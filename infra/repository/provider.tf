@@ -41,4 +41,8 @@ resource "github_branch_protection" "share-cart-protecnion" {
   }
 
   enforce_admins = true
+
+  required_status_checks {
+    strict = true
+  }
 }
