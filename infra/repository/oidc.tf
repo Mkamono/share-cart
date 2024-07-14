@@ -1,24 +1,18 @@
-resource "google_iam_workload_identity_pool" "gh_identity_pool" {
-  workload_identity_pool_id = "github-actions-pool"
-  display_name              = "github-actions-pool"
-  disabled                  = false
+module "gh_oidc" {
+  source      = "terraform-google-modules/github-actions-runners/google//modules/gh-oidc"
+  project_id  = data.google_project.project.project_id
+  pool_id     = "gh-pool"
+  provider_id = "gh-provider"
+  sa_mapping = {
+    "foo-service-account" = {
+      sa_name   = google_service_account.wif_sa.name
+      attribute = "attribute.repository/${github_repository.share-cart.full_name}"
+    }
+  }
 }
 
-resource "google_iam_workload_identity_pool_provider" "pool-provider" {
-  workload_identity_pool_id          = google_iam_workload_identity_pool.gh_identity_pool.workload_identity_pool_id
-  workload_identity_pool_provider_id = "github-actions-provider"
-  display_name                       = "github-actions-provider"
-  description                        = "Github Actions OIDC Provider"
-  disabled                           = false
-
-  attribute_mapping = {
-    "google.subject"       = "assertion.sub"
-    "attribute.actor"      = "assertion.actor"
-    "attribute.aud"        = "assertion.aud"
-    "attribute.repository" = "assertion.repository"
-  }
-
-  oidc {
-    issuer_uri = "https://token.actions.githubusercontent.com"
-  }
+data "google_iam_workload_identity_pool_provider" "wif_pool_provider" {
+  provider                           = google-beta
+  workload_identity_pool_id          = "gh-pool"
+  workload_identity_pool_provider_id = "gh-provider"
 }
