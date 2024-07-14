@@ -27,6 +27,6 @@ jobs:
       #     project_id: "kamono-personal"
       #     workload_identity_provider: ${{ secrets.WIF_POOL_PROVIDER_ID }}
       #     service_account: ${{ secrets.WIF_SA_EMAIL }}
-      - uses: ./.github/workflows/_base_plan.yaml@main
+      - uses: ./.github/workflows/_base_plan.yaml
         # with:
         #   working-directory: infra/repository
