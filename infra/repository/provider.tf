@@ -41,4 +41,6 @@ resource "github_branch_protection" "share-cart-protecnion" {
     required_approving_review_count = 1
     dismiss_stale_reviews           = true
   }
+
+  enforce_admins = true
 }
