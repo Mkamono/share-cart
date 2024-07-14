@@ -8,11 +8,11 @@ on:
 jobs:
   plan:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ${{ inputs.working-directory }}
-    permissions:
-      pull-requests: write
+    # defaults:
+    #   run:
+    #     working-directory: ${{ inputs.working-directory }}
+    # permissions:
+    #   pull-requests: write
     steps:
       - uses: actions/checkout@v4
       # - uses: hashicorp/setup-terraform@v3
