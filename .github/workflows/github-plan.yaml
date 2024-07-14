@@ -7,7 +7,7 @@ on:
       - reopened
     paths:
       - "infra/repository/**.tf"
-      - ".github/workflows/bases/plan.yaml"
+      - ".github/workflows/actions/terraform-plan/action.yaml"
       - ".github/workflows/github-plan.yaml"
 
 jobs:
@@ -28,5 +28,5 @@ jobs:
       #     workload_identity_provider: ${{ secrets.WIF_POOL_PROVIDER_ID }}
       #     service_account: ${{ secrets.WIF_SA_EMAIL }}
       - uses: ./.github/workflows/actions/terraform-plan
-        # with:
-        #   working-directory: infra/repository
+        with:
+          working-directory: infra/repository
