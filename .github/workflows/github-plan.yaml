@@ -12,8 +12,19 @@ on:
 
 jobs:
   plan:
-    uses: ./.github/workflows/_base_plan.yaml
-    with:
-      working-directory: infra/repository
+    runs-on: ubuntu-latest
     permissions:
       pull-requests: write
+      contents: 'read'
+      id-token: 'write'
+
+    steps:
+      - id: auth
+        uses: "google-github-actions/auth@v2"
+        with:
+          project_id: "kamono-personal"
+          workload_identity_provider: ${{ secrets.WIF_POOL_PROVIDER_ID }}
+
+      - uses: ./.github/workflows/_base_plan.yaml
+        with:
+          working-directory: infra/repository
