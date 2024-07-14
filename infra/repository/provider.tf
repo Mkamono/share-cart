@@ -37,9 +37,7 @@ resource "github_branch_protection" "share-cart-protecnion" {
   pattern       = "main"
 
   required_pull_request_reviews {
-    require_code_owner_reviews      = true
-    required_approving_review_count = 1
-    dismiss_stale_reviews           = true
+    required_approving_review_count = 0
   }
 
   enforce_admins = true
