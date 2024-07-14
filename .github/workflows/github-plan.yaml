@@ -12,6 +12,6 @@ on:
 
 jobs:
   plan:
-    uses: ./.github/workflows/bases/plan.yaml
+    uses: ./.github/workflows/_base_plan.yaml
     with:
       working-directory: infra/repository
