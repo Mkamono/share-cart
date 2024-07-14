@@ -17,6 +17,9 @@ jobs:
       pull-requests: write
       contents: "read"
       id-token: "write"
+    defaults:
+      run:
+        working-directory: "infra/repository"
 
     steps:
       - uses: actions/checkout@v4
