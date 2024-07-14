@@ -28,6 +28,6 @@ jobs:
       #     workload_identity_provider: ${{ secrets.WIF_POOL_PROVIDER_ID }}
       #     service_account: ${{ secrets.WIF_SA_EMAIL }}
 
-      - uses: ./_base_plan.yaml
+      - uses: ./.github/workflows/_base_plan.yaml@main
         with:
           working-directory: infra/repository
