@@ -15,6 +15,8 @@
 		"ghcr.io/devcontainers/features/github-cli:1": {},
 		"ghcr.io/devcontainers/features/terraform:1": {},
 		"ghcr.io/meaningful-ooo/devcontainer-features/fish:1": {},
-		"ghcr.io/joshuanianji/devcontainer-features/github-cli-persistence:1": {}
+		"ghcr.io/joshuanianji/devcontainer-features/github-cli-persistence:1": {},
+		"ghcr.io/dhoeric/features/google-cloud-cli:1": {},
+		"ghcr.io/joshuanianji/devcontainer-features/gcloud-cli-persistence:1": {}
 	}
 }
