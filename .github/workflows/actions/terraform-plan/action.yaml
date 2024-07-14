@@ -1,0 +1,10 @@
+on:
+  workflow_call:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      #   - uses: actions/checkout@v4
+      - uses: hashicorp/setup-terraform@v1
+      - run: terraform init
