@@ -13,10 +13,10 @@ on:
 jobs:
   plan:
     runs-on: ubuntu-latest
-    # permissions:
-    #   pull-requests: write
-    #   contents: "read"
-    #   id-token: "write"
+    permissions:
+      pull-requests: write
+      contents: "read"
+      id-token: "write"
     defaults:
       run:
         working-directory: "infra/repository"
@@ -24,12 +24,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # - id: auth
-      #   uses: "google-github-actions/auth@v2"
-      #   with:
-      #     project_id: "kamono-personal"
-      #     workload_identity_provider: ${{ secrets.WIF_POOL_PROVIDER_ID }}
-      #     service_account: ${{ secrets.WIF_SA_EMAIL }}
+      - id: auth
+        uses: "google-github-actions/auth@v2"
+        with:
+          project_id: "kamono-personal"
+          workload_identity_provider: ${{ secrets.WIF_POOL_PROVIDER_ID }}
+          service_account: ${{ secrets.WIF_SA_EMAIL }}
 
       - uses: hashicorp/setup-terraform@v3
         with:
