@@ -14,6 +14,6 @@ terraform {
 
   backend "gcs" {
     bucket = "kamono-terraform-state-bucket"
-    prefix = "terraform/state/repository"
+    prefix = "terraform/state/repo"
   }
 }
