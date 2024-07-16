@@ -7,8 +7,8 @@ provider "google" {
   region  = "asia-northeast1"
 }
 
-# data "google_project" "project" {
-# }
+data "google_project" "project" {
+}
 
 # provider "google-beta" {
 #   project = "kamono-personal"
