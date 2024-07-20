@@ -3,7 +3,7 @@ provider "github" {
 }
 
 provider "google" {
-  project = "kamono-personal"
+  project = "coastal-fiber-430001-s0"
   region  = "asia-northeast1"
 }
 
@@ -11,6 +11,6 @@ data "google_project" "project" {
 }
 
 provider "google-beta" {
-  project = "kamono-personal"
+  project = "coastal-fiber-430001-s0"
   region  = "asia-northeast1"
 }

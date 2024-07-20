@@ -13,7 +13,12 @@ terraform {
   }
 
   backend "gcs" {
-    bucket = "kamono-terraform-state-bucket"
-    prefix = "terraform/state/repo"
+    bucket = "share-cart-terraform-state-bucket"
+    prefix = "terraform/state"
   }
+}
+
+resource "google_storage_bucket" "terraform_state_bucket" {
+  name     = "share-cart-terraform-state-bucket"
+  location = "ASIA-NORTHEAST1"
 }

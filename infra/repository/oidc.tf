@@ -4,8 +4,8 @@ module "gh_oidc" {
   pool_id     = "gha-pool"
   provider_id = "gha-provider"
   sa_mapping = {
-    "foo-service-account" = {
-      sa_name   = google_service_account.wif_sa.name
+    (google_service_account.gha_wif_sa.account_id) = {
+      sa_name   = google_service_account.gha_wif_sa.name
       attribute = "attribute.repository/${github_repository.share-cart.full_name}"
     }
   }
