@@ -10,9 +10,3 @@ module "gh_oidc" {
     }
   }
 }
-
-data "google_iam_workload_identity_pool_provider" "wif_pool_provider" {
-  provider                           = google-beta
-  workload_identity_pool_id          = "gha-pool"
-  workload_identity_pool_provider_id = "gha-provider"
-}
