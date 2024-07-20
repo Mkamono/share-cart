@@ -35,9 +35,6 @@ jobs:
           curl -sSf https://storage.cloud.google.com/share-cart-terraform-state-bucket/terraform/state/default.tfstate \
             --header "Authorization: Bearer ${{ steps.auth.outputs.access_token }}"
 
-      - run: |
-          gcloud iam roles list
-
       - uses: hashicorp/setup-terraform@v3
         with:
           terraform_version: "1.9.2"
