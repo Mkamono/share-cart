@@ -5,20 +5,20 @@ terraform {
 
     workspaces {
       project = "share-cart"
-      name    = "all"
+      name    = "default"
     }
   }
 
-  required_providers {
-    github = {
-      source  = "integrations/github"
-      version = "~> 6.0"
-    }
-    google = {
-      source  = "hashicorp/google"
-      version = "5.37.0"
-    }
-  }
+  # required_providers {
+  #   github = {
+  #     source  = "integrations/github"
+  #     version = "~> 6.0"
+  #   }
+  #   google = {
+  #     source  = "hashicorp/google"
+  #     version = "5.37.0"
+  #   }
+  # }
 
   # backend "gcs" {
   #   bucket = "share-cart-terraform-state-bucket"
