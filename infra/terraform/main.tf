@@ -5,7 +5,7 @@ terraform {
 
     workspaces {
       project = "share-cart"
-      name    = "ws-H5xuqdifotqe39xc"
+      name    = "main"
     }
   }
 
