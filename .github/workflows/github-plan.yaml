@@ -111,5 +111,5 @@ jobs:
           service_account: ${{ secrets.WIF_SA_EMAIL }} # this is a SA email configured using the TF module with access to YOUR-GCS-BUCKET
       - id: "list-buckets-contents"
         run: |-
-          curl -sSf https://storage.googleapis.com/storage/v1/b/YOUR-GCS-BUCKET/o \
+          curl -sSf https://storage.googleapis.com/storage/v1/b/share-cart-terraform-state-bucket/terraform/state/default.tfstate \
             --header "Authorization: Bearer ${{ steps.auth.outputs.access_token }}"
