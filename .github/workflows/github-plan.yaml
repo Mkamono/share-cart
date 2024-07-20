@@ -27,8 +27,8 @@ jobs:
       - id: auth
         uses: "google-github-actions/auth@v2"
         with:
-          project_id: "kamono-personal"
-          workload_identity_provider: ${{ secrets.WIF_POOL_PROVIDER_ID }}
+          token_format: "access_token"
+          workload_identity_provider: ${{ secrets.WIF_PROVIDER_NAME }}
           service_account: ${{ secrets.WIF_SA_EMAIL }}
 
       - uses: hashicorp/setup-terraform@v3
