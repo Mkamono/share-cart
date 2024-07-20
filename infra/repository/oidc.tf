@@ -1,6 +1,6 @@
 module "gh_oidc" {
   source      = "terraform-google-modules/github-actions-runners/google//modules/gh-oidc"
-  project_id  = data.google_project.project.project_id
+  project_id  = local.project_id
   pool_id     = "gha-pool"
   provider_id = "gha-provider"
   sa_mapping = {

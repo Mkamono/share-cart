@@ -3,14 +3,11 @@ provider "github" {
 }
 
 provider "google" {
-  project = "coastal-fiber-430001-s0"
-  region  = "asia-northeast1"
-}
-
-data "google_project" "project" {
+  project = local.project_id
+  region  = local.region
 }
 
 provider "google-beta" {
-  project = "coastal-fiber-430001-s0"
-  region  = "asia-northeast1"
+  project = local.project_id
+  region  = local.region
 }
