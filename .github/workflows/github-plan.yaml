@@ -109,6 +109,7 @@ jobs:
           token_format: "access_token"
           workload_identity_provider: ${{ secrets.WIF_PROVIDER_NAME }} # this is the output provider_name from the TF module
           service_account: ${{ secrets.WIF_SA_EMAIL }} # this is a SA email configured using the TF module with access to YOUR-GCS-BUCKET
-      - id: "list bucket contents"
-        run: |
-          curl -X GET -H "Authorization: Bearer ${{ steps.auth.outputs.access_token }}" "https://storage.cloud.google.com/share-cart-terraform-state-bucket/terraform/state/default.tfstate"
+      - id: "list-buckets-contents"
+        run: |-
+          curl -sSf https://storage.cloud.google.com/share-cart-terraform-state-bucket/terraform/state/default.tfstate \
+            --header "Authorization: Bearer ${{ steps.auth.outputs.access_token }}"
