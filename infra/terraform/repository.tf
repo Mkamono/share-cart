@@ -18,17 +18,17 @@ resource "github_repository" "share-cart" {
   squash_merge_commit_title = "PR_TITLE"
 }
 
-# resource "github_branch_protection" "share-cart-protecnion" {
-#   repository_id = github_repository.share-cart.node_id
-#   pattern       = "main"
+resource "github_branch_protection" "share-cart-protecnion" {
+  repository_id = github_repository.share-cart.node_id
+  pattern       = "main"
 
-#   required_pull_request_reviews {
-#     required_approving_review_count = 0
-#   }
+  required_pull_request_reviews {
+    required_approving_review_count = 0
+  }
 
-#   enforce_admins = true
+  enforce_admins = true
 
-#   required_status_checks {
-#     strict = true
-#   }
-# }
+  required_status_checks {
+    strict = true
+  }
+}
