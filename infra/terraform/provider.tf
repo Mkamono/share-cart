@@ -1,6 +1,6 @@
-# provider "github" {
-#   owner = "Mkamono"
-# }
+provider "github" {
+  owner = "Mkamono"
+}
 
 # provider "google" {
 #   project = local.project_id

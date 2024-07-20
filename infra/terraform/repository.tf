@@ -1,22 +1,22 @@
 
-# resource "github_repository" "share-cart" {
-#   name       = "share-cart"
-#   visibility = "public"
+resource "github_repository" "share-cart" {
+  name       = "share-cart"
+  visibility = "public"
 
-#   allow_merge_commit = false
-#   allow_rebase_merge = false
-#   allow_squash_merge = true
+  allow_merge_commit = false
+  allow_rebase_merge = false
+  allow_squash_merge = true
 
-#   allow_update_branch    = true
-#   delete_branch_on_merge = true
+  allow_update_branch    = true
+  delete_branch_on_merge = true
 
-#   has_downloads = false
-#   has_issues    = true
-#   has_projects  = false
-#   has_wiki      = false
+  has_downloads = false
+  has_issues    = true
+  has_projects  = false
+  has_wiki      = false
 
-#   squash_merge_commit_title = "PR_TITLE"
-# }
+  squash_merge_commit_title = "PR_TITLE"
+}
 
 # resource "github_branch_protection" "share-cart-protecnion" {
 #   repository_id = github_repository.share-cart.node_id
