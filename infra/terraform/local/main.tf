@@ -14,7 +14,7 @@ terraform {
 
   backend "gcs" {
     bucket = "share-cart-terraform-state-bucket"
-    prefix = "terraform/state"
+    prefix = "terraform/state/local"
   }
 }
 
