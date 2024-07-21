@@ -13,7 +13,8 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: infra/terraform/remote
+        # working-directory: infra/terraform/remote
+        working-directory: infra/terraform/local
     permissions:
       contents: "read"
       id-token: "write"
