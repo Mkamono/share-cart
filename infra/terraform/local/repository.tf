@@ -1,4 +1,3 @@
-
 resource "github_repository" "share-cart" {
   name       = "share-cart"
   visibility = "public"
