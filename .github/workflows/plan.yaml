@@ -15,9 +15,15 @@ jobs:
       run:
         working-directory: infra/terraform/remote
     permissions:
+      contents: "read"
+      id-token: "write"
       pull-requests: write
     steps:
       - uses: actions/checkout@v4
+      - uses: "google-github-actions/auth@v2"
+        with:
+          workload_identity_provider: ${{secrets.WIF_PROVIDER_NAME}}
+          service_account: ${{secrets.WIF_SA_EMAIL}}
       - uses: hashicorp/setup-terraform@v3
 
       - name: Terraform fmt
@@ -66,7 +72,7 @@ jobs:
 
             </details>
 
-            *Pusher: @${{ github.actor }}, Action: \`${{ github.event_name }}\`, Working Directory: \`${{ env.tf_actions_working_dir }}\`, Workflow: \`${{ github.workflow }}\`*`;
+            *Pusher: @${{ github.actor }}, Action: \`${{ github.event_name }}\`, Working Directory: \`infra/terraform/remote\`, Workflow: \`${{ github.workflow }}\`*`;
 
             github.rest.issues.createComment({
               issue_number: context.issue.number,
