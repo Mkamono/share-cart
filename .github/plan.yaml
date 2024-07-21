@@ -5,8 +5,8 @@ on:
       - opened
       - synchronize
       - reopened
-    paths:
-      - "infra/terraform/remote/**"
+    # paths:
+    #   - "infra/terraform/remote/**"
 
 jobs:
   plan:
