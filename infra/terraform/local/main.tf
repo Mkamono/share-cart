@@ -19,8 +19,7 @@ terraform {
 }
 
 resource "google_storage_bucket" "terraform_state_bucket" {
-  name                        = "share-cart-terraform-state-bucket"
-  location                    = "ASIA-NORTHEAST1"
-  storage_class               = "STANDARD"
-  uniform_bucket_level_access = true
+  name          = "share-cart-terraform-state-bucket"
+  location      = "ASIA-NORTHEAST1"
+  storage_class = "STANDARD"
 }
