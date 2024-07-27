@@ -8,6 +8,8 @@ import (
 
 	gen "api/openapi"
 
+	mw "api/app/middleware"
+
 	"github.com/labstack/echo/v4"
 )
 
@@ -20,6 +22,7 @@ func main() {
 	server := server.NewServer()
 
 	e := echo.New()
+	e.Use(mw.Logger(mw.SlogLoggerFunc))
 
 	gen.RegisterHandlers(e, server)
 
