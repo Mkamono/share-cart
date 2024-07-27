@@ -15,7 +15,10 @@ WORKDIR /app
 COPY --from=base /app /app
 
 RUN go install -v github.com/go-delve/delve/cmd/dlv@latest
+RUN go install -v github.com/oapi-codegen/oapi-codegen/v2/cmd/oapi-codegen@latest
+RUN go install -v github.com/air-verse/air@latest
 
+CMD ["air", "-c", ".air.toml"]
 
 # デプロイ用
 FROM golang:1.22.5 as builder
