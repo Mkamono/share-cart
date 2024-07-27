@@ -15,6 +15,10 @@ services:
       target: local
     volumes:
       - ./web/:/app/
+      - share-cart-node-modules:/app/share-cart/node_modules
     ports:
       - "5173:5173"
     tty: true
+
+volumes:
+  share-cart-node-modules:
