@@ -16,8 +16,10 @@
 				"golang.go",
 				"ms-azuretools.vscode-docker",
 				"redhat.vscode-yaml",
-				"eamodio.gitlens"
+				"eamodio.gitlens",
+				"42Crunch.vscode-openapi"
 			]
 		}
-	}
+	},
+	"postAttachCommand": "cd api && task dev"
 }
