@@ -18,8 +18,6 @@ RUN go install -v github.com/go-delve/delve/cmd/dlv@latest
 RUN go install -v github.com/oapi-codegen/oapi-codegen/v2/cmd/oapi-codegen@latest
 RUN go install -v github.com/air-verse/air@latest
 
-EXPOSE 8081
-
 CMD ["air", "-c", ".air.toml"]
 
 # デプロイ用
