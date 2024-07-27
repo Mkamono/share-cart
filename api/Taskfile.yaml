@@ -2,12 +2,9 @@ version: "3"
 
 tasks:
   generate:
-    dir: openapi
-    cmd: oapi-codegen --config=config.yaml openapi.yaml
+    cmd: ogen --package oas --target app/oas --clean docs/openapi.yaml
     sources:
-      - openapi.yaml
-    generates:
-      - api.gen.go
+      - docs/openapi.yaml
 
   air:
     cmd: air -c .air.toml

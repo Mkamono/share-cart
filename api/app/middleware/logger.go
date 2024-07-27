@@ -1,37 +1,41 @@
 package middleware
 
 import (
-	"context"
+	"fmt"
 	"log/slog"
 	"os"
 
-	"github.com/labstack/echo/v4"
-	"github.com/labstack/echo/v4/middleware"
+	"github.com/ogen-go/ogen/middleware"
 )
 
-func Logger(logglerFunc func(c echo.Context, v middleware.RequestLoggerValues) error) echo.MiddlewareFunc {
-	return middleware.RequestLoggerWithConfig(middleware.RequestLoggerConfig{
-		LogStatus:     true,
-		LogURI:        true,
-		LogError:      true,
-		HandleError:   true, // forwards error to the global error handler, so it can decide appropriate status code
-		LogValuesFunc: logglerFunc,
-	})
+func NewLogger() *slog.Logger {
+	return slog.New(slog.NewJSONHandler(os.Stdout, nil))
 }
 
-func SlogLoggerFunc(c echo.Context, v middleware.RequestLoggerValues) error {
-	logger := slog.New(slog.NewJSONHandler(os.Stdout, nil))
-	if v.Error == nil {
-		logger.LogAttrs(context.Background(), slog.LevelInfo, "REQUEST",
-			slog.String("uri", v.URI),
-			slog.Int("status", v.Status),
+func Logging(logger *slog.Logger) middleware.Middleware {
+	return func(
+		req middleware.Request,
+		next func(req middleware.Request) (middleware.Response, error),
+	) (middleware.Response, error) {
+		logger.Info(
+			"Handling request",
+			slog.String("operation", req.OperationName),
+			slog.String("URL", req.Raw.URL.String()),
+			slog.String("operationId", req.OperationID),
+			slog.String("body", fmt.Sprintf("%#v", req.Body)),
+			slog.String("raw request", fmt.Sprintf("%+v", req.Raw)),
 		)
-	} else {
-		logger.LogAttrs(context.Background(), slog.LevelError, "REQUEST_ERROR",
-			slog.String("uri", v.URI),
-			slog.Int("status", v.Status),
-			slog.String("err", v.Error.Error()),
-		)
+		resp, err := next(req)
+		if err != nil {
+			logger.Error("Fail", "error", err)
+		} else {
+			logger.Info(
+				"Handled request",
+				"operation", req.OperationName,
+				"operationId", req.OperationID,
+				"raw response", fmt.Sprintf("%#v", resp.Type),
+			)
+		}
+		return resp, err
 	}
-	return nil
 }

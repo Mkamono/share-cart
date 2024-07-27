@@ -2,15 +2,12 @@ package main
 
 import (
 	"api/app/config"
-	"api/app/server"
+	h "api/app/handler"
+	mw "api/app/middleware"
+	"api/app/oas"
 	"fmt"
 	"log"
-
-	gen "api/openapi"
-
-	mw "api/app/middleware"
-
-	"github.com/labstack/echo/v4"
+	"net/http"
 )
 
 func main() {
@@ -19,12 +16,15 @@ func main() {
 		log.Fatal(err)
 	}
 
-	server := server.NewServer()
+	service := h.NewHandler()
+	logger := mw.NewLogger()
 
-	e := echo.New()
-	e.Use(mw.Logger(mw.SlogLoggerFunc))
-
-	gen.RegisterHandlers(e, server)
-
-	log.Fatal(e.Start(fmt.Sprintf("0.0.0.0:%s", c.Port)))
+	srv, err := oas.NewServer(service, oas.WithMiddleware(mw.Logging(logger)))
+	if err != nil {
+		log.Fatal(err)
+	}
+	addr := fmt.Sprintf(":%s", c.Port)
+	if err := http.ListenAndServe(addr, srv); err != nil {
+		log.Fatal(err)
+	}
 }

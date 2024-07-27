@@ -1,0 +1,30 @@
+openapi: "3.0.3"
+info:
+  title: Share Cart API
+  version: "1.0"
+servers:
+  - url: http://localhost:8081
+paths:
+  /test:
+    get:
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Test"
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Failed to get test"
