@@ -4,3 +4,7 @@ services:
       context: ./api
       dockerfile: Dockerfile
       target: local
+    volumes:
+      - ./api/:/app/
+    ports:
+      - "8081:8081"

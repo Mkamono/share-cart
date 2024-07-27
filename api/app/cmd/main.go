@@ -23,5 +23,5 @@ func main() {
 
 	gen.RegisterHandlers(e, server)
 
-	log.Fatal(e.Start(fmt.Sprintf("localhost:%s", c.Port)))
+	log.Fatal(e.Start(fmt.Sprintf("0.0.0.0:%s", c.Port)))
 }
