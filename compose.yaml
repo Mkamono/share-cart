@@ -8,3 +8,13 @@ services:
       - ./api/:/app/
     ports:
       - "8081:8081"
+  web:
+    build:
+      context: ./web
+      dockerfile: Dockerfile
+      target: local
+    volumes:
+      - ./web/:/app/
+    ports:
+      - "5173:5173"
+    tty: true
