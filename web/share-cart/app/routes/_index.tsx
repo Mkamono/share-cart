@@ -1,13 +1,11 @@
 import { type MetaFunction, json } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
-
-type LoaderData = {
-	message: string;
-};
+import createClient from "openapi-fetch";
+import type { paths } from "~/models/schema";
 
 export async function loader() {
-	const response = await fetch(`${process.env.API_HOST}/test`);
-	const data: LoaderData = await response.json();
+	const client = createClient<paths>({ baseUrl: process.env.API_HOST });
+	const { data } = await client.GET("/test", {});
 	return json(data);
 }
 
