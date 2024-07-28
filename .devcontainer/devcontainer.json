@@ -25,5 +25,5 @@
 		}
 	},
 	// "postAttachCommand": "cd api && task dev"
-	"postAttachCommand": "cd web/share-cart && yarn dev"
+	"postAttachCommand": "cd web && task dev"
 }

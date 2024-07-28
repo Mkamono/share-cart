@@ -8,6 +8,7 @@ services:
       - ./api/:/app/
     ports:
       - "8081:8081"
+    command: ["air", "-c", ".air.toml"]
   web:
     build:
       context: ./web
@@ -15,6 +16,13 @@ services:
       target: local
     volumes:
       - ./web/:/app/
+      - share-cart-node-modules:/app/share-cart/node_modules
     ports:
       - "5173:5173"
-    tty: true
+    environment:
+      - API_HOST=http://api:8081
+    working_dir: /app/share-cart
+    command: ["yarn", "dev"]
+
+volumes:
+  share-cart-node-modules:
