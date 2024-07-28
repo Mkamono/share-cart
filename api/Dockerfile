@@ -1,6 +1,7 @@
 # ローカル開発用
 FROM golang:1.22.5 AS local
 
+ENV TZ=Asia/Tokyo
 WORKDIR /app
 
 RUN go install -v github.com/go-delve/delve/cmd/dlv@latest
