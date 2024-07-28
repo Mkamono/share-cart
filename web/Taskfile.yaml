@@ -1,0 +1,16 @@
+version: "3"
+
+interval: 50ms
+
+tasks:
+  format:
+    cmds:
+      - biome format --write
+    sources:
+      - "**/*.tsx"
+      - "**/*.ts"
+
+  dev:
+    dir: share-cart
+    cmds:
+      - yarn dev & task format -w
