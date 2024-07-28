@@ -3,6 +3,13 @@ version: "3"
 interval: 50ms
 
 tasks:
+  generate:
+    cmd: npx -y openapi-typescript ../api/docs/openapi.yaml -o share-cart/app/models/schema.d.ts
+    sources:
+      - "../api/docs/openapi.yaml"
+    generates:
+      - "share-cart/app/models/schema.d.ts"
+
   format:
     cmds:
       - biome format --write
@@ -13,4 +20,4 @@ tasks:
   dev:
     dir: share-cart
     cmds:
-      - yarn dev & task format -w
+      - yarn dev & task format -w & task generate -w
