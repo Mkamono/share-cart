@@ -21,3 +21,10 @@ tasks:
     dir: share-cart
     cmds:
       - yarn dev & task format -w & task generate -w
+
+  gen_env:
+    cmd: npx gen-env-template .env .env.example
+    sources:
+      - ".env"
+    generates:
+      - ".env.example"
