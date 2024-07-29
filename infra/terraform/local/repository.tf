@@ -11,7 +11,7 @@ resource "github_repository" "share-cart" {
 
   has_downloads = false
   has_issues    = true
-  has_projects  = false
+  has_projects  = true
   has_wiki      = false
 
   squash_merge_commit_title = "PR_TITLE"
