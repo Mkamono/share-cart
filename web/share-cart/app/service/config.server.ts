@@ -8,5 +8,6 @@ export const config = cleanEnv(process.env, {
 	AUTH0_DOMAIN: str(),
 	AUTH0_LOGOUT_URL: url(),
 	AUTH0_RETURN_TO_URL: url(),
+	AUTH0_AUDIENCE: str(),
 	NODE_ENV: str({ choices: ["development", "production", "staging", "test"] }),
 });
