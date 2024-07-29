@@ -1,23 +1,19 @@
 import { type MetaFunction, json } from "@remix-run/node";
-import { useLoaderData } from "@remix-run/react";
+import { Form, useLoaderData } from "@remix-run/react";
 import createClient from "openapi-fetch";
 import type { paths } from "~/models/schema";
 import { authenticator } from "~/service/auth.server";
 import { config } from "~/service/config.server";
-import { getSession } from "~/service/session.server";
 import Login from "./login";
 
 export async function loader({ request }: { request: Request }) {
-	const user = await authenticator.isAuthenticated(request);
-	const email = user?.profile.emails?.[0].value;
-	const session = await getSession();
+	const jwt = await authenticator.isAuthenticated(request);
 	const client = createClient<paths>({ baseUrl: process.env.API_HOST });
 	const { data } = await client.GET("/test", {});
 	return json({
 		testData: data,
 		config,
-		session,
-		user,
+		jwt,
 	});
 }
 
@@ -40,14 +36,18 @@ export default function Index() {
 						<p className="text-red-700">You are in development mode</p>
 					)}
 					<Login />
-					{data.session ? (
+					<Form action="/auth/logout" method="post">
+						<button type="submit">Logout with Auth0</button>
+					</Form>
+					{data.jwt ? (
 						<div>
 							<p className="text-green-700">You are logged in</p>
-							<p>{data.user?.profile.id}</p>
-							<p>{data.user?.profile.displayName}</p>
-							{data.user?.profile.emails?.map((email) => (
+							<p>{data.jwt.profile.id}</p>
+							<p>{data.jwt.profile.displayName}</p>
+							{data.jwt?.profile.emails?.map((email) => (
 								<p key={email.value}>{email.value}</p>
 							))}
+							<p>{data.jwt.accessToken}</p>
 						</div>
 					) : (
 						<p className="text-red-700">You are not logged in</p>
