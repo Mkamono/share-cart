@@ -21,6 +21,7 @@ const auth0Strategy = new Auth0Strategy(
 		clientID: config.AUTH0_CLIENT_ID,
 		clientSecret: config.AUTH0_CLIENT_SECRET,
 		domain: config.AUTH0_DOMAIN,
+		audience: config.AUTH0_AUDIENCE,
 	},
 	async ({ accessToken, refreshToken, extraParams, profile }) => {
 		return {
