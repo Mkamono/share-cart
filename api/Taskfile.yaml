@@ -12,4 +12,10 @@ tasks:
   dev:
     cmds:
       - task: generate
+      - task: graph
       - task: air
+
+  graph:
+    cmd: godepgraph -o .,api -s . | dot -Tpng -o ./docs/dependancy.png
+    sources:
+      - ./**/*.go

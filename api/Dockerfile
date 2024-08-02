@@ -4,9 +4,13 @@ FROM golang:1.22.5 AS local
 ENV TZ=Asia/Tokyo
 WORKDIR /app
 
+RUN apt-get update && apt-get install -y \
+    graphviz
+
 RUN go install -v github.com/go-delve/delve/cmd/dlv@latest
 RUN go install -v github.com/ogen-go/ogen/cmd/ogen@latest
 RUN go install -v github.com/air-verse/air@latest
+RUN go install -v github.com/kisielk/godepgraph@latest
 
 CMD ["air", "-c", ".air.toml"]
 
@@ -14,9 +18,8 @@ CMD ["air", "-c", ".air.toml"]
 FROM golang:1.22.5 AS builder
 
 WORKDIR /app
-COPY . .
 
-RUN CGO_ENABLED=0 go build -o /go/bin/app app/cmd/main.go
+RUN --mount=type=bind,target=. go build -o /go/bin/app
 
 FROM gcr.io/distroless/static-debian12 AS production
 
