@@ -5,6 +5,13 @@
 	// language - current active spelling language
 	"language": "en",
 	// words - list of words to be always considered correct
-	"words": ["ogen"],
+	"words": [
+		"cmds",
+		"godepgraph",
+		"ogen",
+		"openapi",
+		"testdata",
+		"tmpl"
+	],
 	"flagWords": []
 }

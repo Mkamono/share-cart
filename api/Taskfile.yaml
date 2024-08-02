@@ -6,10 +6,12 @@ tasks:
     sources:
       - docs/openapi.yaml
 
-  air:
-    cmd: air -c .air.toml
-
   dev:
     cmds:
       - task: generate
-      - task: air
+      - task: graph
+
+  graph:
+    cmd: godepgraph -o .,api -s . | dot -Tpng -o ./docs/dependency.png
+    sources:
+      - ./**/*.go
