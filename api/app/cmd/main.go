@@ -17,9 +17,9 @@ func main() {
 	}
 
 	service := h.NewHandler()
-	logger := mw.NewLogger()
+	logger := mw.NewSlogLogger()
 
-	srv, err := oas.NewServer(service, oas.WithMiddleware(mw.Logging(logger)))
+	srv, err := oas.NewServer(service, oas.WithMiddleware(logger))
 	if err != nil {
 		log.Fatal(err)
 	}
