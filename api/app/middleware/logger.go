@@ -8,11 +8,8 @@ import (
 	"github.com/ogen-go/ogen/middleware"
 )
 
-func NewLogger() *slog.Logger {
-	return slog.New(slog.NewJSONHandler(os.Stdout, nil))
-}
-
-func Logging(logger *slog.Logger) middleware.Middleware {
+func NewSlogLogger() middleware.Middleware {
+	logger := slog.New(slog.NewJSONHandler(os.Stdout, nil))
 	return func(
 		req middleware.Request,
 		next func(req middleware.Request) (middleware.Response, error),
