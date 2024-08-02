@@ -12,6 +12,6 @@ tasks:
       - task: graph
 
   graph:
-    cmd: godepgraph -o .,api -s . | dot -Tpng -o ./docs/dependancy.png
+    cmd: godepgraph -o .,api -s . | dot -Tpng -o ./docs/dependency.png
     sources:
       - ./**/*.go
