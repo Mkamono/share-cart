@@ -1,0 +1,13 @@
+output = "infra/boiler"
+pkgname = "boiler"
+wipe = true
+no-tests = true
+
+[psql]
+dbname = "share_cart"
+host = "db"
+port = 5432
+user = "postgres"
+pass = "postgres"
+sslmode = "disable"
+schema = "main"

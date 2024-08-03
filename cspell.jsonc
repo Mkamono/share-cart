@@ -11,9 +11,14 @@
 		"godepgraph",
 		"ogen",
 		"openapi",
+		"psql",
+		"sqlboiler",
 		"sslmode",
 		"testdata",
 		"tmpl"
 	],
-	"flagWords": []
+	"flagWords": [],
+	"ignorePaths": [
+		"api/infra/boiler/**"
+	]
 }
