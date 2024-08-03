@@ -26,3 +26,6 @@ tasks:
 
   plan:
     cmd: atlas schema apply -u $POSTGRES_URL --to $SCHEMA_FILE --dry-run
+
+  sqlboiler:
+    cmd: sqlboiler psql --add-soft-deletes
