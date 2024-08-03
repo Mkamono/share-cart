@@ -15,3 +15,6 @@ tasks:
     cmd: godepgraph -o .,api -s . | dot -Tpng -o ./docs/dependency.png
     sources:
       - ./**/*.go
+
+  inspect:
+    cmd: atlas schema inspect -u "postgres://postgres:postgres@db:5432/share_cart?sslmode=disable" > ./app/infra/db/schema.hcl
