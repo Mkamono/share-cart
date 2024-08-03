@@ -1,0 +1,44 @@
+{
+  "database": {
+    "1722639821620": {
+      "host": "db",
+      "port": 5432,
+      "user": "postgres",
+      "password": "postgres",
+      "dbType": "PostgreSQL",
+      "database": "share_cart",
+      "advance": {
+        "hideSystemSchema": true,
+        "groupingTables": false
+      },
+      "treeFeatures": [],
+      "timezone": "+00:00",
+      "usingSSH": false,
+      "useSocksProxy": false,
+      "useHTTPProxy": false,
+      "athena": {},
+      "bigQuery": {},
+      "global": true,
+      "savePassword": "Forever",
+      "readonly": false,
+      "sort": 12,
+      "useSSL": false,
+      "fs": {
+        "encoding": "utf8",
+        "showHidden": true
+      },
+      "dm": {
+        "usingServiceName": false
+      },
+      "httpAuth": {
+        "authType": "none"
+      },
+      "key": "1722639821620",
+      "connectionKey": "database.connections",
+      "isJdbc": false,
+      "requiredAuth": true
+    }
+  },
+  "nosql": null,
+  "$schema": "https://cdn.database-client.com/dbclient/schema.json"
+}
