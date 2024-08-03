@@ -1,24 +1,20 @@
 version: "3"
 
 env:
-  POSTGRES_HOST: db:5432
-  POSTGRES_USER: postgres
-  POSTGRES_PASSWORD: postgres
-  POSTGRES_DB: share_cart
-
-  DB_URL: postgres://$POSTGRES_USER:$POSTGRES_PASSWORD@$POSTGRES_HOST/$POSTGRES_DB?sslmode=disable
+  POSTGRES_URL:
+    sh: echo postgres://$POSTGRES_USER:$POSTGRES_PASSWORD@$POSTGRES_HOST/$POSTGRES_DB?sslmode=disable
   SCHEMA_FILE: file://./app/infra/db/schema.hcl
 
 tasks:
-  generate:
-    cmd: ogen --package oas --target app/oas --clean docs/openapi.yaml
-    sources:
-      - docs/openapi.yaml
-
   dev:
     cmds:
       - task: generate
       - task: graph
+
+  generate:
+    cmd: ogen --package oas --target app/oas --clean docs/openapi.yaml
+    sources:
+      - docs/openapi.yaml
 
   graph:
     cmd: godepgraph -o .,api -s . | dot -Tpng -o ./docs/dependency.png # cspell:disable-line
@@ -26,11 +22,7 @@ tasks:
       - ./**/*.go
 
   apply:
-    cmd: atlas schema apply -u {{.PG_URL}} --to $SCHEMA_FILE
-    vars:
-      PG_URL: postgres://$POSTGRES_USER:$POSTGRES_PASSWORD@$POSTGRES_HOST/$POSTGRES_DB?sslmode=disable
+    cmd: atlas schema apply -u $POSTGRES_URL --to $SCHEMA_FILE
 
   plan:
-    cmd: atlas schema apply -u {{.PG_URL}} --to $SCHEMA_FILE --dry-run
-    vars:
-      PG_URL: postgres://$POSTGRES_USER:$POSTGRES_PASSWORD@$POSTGRES_HOST/$POSTGRES_DB?sslmode=disable
+    cmd: atlas schema apply -u $POSTGRES_URL --to $SCHEMA_FILE --dry-run
