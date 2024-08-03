@@ -1,4 +1,4 @@
-output = "infra/boiler"
+output = "app/infra/boiler"
 pkgname = "boiler"
 wipe = true
 no-tests = true
