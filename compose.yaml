@@ -25,6 +25,17 @@ services:
       - ./web/.env
     working_dir: /app/share-cart
     command: ["yarn", "dev"]
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: share_cart
+    ports:
+      - "5432:5432"
+    volumes:
+      - share-cart-db-data:/var/lib/postgresql/data
 
 volumes:
   share-cart-node-modules:
+  share-cart-db-data:
