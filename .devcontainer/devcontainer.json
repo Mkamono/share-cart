@@ -22,7 +22,7 @@
 				"rangav.vscode-thunder-client",
 				"streetsidesoftware.code-spell-checker",
 				"cweijan.vscode-database-client2",
-				"HashiCorp.HCL"
+				"hashicorp.hcl"
 			]
 		}
 	},

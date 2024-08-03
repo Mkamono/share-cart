@@ -1,5 +1,7 @@
+schema "main" {}
+
 table "users" {
-  schema = schema.public
+  schema = schema.main
   column "id" {
     null = false
     type = integer
@@ -7,18 +9,31 @@ table "users" {
       generated = ALWAYS
     }
   }
-  column "create_time" {
-    null = true
-    type = date
-  }
-  column "name" {
-    null = true
-    type = character_varying(255)
-  }
   primary_key {
     columns = [column.id]
   }
-}
-schema "public" {
-  comment = "standard public schema"
+
+  column "name" {
+    null = false
+    type = character_varying(255)
+  }
+  unique "name" {
+    columns = [column.name]
+  }
+
+  // system managed columns
+  column "created_at" {
+    null = false
+    type = timestamp
+  }
+
+  column "updated_at" {
+    null = false
+    type = timestamp
+  }
+
+  column "deleted_at" {
+    null = true
+    type = timestamp
+  }
 }

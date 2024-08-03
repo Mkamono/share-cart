@@ -10,6 +10,7 @@
 		"godepgraph",
 		"ogen",
 		"openapi",
+		"sslmode",
 		"testdata",
 		"tmpl"
 	],
