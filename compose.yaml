@@ -6,6 +6,11 @@ services:
       target: local
     volumes:
       - ./api/:/app/
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_HOST: db:5432
     ports:
       - "8081:8081"
     command: ["air", "-c", ".air.toml"]
@@ -20,11 +25,22 @@ services:
     ports:
       - "5173:5173"
     environment:
-      - API_HOST=http://api:8081
+      API_HOST: http://api:8081
     env_file:
       - ./web/.env
     working_dir: /app/share-cart
     command: ["yarn", "dev"]
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+      - "5432:5432"
+    volumes:
+      - share-cart-db-data:/var/lib/postgresql/data
 
 volumes:
   share-cart-node-modules:
+  share-cart-db-data:

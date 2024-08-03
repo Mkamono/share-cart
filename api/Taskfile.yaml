@@ -1,17 +1,28 @@
 version: "3"
 
-tasks:
-  generate:
-    cmd: ogen --package oas --target app/oas --clean docs/openapi.yaml
-    sources:
-      - docs/openapi.yaml
+env:
+  POSTGRES_URL:
+    sh: echo postgres://$POSTGRES_USER:$POSTGRES_PASSWORD@$POSTGRES_HOST/$POSTGRES_DB?sslmode=disable
+  SCHEMA_FILE: file://./app/infra/db/schema.hcl
 
+tasks:
   dev:
     cmds:
       - task: generate
       - task: graph
 
+  generate:
+    cmd: ogen --package oas --target app/oas --clean docs/openapi.yaml
+    sources:
+      - docs/openapi.yaml
+
   graph:
-    cmd: godepgraph -o .,api -s . | dot -Tpng -o ./docs/dependency.png
+    cmd: godepgraph -o .,api -s . | dot -Tpng -o ./docs/dependency.png # cspell:disable-line
     sources:
       - ./**/*.go
+
+  apply:
+    cmd: atlas schema apply -u $POSTGRES_URL --to $SCHEMA_FILE
+
+  plan:
+    cmd: atlas schema apply -u $POSTGRES_URL --to $SCHEMA_FILE --dry-run
