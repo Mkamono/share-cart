@@ -19,17 +19,17 @@ import (
 	"github.com/ogen-go/ogen/ogenerrors"
 )
 
-// handleLoginPostRequest handles POST /login operation.
+// handleSignUpPostRequest handles POST /sign-up operation.
 //
-// POST /login
-func (s *Server) handleLoginPostRequest(args [0]string, argsEscaped bool, w http.ResponseWriter, r *http.Request) {
+// POST /sign-up
+func (s *Server) handleSignUpPostRequest(args [0]string, argsEscaped bool, w http.ResponseWriter, r *http.Request) {
 	otelAttrs := []attribute.KeyValue{
 		semconv.HTTPMethodKey.String("POST"),
-		semconv.HTTPRouteKey.String("/login"),
+		semconv.HTTPRouteKey.String("/sign-up"),
 	}
 
 	// Start a span for this request.
-	ctx, span := s.cfg.Tracer.Start(r.Context(), "LoginPost",
+	ctx, span := s.cfg.Tracer.Start(r.Context(), "SignUpPost",
 		trace.WithAttributes(otelAttrs...),
 		serverSpanKind,
 	)
@@ -60,11 +60,11 @@ func (s *Server) handleLoginPostRequest(args [0]string, argsEscaped bool, w http
 		}
 		err          error
 		opErrContext = ogenerrors.OperationContext{
-			Name: "LoginPost",
+			Name: "SignUpPost",
 			ID:   "",
 		}
 	)
-	request, close, err := s.decodeLoginPostRequest(r)
+	request, close, err := s.decodeSignUpPostRequest(r)
 	if err != nil {
 		err = &ogenerrors.DecodeRequestError{
 			OperationContext: opErrContext,
@@ -80,11 +80,11 @@ func (s *Server) handleLoginPostRequest(args [0]string, argsEscaped bool, w http
 		}
 	}()
 
-	var response LoginPostRes
+	var response SignUpPostRes
 	if m := s.cfg.Middleware; m != nil {
 		mreq := middleware.Request{
 			Context:          ctx,
-			OperationName:    "LoginPost",
+			OperationName:    "SignUpPost",
 			OperationSummary: "",
 			OperationID:      "",
 			Body:             request,
@@ -93,9 +93,9 @@ func (s *Server) handleLoginPostRequest(args [0]string, argsEscaped bool, w http
 		}
 
 		type (
-			Request  = *LoginPostReq
+			Request  = *SignUpPostReq
 			Params   = struct{}
-			Response = LoginPostRes
+			Response = SignUpPostRes
 		)
 		response, err = middleware.HookMiddleware[
 			Request,
@@ -106,12 +106,12 @@ func (s *Server) handleLoginPostRequest(args [0]string, argsEscaped bool, w http
 			mreq,
 			nil,
 			func(ctx context.Context, request Request, params Params) (response Response, err error) {
-				response, err = s.h.LoginPost(ctx, request)
+				response, err = s.h.SignUpPost(ctx, request)
 				return response, err
 			},
 		)
 	} else {
-		response, err = s.h.LoginPost(ctx, request)
+		response, err = s.h.SignUpPost(ctx, request)
 	}
 	if err != nil {
 		defer recordError("Internal", err)
@@ -119,7 +119,7 @@ func (s *Server) handleLoginPostRequest(args [0]string, argsEscaped bool, w http
 		return
 	}
 
-	if err := encodeLoginPostResponse(response, w, span); err != nil {
+	if err := encodeSignUpPostResponse(response, w, span); err != nil {
 		defer recordError("EncodeResponse", err)
 		if !errors.Is(err, ht.ErrInternalServerErrorResponse) {
 			s.cfg.ErrorHandler(ctx, w, r, err)

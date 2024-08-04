@@ -15,8 +15,8 @@ import (
 	"github.com/ogen-go/ogen/validate"
 )
 
-func (s *Server) decodeLoginPostRequest(r *http.Request) (
-	req *LoginPostReq,
+func (s *Server) decodeSignUpPostRequest(r *http.Request) (
+	req *SignUpPostReq,
 	close func() error,
 	rerr error,
 ) {
@@ -55,7 +55,7 @@ func (s *Server) decodeLoginPostRequest(r *http.Request) (
 
 		d := jx.DecodeBytes(buf)
 
-		var request LoginPostReq
+		var request SignUpPostReq
 		if err := func() error {
 			if err := request.Decode(d); err != nil {
 				return err

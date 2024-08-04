@@ -11,8 +11,8 @@ import (
 	ht "github.com/ogen-go/ogen/http"
 )
 
-func encodeLoginPostRequest(
-	req *LoginPostReq,
+func encodeSignUpPostRequest(
+	req *SignUpPostReq,
 	r *http.Request,
 ) error {
 	const contentType = "application/json"
