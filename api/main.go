@@ -16,10 +16,13 @@ func main() {
 		log.Fatal(err)
 	}
 
-	service := h.NewHandler()
-	logger := mw.NewSlogLogger()
+	const auth0SubjectKey = "subject"
 
-	srv, err := oas.NewServer(service, oas.WithMiddleware(logger))
+	service := h.NewHandler(auth0SubjectKey)
+	logger := mw.NewSlogLogger()
+	jwtValidator := mw.NewJwtMiddleware(c.AUTH0.Domain, c.AUTH0.Audience, auth0SubjectKey)
+
+	srv, err := oas.NewServer(service, oas.WithMiddleware(logger), oas.WithMiddleware(jwtValidator))
 	if err != nil {
 		log.Fatal(err)
 	}
