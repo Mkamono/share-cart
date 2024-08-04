@@ -14,5 +14,12 @@ func NewJwtClient(subjectKey string) handler.JwtClient {
 }
 
 func (j *jwtClient) GetSubject(ctx context.Context) string {
-	return ctx.Value(j.subjectKey).(string)
+	v := ctx.Value(j.subjectKey)
+
+	subject, ok := v.(string)
+	if ok {
+		return subject
+	}
+
+	return ""
 }

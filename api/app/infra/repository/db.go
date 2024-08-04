@@ -14,7 +14,7 @@ func New(connStr string) (*sql.DB, error) {
 	}
 
 	if err := db.Ping(); err != nil {
-		return db, err
+		return nil, err
 	}
 
 	db.SetMaxIdleConns(10)
