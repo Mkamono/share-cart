@@ -3,35 +3,39 @@ package handler
 import (
 	"api/app/oas"
 	"context"
+	"database/sql"
 	"fmt"
+	"log/slog"
 	"time"
 )
 
 var _ oas.Handler = (*handler)(nil)
 
-func NewHandler(subjectKey string) oas.Handler {
+type JwtClient interface {
+	GetSubject(ctx context.Context) string
+}
+
+func NewHandler(
+	jc JwtClient,
+	l *slog.Logger,
+	db *sql.DB,
+) oas.Handler {
 	return &handler{
-		getSubject: func(ctx context.Context) string {
-			return ctx.Value(subjectKey).(string)
-		},
+		jwtClient: jc,
+		logger:    l,
+		db:        db,
 	}
 }
 
 type handler struct {
-	// getSubject is a function that returns the subject from the context.
-	getSubject func(context.Context) string
+	jwtClient JwtClient
+	logger    *slog.Logger
+	db        *sql.DB
 }
 
-func (h *handler) TestGet(context.Context) (oas.TestGetRes, error) {
+func (h *handler) TestGet(ctx context.Context) (oas.TestGetRes, error) {
 	s := fmt.Sprintf("Hello, world! : %s", time.Now().String())
-	return &oas.TestGetOK{
-		Message: oas.OptString{Value: s, Set: true},
-	}, nil
-}
-
-func (h *handler) LoginPost(ctx context.Context, req *oas.LoginPostReq) (oas.LoginPostRes, error) {
-	sub := h.getSubject(ctx)
-	return &oas.LoginPostOK{
-		Message: oas.OptString{Value: sub, Set: true},
+	return &oas.DefaultSuccess{
+		Message: s,
 	}, nil
 }

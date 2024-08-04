@@ -4,7 +4,9 @@
 package boiler
 
 var TableNames = struct {
-	Users string
+	AuthSubjects string
+	Users        string
 }{
-	Users: "users",
+	AuthSubjects: "auth_subjects",
+	Users:        "users",
 }

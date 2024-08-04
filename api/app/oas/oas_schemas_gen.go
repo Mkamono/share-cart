@@ -2,77 +2,22 @@
 
 package oas
 
-type LoginPostDef struct {
-	Message OptString `json:"message"`
+type DefaultSuccess struct {
+	Message string `json:"message"`
 }
 
 // GetMessage returns the value of Message.
-func (s *LoginPostDef) GetMessage() OptString {
+func (s *DefaultSuccess) GetMessage() string {
 	return s.Message
 }
 
 // SetMessage sets the value of Message.
-func (s *LoginPostDef) SetMessage(val OptString) {
+func (s *DefaultSuccess) SetMessage(val string) {
 	s.Message = val
 }
 
-// LoginPostDefStatusCode wraps LoginPostDef with StatusCode.
-type LoginPostDefStatusCode struct {
-	StatusCode int
-	Response   LoginPostDef
-}
-
-// GetStatusCode returns the value of StatusCode.
-func (s *LoginPostDefStatusCode) GetStatusCode() int {
-	return s.StatusCode
-}
-
-// GetResponse returns the value of Response.
-func (s *LoginPostDefStatusCode) GetResponse() LoginPostDef {
-	return s.Response
-}
-
-// SetStatusCode sets the value of StatusCode.
-func (s *LoginPostDefStatusCode) SetStatusCode(val int) {
-	s.StatusCode = val
-}
-
-// SetResponse sets the value of Response.
-func (s *LoginPostDefStatusCode) SetResponse(val LoginPostDef) {
-	s.Response = val
-}
-
-func (*LoginPostDefStatusCode) loginPostRes() {}
-
-type LoginPostOK struct {
-	Message OptString `json:"message"`
-}
-
-// GetMessage returns the value of Message.
-func (s *LoginPostOK) GetMessage() OptString {
-	return s.Message
-}
-
-// SetMessage sets the value of Message.
-func (s *LoginPostOK) SetMessage(val OptString) {
-	s.Message = val
-}
-
-func (*LoginPostOK) loginPostRes() {}
-
-type LoginPostReq struct {
-	Name OptString `json:"name"`
-}
-
-// GetName returns the value of Name.
-func (s *LoginPostReq) GetName() OptString {
-	return s.Name
-}
-
-// SetName sets the value of Name.
-func (s *LoginPostReq) SetName(val OptString) {
-	s.Name = val
-}
+func (*DefaultSuccess) signUpPostRes() {}
+func (*DefaultSuccess) testGetRes()    {}
 
 // NewOptString returns new OptString with value set to v.
 func NewOptString(v string) OptString {
@@ -120,60 +65,49 @@ func (o OptString) Or(d string) string {
 	return d
 }
 
-type TestGetDef struct {
-	Message OptString `json:"message"`
+type R401UnauthorizedError struct {
+	Message string `json:"message"`
 }
 
 // GetMessage returns the value of Message.
-func (s *TestGetDef) GetMessage() OptString {
+func (s *R401UnauthorizedError) GetMessage() string {
 	return s.Message
 }
 
 // SetMessage sets the value of Message.
-func (s *TestGetDef) SetMessage(val OptString) {
+func (s *R401UnauthorizedError) SetMessage(val string) {
 	s.Message = val
 }
 
-// TestGetDefStatusCode wraps TestGetDef with StatusCode.
-type TestGetDefStatusCode struct {
-	StatusCode int
-	Response   TestGetDef
-}
+func (*R401UnauthorizedError) signUpPostRes() {}
 
-// GetStatusCode returns the value of StatusCode.
-func (s *TestGetDefStatusCode) GetStatusCode() int {
-	return s.StatusCode
-}
-
-// GetResponse returns the value of Response.
-func (s *TestGetDefStatusCode) GetResponse() TestGetDef {
-	return s.Response
-}
-
-// SetStatusCode sets the value of StatusCode.
-func (s *TestGetDefStatusCode) SetStatusCode(val int) {
-	s.StatusCode = val
-}
-
-// SetResponse sets the value of Response.
-func (s *TestGetDefStatusCode) SetResponse(val TestGetDef) {
-	s.Response = val
-}
-
-func (*TestGetDefStatusCode) testGetRes() {}
-
-type TestGetOK struct {
-	Message OptString `json:"message"`
+type R500InternalServerError struct {
+	Message string `json:"message"`
 }
 
 // GetMessage returns the value of Message.
-func (s *TestGetOK) GetMessage() OptString {
+func (s *R500InternalServerError) GetMessage() string {
 	return s.Message
 }
 
 // SetMessage sets the value of Message.
-func (s *TestGetOK) SetMessage(val OptString) {
+func (s *R500InternalServerError) SetMessage(val string) {
 	s.Message = val
 }
 
-func (*TestGetOK) testGetRes() {}
+func (*R500InternalServerError) signUpPostRes() {}
+func (*R500InternalServerError) testGetRes()    {}
+
+type SignUpPostReq struct {
+	Name OptString `json:"name"`
+}
+
+// GetName returns the value of Name.
+func (s *SignUpPostReq) GetName() OptString {
+	return s.Name
+}
+
+// SetName sets the value of Name.
+func (s *SignUpPostReq) SetName(val OptString) {
+	s.Name = val
+}

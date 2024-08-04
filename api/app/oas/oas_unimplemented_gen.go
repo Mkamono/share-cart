@@ -13,10 +13,10 @@ type UnimplementedHandler struct{}
 
 var _ Handler = UnimplementedHandler{}
 
-// LoginPost implements POST /login operation.
+// SignUpPost implements POST /sign-up operation.
 //
-// POST /login
-func (UnimplementedHandler) LoginPost(ctx context.Context, req *LoginPostReq) (r LoginPostRes, _ error) {
+// POST /sign-up
+func (UnimplementedHandler) SignUpPost(ctx context.Context, req *SignUpPostReq) (r SignUpPostRes, _ error) {
 	return r, ht.ErrNotImplemented
 }
 

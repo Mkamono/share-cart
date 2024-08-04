@@ -7,15 +7,19 @@
 	// words - list of words to be always considered correct
 	"words": [
 		"cmds",
+		"dbname",
 		"envconfig",
 		"godepgraph",
+		"jwks",
 		"ogen",
 		"openapi",
 		"psql",
 		"sqlboiler",
 		"sslmode",
 		"testdata",
-		"tmpl"
+		"tmpl",
+		"Usecase",
+		"volatiletech"
 	],
 	"flagWords": [],
 	"ignorePaths": [

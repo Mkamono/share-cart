@@ -3,22 +3,26 @@ package middleware
 import (
 	"fmt"
 	"net/url"
+	"os"
 	"time"
 
 	"github.com/auth0/go-jwt-middleware/v2/jwks"
 	"github.com/auth0/go-jwt-middleware/v2/validator"
 	"github.com/ogen-go/ogen/middleware"
+	"golang.org/x/exp/slog"
 	"golang.org/x/net/context"
 )
 
 // NewJwtMiddleware : JWTを検証するミドルウェアを作成します。contextにsubjectを追加します。検証に失敗した場合は空文字列を追加します。
 func NewJwtMiddleware(auth0Domain string, auth0Audience string, subjectKey string) (middleware.Middleware, error) {
+	logger := slog.New(slog.NewJSONHandler(os.Stdout, nil))
 	issuer := fmt.Sprintf("https://%s/", auth0Domain)
 	audience := []string{auth0Audience}
 
 	jwtValidator, err := NewJwtValidator(issuer, audience)
 	if err != nil {
-		fmt.Println("failed to create jwt validator")
+		logger.Error("failed to create JWT validator")
+		logger.Error(err.Error())
 		return nil, err
 	}
 
@@ -26,7 +30,7 @@ func NewJwtMiddleware(auth0Domain string, auth0Audience string, subjectKey strin
 		req middleware.Request,
 		next func(req middleware.Request) (middleware.Response, error),
 	) (middleware.Response, error) {
-		tokenString := req.Raw.Header.Get("authorization")
+		tokenString := req.Raw.Header.Get("Authorization")
 		claims, err := jwtValidator.ValidateToken(req.Context, tokenString)
 
 		var subject string
@@ -44,7 +48,6 @@ func NewJwtMiddleware(auth0Domain string, auth0Audience string, subjectKey strin
 }
 
 // JwtValidator is an interface for validating JWT tokens.
-// 可読性のために、このインターフェースを定義しています。
 type JwtValidator interface {
 	ValidateToken(ctx context.Context, token string) (*validator.ValidatedClaims, error)
 }

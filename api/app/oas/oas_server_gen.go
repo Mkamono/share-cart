@@ -8,10 +8,10 @@ import (
 
 // Handler handles operations described by OpenAPI v3 specification.
 type Handler interface {
-	// LoginPost implements POST /login operation.
+	// SignUpPost implements POST /sign-up operation.
 	//
-	// POST /login
-	LoginPost(ctx context.Context, req *LoginPostReq) (LoginPostRes, error)
+	// POST /sign-up
+	SignUpPost(ctx context.Context, req *SignUpPostReq) (SignUpPostRes, error)
 	// TestGet implements GET /test operation.
 	//
 	// GET /test

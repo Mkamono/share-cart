@@ -21,10 +21,10 @@ import (
 
 // Invoker invokes operations described by OpenAPI v3 specification.
 type Invoker interface {
-	// LoginPost invokes POST /login operation.
+	// SignUpPost invokes POST /sign-up operation.
 	//
-	// POST /login
-	LoginPost(ctx context.Context, request *LoginPostReq) (LoginPostRes, error)
+	// POST /sign-up
+	SignUpPost(ctx context.Context, request *SignUpPostReq) (SignUpPostRes, error)
 	// TestGet invokes GET /test operation.
 	//
 	// GET /test
@@ -79,18 +79,18 @@ func (c *Client) requestURL(ctx context.Context) *url.URL {
 	return u
 }
 
-// LoginPost invokes POST /login operation.
+// SignUpPost invokes POST /sign-up operation.
 //
-// POST /login
-func (c *Client) LoginPost(ctx context.Context, request *LoginPostReq) (LoginPostRes, error) {
-	res, err := c.sendLoginPost(ctx, request)
+// POST /sign-up
+func (c *Client) SignUpPost(ctx context.Context, request *SignUpPostReq) (SignUpPostRes, error) {
+	res, err := c.sendSignUpPost(ctx, request)
 	return res, err
 }
 
-func (c *Client) sendLoginPost(ctx context.Context, request *LoginPostReq) (res LoginPostRes, err error) {
+func (c *Client) sendSignUpPost(ctx context.Context, request *SignUpPostReq) (res SignUpPostRes, err error) {
 	otelAttrs := []attribute.KeyValue{
 		semconv.HTTPMethodKey.String("POST"),
-		semconv.HTTPRouteKey.String("/login"),
+		semconv.HTTPRouteKey.String("/sign-up"),
 	}
 
 	// Run stopwatch.
@@ -105,7 +105,7 @@ func (c *Client) sendLoginPost(ctx context.Context, request *LoginPostReq) (res 
 	c.requests.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
 
 	// Start a span for this request.
-	ctx, span := c.cfg.Tracer.Start(ctx, "LoginPost",
+	ctx, span := c.cfg.Tracer.Start(ctx, "SignUpPost",
 		trace.WithAttributes(otelAttrs...),
 		clientSpanKind,
 	)
@@ -123,7 +123,7 @@ func (c *Client) sendLoginPost(ctx context.Context, request *LoginPostReq) (res 
 	stage = "BuildURL"
 	u := uri.Clone(c.requestURL(ctx))
 	var pathParts [1]string
-	pathParts[0] = "/login"
+	pathParts[0] = "/sign-up"
 	uri.AddPathParts(u, pathParts[:]...)
 
 	stage = "EncodeRequest"
@@ -131,7 +131,7 @@ func (c *Client) sendLoginPost(ctx context.Context, request *LoginPostReq) (res 
 	if err != nil {
 		return res, errors.Wrap(err, "create request")
 	}
-	if err := encodeLoginPostRequest(request, r); err != nil {
+	if err := encodeSignUpPostRequest(request, r); err != nil {
 		return res, errors.Wrap(err, "encode request")
 	}
 
@@ -143,7 +143,7 @@ func (c *Client) sendLoginPost(ctx context.Context, request *LoginPostReq) (res 
 	defer resp.Body.Close()
 
 	stage = "DecodeResponse"
-	result, err := decodeLoginPostResponse(resp)
+	result, err := decodeSignUpPostResponse(resp)
 	if err != nil {
 		return res, errors.Wrap(err, "decode response")
 	}

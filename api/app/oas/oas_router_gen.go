@@ -60,9 +60,9 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 				break
 			}
 			switch elem[0] {
-			case 'l': // Prefix: "login"
+			case 's': // Prefix: "sign-up"
 				origElem := elem
-				if l := len("login"); len(elem) >= l && elem[0:l] == "login" {
+				if l := len("sign-up"); len(elem) >= l && elem[0:l] == "sign-up" {
 					elem = elem[l:]
 				} else {
 					break
@@ -72,7 +72,7 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 					// Leaf node.
 					switch r.Method {
 					case "POST":
-						s.handleLoginPostRequest([0]string{}, elemIsEscaped, w, r)
+						s.handleSignUpPostRequest([0]string{}, elemIsEscaped, w, r)
 					default:
 						s.notAllowed(w, r, "POST")
 					}
@@ -197,9 +197,9 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 				break
 			}
 			switch elem[0] {
-			case 'l': // Prefix: "login"
+			case 's': // Prefix: "sign-up"
 				origElem := elem
-				if l := len("login"); len(elem) >= l && elem[0:l] == "login" {
+				if l := len("sign-up"); len(elem) >= l && elem[0:l] == "sign-up" {
 					elem = elem[l:]
 				} else {
 					break
@@ -209,10 +209,10 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 					// Leaf node.
 					switch method {
 					case "POST":
-						r.name = "LoginPost"
+						r.name = "SignUpPost"
 						r.summary = ""
 						r.operationID = ""
-						r.pathPattern = "/login"
+						r.pathPattern = "/sign-up"
 						r.args = args
 						r.count = 0
 						return r, true
