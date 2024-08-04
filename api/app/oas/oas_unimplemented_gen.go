@@ -13,17 +13,16 @@ type UnimplementedHandler struct{}
 
 var _ Handler = UnimplementedHandler{}
 
-// TestGet implements GET /test operation.
+// LoginPost implements POST /login operation.
 //
-// GET /test
-func (UnimplementedHandler) TestGet(ctx context.Context) (r *TestGetOK, _ error) {
+// POST /login
+func (UnimplementedHandler) LoginPost(ctx context.Context, req *LoginPostReq) (r LoginPostRes, _ error) {
 	return r, ht.ErrNotImplemented
 }
 
-// NewError creates *ErrRespStatusCode from error returned by handler.
+// TestGet implements GET /test operation.
 //
-// Used for common default response.
-func (UnimplementedHandler) NewError(ctx context.Context, err error) (r *ErrRespStatusCode) {
-	r = new(ErrRespStatusCode)
-	return r
+// GET /test
+func (UnimplementedHandler) TestGet(ctx context.Context) (r TestGetRes, _ error) {
+	return r, ht.ErrNotImplemented
 }
