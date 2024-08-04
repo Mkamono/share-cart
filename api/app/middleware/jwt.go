@@ -2,7 +2,6 @@ package middleware
 
 import (
 	"fmt"
-	"log"
 	"net/url"
 	"time"
 
@@ -13,14 +12,14 @@ import (
 )
 
 // NewJwtMiddleware : JWTを検証するミドルウェアを作成します。contextにsubjectを追加します。検証に失敗した場合は空文字列を追加します。
-func NewJwtMiddleware(auth0Domain string, auth0Audience string, subjectKey string) middleware.Middleware {
+func NewJwtMiddleware(auth0Domain string, auth0Audience string, subjectKey string) (middleware.Middleware, error) {
 	issuer := fmt.Sprintf("https://%s/", auth0Domain)
 	audience := []string{auth0Audience}
 
 	jwtValidator, err := NewJwtValidator(issuer, audience)
 	if err != nil {
 		fmt.Println("failed to create jwt validator")
-		panic(err)
+		return nil, err
 	}
 
 	return func(
@@ -41,7 +40,7 @@ func NewJwtMiddleware(auth0Domain string, auth0Audience string, subjectKey strin
 
 		resp, err := next(req)
 		return resp, err
-	}
+	}, nil
 }
 
 // JwtValidator is an interface for validating JWT tokens.
@@ -59,7 +58,7 @@ type jwtValidator struct {
 func NewJwtValidator(issuer string, audience []string) (JwtValidator, error) {
 	issuerURL, err := url.Parse(issuer)
 	if err != nil {
-		log.Fatalf("failed to parse the issuer url: %v", err)
+		return nil, fmt.Errorf("failed to parse issuer URL: %v", err)
 	}
 	provider := jwks.NewCachingProvider(issuerURL, 5*time.Minute)
 
@@ -70,7 +69,7 @@ func NewJwtValidator(issuer string, audience []string) (JwtValidator, error) {
 		audience,
 	)
 	if err != nil {
-		log.Fatalf("failed to set up the validator: %v", err)
+		return nil, fmt.Errorf("failed to create JWT validator: %v", err)
 	}
 
 	return &jwtValidator{
@@ -86,11 +85,11 @@ func (j *jwtValidator) ValidateToken(ctx context.Context, token string) (*valida
 
 	claims, ok := i.(*validator.ValidatedClaims)
 	if !ok {
-		return nil, fmt.Errorf("failed to get validated claims")
+		return nil, fmt.Errorf("failed to assert validated claims type")
 	}
 
 	if len(claims.RegisteredClaims.Subject) == 0 {
-		return nil, fmt.Errorf("subject in JWT claims was empty")
+		return nil, fmt.Errorf("subject in JWT claims is empty")
 	}
 
 	return claims, nil
