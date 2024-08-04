@@ -3,6 +3,14 @@ version: "3"
 interval: 50ms
 
 tasks:
+  dev:
+    dir: share-cart
+    cmds:
+      - task: generate
+      - task: format
+      - task: gen_env
+      - task: dep_graph
+
   generate:
     cmd: npx -y openapi-typescript ../api/docs/openapi.yaml -o share-cart/app/models/schema.d.ts
     sources:
@@ -17,14 +25,17 @@ tasks:
       - "**/*.tsx"
       - "**/*.ts"
 
-  dev:
-    dir: share-cart
-    cmds:
-      - yarn dev & task format -w & task generate -w
-
   gen_env:
     cmd: npx gen-env-template .env .env.example
     sources:
       - ".env"
     generates:
       - ".env.example"
+
+  dep_graph:
+    dir: share-cart
+    cmd: npx depcruise app --include-only "^app" --output-type dot | dot -Tpng > dependency-graph.png # cspell: disable-line
+    sources:
+      - "share-cart/app/**/*.ts"
+    generates:
+      - "dependency-graph.png"
