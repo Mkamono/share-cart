@@ -21,7 +21,7 @@ func (j *jwtClient) GetSubject(ctx context.Context) string {
 
 	subject, ok := v.(string)
 	if !ok {
-		logger.Error("failed to get subject from context")
+		logger.Info("failed to get subject from context")
 		return ""
 	}
 
