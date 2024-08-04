@@ -1,4 +1,4 @@
-import { sessionStorage } from "./session.server";
+import { sessionStorage } from "~/service/session.server";
 
 import { Authenticator } from "remix-auth";
 import {
@@ -6,7 +6,7 @@ import {
 	type Auth0Profile,
 	Auth0Strategy,
 } from "remix-auth-auth0";
-import { config } from "./config.server";
+import { config } from "~/service/config.server";
 
 export const authenticator = new Authenticator<{
 	accessToken: string;

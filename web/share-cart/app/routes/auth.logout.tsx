@@ -1,9 +1,15 @@
-import { type ActionFunctionArgs, redirect } from "@remix-run/node";
+import {
+	ActionFunction,
+	type ActionFunctionArgs,
+	redirect,
+} from "@remix-run/node";
 import { config } from "~/service/config.server";
 
 import { destroySession, getSession } from "~/service/session.server";
 
-export const action = async ({ request }: ActionFunctionArgs) => {
+export const action: ActionFunction = async ({
+	request,
+}: ActionFunctionArgs) => {
 	const session = await getSession(request.headers.get("Cookie"));
 	const logoutURL = new URL(config.AUTH0_LOGOUT_URL); // i.e https://YOUR_TENANT.us.auth0.com/v2/logout
 
