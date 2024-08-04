@@ -14,36 +14,17 @@ export interface paths {
 		get: {
 			parameters: {
 				query?: never;
-				header?: never;
+				header: {
+					/** @description Bearer token */
+					Authorization: components["parameters"]["Authorization"];
+				};
 				path?: never;
 				cookie?: never;
 			};
 			requestBody?: never;
 			responses: {
-				/** @description OK */
-				200: {
-					headers: {
-						[name: string]: unknown;
-					};
-					content: {
-						"application/json": {
-							/** @example Test */
-							message?: string;
-						};
-					};
-				};
-				/** @description Error */
-				default: {
-					headers: {
-						[name: string]: unknown;
-					};
-					content: {
-						"application/json": {
-							/** @example Failed to get test */
-							message?: string;
-						};
-					};
-				};
+				200: components["responses"]["DefaultSuccess"];
+				500: components["responses"]["500InternalServerError"];
 			};
 		};
 		put?: never;
@@ -54,13 +35,106 @@ export interface paths {
 		patch?: never;
 		trace?: never;
 	};
+	"/sign-up": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		get?: never;
+		put?: never;
+		post: {
+			parameters: {
+				query?: never;
+				header: {
+					/** @description Bearer token */
+					Authorization: components["parameters"]["Authorization"];
+				};
+				path?: never;
+				cookie?: never;
+			};
+			requestBody: components["requestBodies"]["SignUp"];
+			responses: {
+				201: components["responses"]["DefaultSuccess"];
+				401: components["responses"]["401UnauthorizedError"];
+				500: components["responses"]["500InternalServerError"];
+			};
+		};
+		delete?: never;
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
 }
 export type webhooks = Record<string, never>;
 export interface components {
 	schemas: never;
-	responses: never;
-	parameters: never;
-	requestBodies: never;
+	responses: {
+		/** @description OK */
+		DefaultSuccess: {
+			headers: {
+				[name: string]: unknown;
+			};
+			content: {
+				"application/json": {
+					/** @example Success */
+					message: string;
+				};
+			};
+		};
+		/** @description Unauthorized */
+		"401UnauthorizedError": {
+			headers: {
+				[name: string]: unknown;
+			};
+			content: {
+				"application/json": {
+					/** @example Unauthorized */
+					message: string;
+				};
+			};
+		};
+		/** @description Forbidden */
+		"403ForbiddenError": {
+			headers: {
+				[name: string]: unknown;
+			};
+			content: {
+				"application/json": {
+					/** @example Forbidden */
+					message: string;
+				};
+			};
+		};
+		/** @description Internal Server Error */
+		"500InternalServerError": {
+			headers: {
+				[name: string]: unknown;
+			};
+			content: {
+				"application/json": {
+					/** @example Internal Server Error */
+					message: string;
+				};
+			};
+		};
+	};
+	parameters: {
+		/** @description Bearer token */
+		Authorization: string;
+	};
+	requestBodies: {
+		SignUp: {
+			content: {
+				"application/json": {
+					/** @example your_name */
+					name?: string;
+				};
+			};
+		};
+	};
 	headers: never;
 	pathItems: never;
 }
