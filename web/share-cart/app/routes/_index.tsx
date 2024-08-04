@@ -4,12 +4,15 @@ import createClient from "openapi-fetch";
 import type { paths } from "~/models/schema";
 import { authenticator } from "~/service/auth.server";
 import { config } from "~/service/config.server";
+import { jwtMiddleware } from "~/service/middleware";
 import Login from "./login";
 
+
 export async function loader({ request }: { request: Request }) {
-	const jwt = await authenticator.isAuthenticated(request);
 	const client = createClient<paths>({ baseUrl: process.env.API_HOST });
-	const { data } = await client.GET("/test", {});
+	const jwt = await authenticator.isAuthenticated(request);
+	client.use(jwtMiddleware(jwt?.accessToken ?? ""));
+	const { data } = await client.GET("/test");
 	return json({
 		testData: data,
 		config,

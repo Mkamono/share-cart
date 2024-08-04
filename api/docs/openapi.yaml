@@ -7,6 +7,8 @@ servers:
 paths:
   /test:
     get:
+      parameters:
+        - $ref: "#/components/parameters/Authorization"
       responses:
         "200":
           description: OK
@@ -28,3 +30,48 @@ paths:
                   message:
                     type: string
                     example: "Failed to get test"
+  /login:
+    post:
+      parameters:
+        - $ref: "#/components/parameters/Authorization"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: "test"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Login success"
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Failed to login"
+
+components:
+  parameters:
+    Authorization:
+      in: header
+      name: Authorization
+      schema:
+        type: string
+      required: true
+      description: Bearer token

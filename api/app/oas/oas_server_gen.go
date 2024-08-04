@@ -8,14 +8,14 @@ import (
 
 // Handler handles operations described by OpenAPI v3 specification.
 type Handler interface {
+	// LoginPost implements POST /login operation.
+	//
+	// POST /login
+	LoginPost(ctx context.Context, req *LoginPostReq) (LoginPostRes, error)
 	// TestGet implements GET /test operation.
 	//
 	// GET /test
-	TestGet(ctx context.Context) (*TestGetOK, error)
-	// NewError creates *ErrRespStatusCode from error returned by handler.
-	//
-	// Used for common default response.
-	NewError(ctx context.Context, err error) *ErrRespStatusCode
+	TestGet(ctx context.Context) (TestGetRes, error)
 }
 
 // Server implements http server based on OpenAPI v3 specification and

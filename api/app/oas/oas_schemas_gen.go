@@ -2,52 +2,76 @@
 
 package oas
 
-import (
-	"fmt"
-)
-
-func (s *ErrRespStatusCode) Error() string {
-	return fmt.Sprintf("code %d: %+v", s.StatusCode, s.Response)
-}
-
-type ErrResp struct {
+type LoginPostDef struct {
 	Message OptString `json:"message"`
 }
 
 // GetMessage returns the value of Message.
-func (s *ErrResp) GetMessage() OptString {
+func (s *LoginPostDef) GetMessage() OptString {
 	return s.Message
 }
 
 // SetMessage sets the value of Message.
-func (s *ErrResp) SetMessage(val OptString) {
+func (s *LoginPostDef) SetMessage(val OptString) {
 	s.Message = val
 }
 
-// ErrRespStatusCode wraps ErrResp with StatusCode.
-type ErrRespStatusCode struct {
+// LoginPostDefStatusCode wraps LoginPostDef with StatusCode.
+type LoginPostDefStatusCode struct {
 	StatusCode int
-	Response   ErrResp
+	Response   LoginPostDef
 }
 
 // GetStatusCode returns the value of StatusCode.
-func (s *ErrRespStatusCode) GetStatusCode() int {
+func (s *LoginPostDefStatusCode) GetStatusCode() int {
 	return s.StatusCode
 }
 
 // GetResponse returns the value of Response.
-func (s *ErrRespStatusCode) GetResponse() ErrResp {
+func (s *LoginPostDefStatusCode) GetResponse() LoginPostDef {
 	return s.Response
 }
 
 // SetStatusCode sets the value of StatusCode.
-func (s *ErrRespStatusCode) SetStatusCode(val int) {
+func (s *LoginPostDefStatusCode) SetStatusCode(val int) {
 	s.StatusCode = val
 }
 
 // SetResponse sets the value of Response.
-func (s *ErrRespStatusCode) SetResponse(val ErrResp) {
+func (s *LoginPostDefStatusCode) SetResponse(val LoginPostDef) {
 	s.Response = val
+}
+
+func (*LoginPostDefStatusCode) loginPostRes() {}
+
+type LoginPostOK struct {
+	Message OptString `json:"message"`
+}
+
+// GetMessage returns the value of Message.
+func (s *LoginPostOK) GetMessage() OptString {
+	return s.Message
+}
+
+// SetMessage sets the value of Message.
+func (s *LoginPostOK) SetMessage(val OptString) {
+	s.Message = val
+}
+
+func (*LoginPostOK) loginPostRes() {}
+
+type LoginPostReq struct {
+	Name OptString `json:"name"`
+}
+
+// GetName returns the value of Name.
+func (s *LoginPostReq) GetName() OptString {
+	return s.Name
+}
+
+// SetName sets the value of Name.
+func (s *LoginPostReq) SetName(val OptString) {
+	s.Name = val
 }
 
 // NewOptString returns new OptString with value set to v.
@@ -96,6 +120,48 @@ func (o OptString) Or(d string) string {
 	return d
 }
 
+type TestGetDef struct {
+	Message OptString `json:"message"`
+}
+
+// GetMessage returns the value of Message.
+func (s *TestGetDef) GetMessage() OptString {
+	return s.Message
+}
+
+// SetMessage sets the value of Message.
+func (s *TestGetDef) SetMessage(val OptString) {
+	s.Message = val
+}
+
+// TestGetDefStatusCode wraps TestGetDef with StatusCode.
+type TestGetDefStatusCode struct {
+	StatusCode int
+	Response   TestGetDef
+}
+
+// GetStatusCode returns the value of StatusCode.
+func (s *TestGetDefStatusCode) GetStatusCode() int {
+	return s.StatusCode
+}
+
+// GetResponse returns the value of Response.
+func (s *TestGetDefStatusCode) GetResponse() TestGetDef {
+	return s.Response
+}
+
+// SetStatusCode sets the value of StatusCode.
+func (s *TestGetDefStatusCode) SetStatusCode(val int) {
+	s.StatusCode = val
+}
+
+// SetResponse sets the value of Response.
+func (s *TestGetDefStatusCode) SetResponse(val TestGetDef) {
+	s.Response = val
+}
+
+func (*TestGetDefStatusCode) testGetRes() {}
+
 type TestGetOK struct {
 	Message OptString `json:"message"`
 }
@@ -109,3 +175,5 @@ func (s *TestGetOK) GetMessage() OptString {
 func (s *TestGetOK) SetMessage(val OptString) {
 	s.Message = val
 }
+
+func (*TestGetOK) testGetRes() {}

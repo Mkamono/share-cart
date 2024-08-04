@@ -14,6 +14,8 @@ services:
       POSTGRES_PORT: ${POSTGRES_PORT}
     ports:
       - "8081:8081"
+    env_file:
+      - ./api/.env
     command: ["air", "-c", ".air.toml"]
   web:
     build:

@@ -12,7 +12,7 @@ RUN curl -sSf https://atlasgo.sh | sh
 RUN go install github.com/volatiletech/sqlboiler/v4@latest
 RUN go install github.com/volatiletech/sqlboiler/v4/drivers/sqlboiler-psql@latest
 RUN go install -v github.com/go-delve/delve/cmd/dlv@latest
-RUN go install -v github.com/ogen-go/ogen/cmd/ogen@latest
+RUN go install -v github.com/ogen-go/ogen/cmd/ogen@v1.2.2
 RUN go install -v github.com/air-verse/air@latest
 RUN go install -v github.com/kisielk/godepgraph@latest
 
