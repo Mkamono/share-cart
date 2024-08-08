@@ -1,4 +1,4 @@
-import { cleanEnv, str, url } from "envalid";
+import { cleanEnv, str, url } from "envalid"; // cspell:disable-line
 
 export const config = cleanEnv(process.env, {
 	SESSION_SECRET: str(),

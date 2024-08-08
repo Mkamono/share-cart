@@ -1,5 +1,5 @@
 import { createCookieSessionStorage } from "@remix-run/node";
-import { config } from "./config.server";
+import { config } from "~/service/config.server";
 
 export const sessionStorage = createCookieSessionStorage({
 	cookie: {

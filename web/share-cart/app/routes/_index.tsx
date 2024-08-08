@@ -1,18 +1,18 @@
 import { type MetaFunction, json } from "@remix-run/node";
-import { Form, useLoaderData } from "@remix-run/react";
+import { useLoaderData } from "@remix-run/react";
 import createClient from "openapi-fetch";
 import type { paths } from "~/models/schema";
+import Login from "~/routes/auth.login";
+import Logout from "~/routes/auth.logout";
 import { authenticator } from "~/service/auth.server";
 import { config } from "~/service/config.server";
-import { jwtMiddleware } from "~/service/middleware";
-import Login from "./login";
-
 
 export async function loader({ request }: { request: Request }) {
 	const client = createClient<paths>({ baseUrl: process.env.API_HOST });
 	const jwt = await authenticator.isAuthenticated(request);
-	client.use(jwtMiddleware(jwt?.accessToken ?? ""));
-	const { data } = await client.GET("/test");
+	const { data } = await client.GET("/test", {
+		params: { header: { Authorization: jwt?.accessToken ?? "" } },
+	});
 	return json({
 		testData: data,
 		config,
@@ -39,9 +39,7 @@ export default function Index() {
 						<p className="text-red-700">You are in development mode</p>
 					)}
 					<Login />
-					<Form action="/auth/logout" method="post">
-						<button type="submit">Logout with Auth0</button>
-					</Form>
+					<Logout />
 					{data.jwt ? (
 						<div>
 							<p className="text-green-700">You are logged in</p>
