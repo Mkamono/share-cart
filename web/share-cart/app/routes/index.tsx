@@ -2,8 +2,8 @@ import { type MetaFunction, json } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import createClient from "openapi-fetch";
 import type { paths } from "~/models/schema";
-import Login from "~/routes/auth.login";
-import Logout from "~/routes/auth.logout";
+import Login from "~/routes/auth/login";
+import Logout from "~/routes/auth/logout";
 import { authenticator } from "~/service/auth.server";
 import { config } from "~/service/config.server";
 
