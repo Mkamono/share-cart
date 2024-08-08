@@ -15,7 +15,7 @@ table "users" {
 
   column "name" {
     null = false
-    type = character_varying(255)
+    type = text
   }
   unique "name" {
     columns = [column.name]
@@ -62,10 +62,10 @@ table "auth_subjects" {
 
   column "subject" {
     null = false
-    type = character_varying(255)
+    type = text
   }
-  unique "user_id_subject" {
-    columns = [column.user_id, column.subject]
+  unique "subject" {
+    columns = [column.subject]
   }
 
   // system managed columns
