@@ -2,10 +2,10 @@
 
 ## Tables
 
-| # | Name                                        | Columns | Comment | Type       |
-| - | ------------------------------------------- | ------- | ------- | ---------- |
-| 1 | [main.users](main.users.md)                 | 4       |         | BASE TABLE |
-| 2 | [main.auth_subjects](main.auth_subjects.md) | 5       |         | BASE TABLE |
+| # | Name                                            | Columns | Comment | Type       |
+| - | ----------------------------------------------- | ------- | ------- | ---------- |
+| 1 | [public.users](public.users.md)                 | 4       |         | BASE TABLE |
+| 2 | [public.auth_subjects](public.auth_subjects.md) | 5       |         | BASE TABLE |
 
 ## Relations
 

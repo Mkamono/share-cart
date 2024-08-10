@@ -64,10 +64,10 @@ var UserWhere = struct {
 	CreatedAt whereHelpertime_Time
 	UpdatedAt whereHelpertime_Time
 }{
-	ID:        whereHelperint{field: "\"main\".\"users\".\"id\""},
-	Name:      whereHelperstring{field: "\"main\".\"users\".\"name\""},
-	CreatedAt: whereHelpertime_Time{field: "\"main\".\"users\".\"created_at\""},
-	UpdatedAt: whereHelpertime_Time{field: "\"main\".\"users\".\"updated_at\""},
+	ID:        whereHelperint{field: "\"users\".\"id\""},
+	Name:      whereHelperstring{field: "\"users\".\"name\""},
+	CreatedAt: whereHelpertime_Time{field: "\"users\".\"created_at\""},
+	UpdatedAt: whereHelpertime_Time{field: "\"users\".\"updated_at\""},
 }
 
 // UserRels is where relationship names are stored.
@@ -418,7 +418,7 @@ func (o *User) AuthSubjects(mods ...qm.QueryMod) authSubjectQuery {
 	}
 
 	queryMods = append(queryMods,
-		qm.Where("\"main\".\"auth_subjects\".\"user_id\"=?", o.ID),
+		qm.Where("\"auth_subjects\".\"user_id\"=?", o.ID),
 	)
 
 	return AuthSubjects(queryMods...)
@@ -479,8 +479,8 @@ func (userL) LoadAuthSubjects(ctx context.Context, e boil.ContextExecutor, singu
 	}
 
 	query := NewQuery(
-		qm.From(`main.auth_subjects`),
-		qm.WhereIn(`main.auth_subjects.user_id in ?`, argsSlice...),
+		qm.From(`auth_subjects`),
+		qm.WhereIn(`auth_subjects.user_id in ?`, argsSlice...),
 	)
 	if mods != nil {
 		mods.Apply(query)
@@ -551,7 +551,7 @@ func (o *User) AddAuthSubjects(ctx context.Context, exec boil.ContextExecutor, i
 			}
 		} else {
 			updateQuery := fmt.Sprintf(
-				"UPDATE \"main\".\"auth_subjects\" SET %s WHERE %s",
+				"UPDATE \"auth_subjects\" SET %s WHERE %s",
 				strmangle.SetParamNames("\"", "\"", 1, []string{"user_id"}),
 				strmangle.WhereClause("\"", "\"", 2, authSubjectPrimaryKeyColumns),
 			)
@@ -592,10 +592,10 @@ func (o *User) AddAuthSubjects(ctx context.Context, exec boil.ContextExecutor, i
 
 // Users retrieves all the records using an executor.
 func Users(mods ...qm.QueryMod) userQuery {
-	mods = append(mods, qm.From("\"main\".\"users\""))
+	mods = append(mods, qm.From("\"users\""))
 	q := NewQuery(mods...)
 	if len(queries.GetSelect(q)) == 0 {
-		queries.SetSelect(q, []string{"\"main\".\"users\".*"})
+		queries.SetSelect(q, []string{"\"users\".*"})
 	}
 
 	return userQuery{q}
@@ -611,7 +611,7 @@ func FindUser(ctx context.Context, exec boil.ContextExecutor, iD int, selectCols
 		sel = strings.Join(strmangle.IdentQuoteSlice(dialect.LQ, dialect.RQ, selectCols), ",")
 	}
 	query := fmt.Sprintf(
-		"select %s from \"main\".\"users\" where \"id\"=$1", sel,
+		"select %s from \"users\" where \"id\"=$1", sel,
 	)
 
 	q := queries.Raw(query, iD)
@@ -679,9 +679,9 @@ func (o *User) Insert(ctx context.Context, exec boil.ContextExecutor, columns bo
 			return err
 		}
 		if len(wl) != 0 {
-			cache.query = fmt.Sprintf("INSERT INTO \"main\".\"users\" (\"%s\") %%sVALUES (%s)%%s", strings.Join(wl, "\",\""), strmangle.Placeholders(dialect.UseIndexPlaceholders, len(wl), 1, 1))
+			cache.query = fmt.Sprintf("INSERT INTO \"users\" (\"%s\") %%sVALUES (%s)%%s", strings.Join(wl, "\",\""), strmangle.Placeholders(dialect.UseIndexPlaceholders, len(wl), 1, 1))
 		} else {
-			cache.query = "INSERT INTO \"main\".\"users\" %sDEFAULT VALUES%s"
+			cache.query = "INSERT INTO \"users\" %sDEFAULT VALUES%s"
 		}
 
 		var queryOutput, queryReturning string
@@ -754,7 +754,7 @@ func (o *User) Update(ctx context.Context, exec boil.ContextExecutor, columns bo
 			return 0, errors.New("boiler: unable to update users, could not build whitelist")
 		}
 
-		cache.query = fmt.Sprintf("UPDATE \"main\".\"users\" SET %s WHERE %s",
+		cache.query = fmt.Sprintf("UPDATE \"users\" SET %s WHERE %s",
 			strmangle.SetParamNames("\"", "\"", 1, wl),
 			strmangle.WhereClause("\"", "\"", len(wl)+1, userPrimaryKeyColumns),
 		)
@@ -835,7 +835,7 @@ func (o UserSlice) UpdateAll(ctx context.Context, exec boil.ContextExecutor, col
 		args = append(args, pkeyArgs...)
 	}
 
-	sql := fmt.Sprintf("UPDATE \"main\".\"users\" SET %s WHERE %s",
+	sql := fmt.Sprintf("UPDATE \"users\" SET %s WHERE %s",
 		strmangle.SetParamNames("\"", "\"", 1, colNames),
 		strmangle.WhereClauseRepeated(string(dialect.LQ), string(dialect.RQ), len(colNames)+1, userPrimaryKeyColumns, len(o)))
 
@@ -942,7 +942,7 @@ func (o *User) Upsert(ctx context.Context, exec boil.ContextExecutor, updateOnCo
 			conflict = make([]string, len(userPrimaryKeyColumns))
 			copy(conflict, userPrimaryKeyColumns)
 		}
-		cache.query = buildUpsertQueryPostgres(dialect, "\"main\".\"users\"", updateOnConflict, ret, update, conflict, insert, opts...)
+		cache.query = buildUpsertQueryPostgres(dialect, "\"users\"", updateOnConflict, ret, update, conflict, insert, opts...)
 
 		cache.valueMapping, err = queries.BindMapping(userType, userMapping, insert)
 		if err != nil {
@@ -1001,7 +1001,7 @@ func (o *User) Delete(ctx context.Context, exec boil.ContextExecutor) (int64, er
 	}
 
 	args := queries.ValuesFromMapping(reflect.Indirect(reflect.ValueOf(o)), userPrimaryKeyMapping)
-	sql := "DELETE FROM \"main\".\"users\" WHERE \"id\"=$1"
+	sql := "DELETE FROM \"users\" WHERE \"id\"=$1"
 
 	if boil.IsDebug(ctx) {
 		writer := boil.DebugWriterFrom(ctx)
@@ -1066,7 +1066,7 @@ func (o UserSlice) DeleteAll(ctx context.Context, exec boil.ContextExecutor) (in
 		args = append(args, pkeyArgs...)
 	}
 
-	sql := "DELETE FROM \"main\".\"users\" WHERE " +
+	sql := "DELETE FROM \"users\" WHERE " +
 		strmangle.WhereClauseRepeated(string(dialect.LQ), string(dialect.RQ), 1, userPrimaryKeyColumns, len(o))
 
 	if boil.IsDebug(ctx) {
@@ -1121,7 +1121,7 @@ func (o *UserSlice) ReloadAll(ctx context.Context, exec boil.ContextExecutor) er
 		args = append(args, pkeyArgs...)
 	}
 
-	sql := "SELECT \"main\".\"users\".* FROM \"main\".\"users\" WHERE " +
+	sql := "SELECT \"users\".* FROM \"users\" WHERE " +
 		strmangle.WhereClauseRepeated(string(dialect.LQ), string(dialect.RQ), 1, userPrimaryKeyColumns, len(*o))
 
 	q := queries.Raw(sql, args...)
@@ -1139,7 +1139,7 @@ func (o *UserSlice) ReloadAll(ctx context.Context, exec boil.ContextExecutor) er
 // UserExists checks if the User row exists.
 func UserExists(ctx context.Context, exec boil.ContextExecutor, iD int) (bool, error) {
 	var exists bool
-	sql := "select exists(select 1 from \"main\".\"users\" where \"id\"=$1 limit 1)"
+	sql := "select exists(select 1 from \"users\" where \"id\"=$1 limit 1)"
 
 	if boil.IsDebug(ctx) {
 		writer := boil.DebugWriterFrom(ctx)
