@@ -1,7 +1,7 @@
-schema "main" {}
+schema "public" {}
 
 table "users" {
-  schema = schema.main
+  schema = schema.public
   column "id" {
     null = false
     type = integer
@@ -33,7 +33,7 @@ table "users" {
 }
 
 table "auth_subjects" {
-  schema = schema.main
+  schema = schema.public
   column "id" {
     null = false
     type = integer

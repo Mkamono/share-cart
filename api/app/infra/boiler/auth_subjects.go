@@ -24,10 +24,10 @@ import (
 // AuthSubject is an object representing the database table.
 type AuthSubject struct {
 	ID        int       `boil:"id" json:"id" toml:"id" yaml:"id"`
-	CreatedAt time.Time `boil:"created_at" json:"created_at" toml:"created_at" yaml:"created_at"`
-	UpdatedAt time.Time `boil:"updated_at" json:"updated_at" toml:"updated_at" yaml:"updated_at"`
 	UserID    int       `boil:"user_id" json:"user_id" toml:"user_id" yaml:"user_id"`
 	Subject   string    `boil:"subject" json:"subject" toml:"subject" yaml:"subject"`
+	CreatedAt time.Time `boil:"created_at" json:"created_at" toml:"created_at" yaml:"created_at"`
+	UpdatedAt time.Time `boil:"updated_at" json:"updated_at" toml:"updated_at" yaml:"updated_at"`
 
 	R *authSubjectR `boil:"-" json:"-" toml:"-" yaml:"-"`
 	L authSubjectL  `boil:"-" json:"-" toml:"-" yaml:"-"`
@@ -35,30 +35,30 @@ type AuthSubject struct {
 
 var AuthSubjectColumns = struct {
 	ID        string
-	CreatedAt string
-	UpdatedAt string
 	UserID    string
 	Subject   string
+	CreatedAt string
+	UpdatedAt string
 }{
 	ID:        "id",
-	CreatedAt: "created_at",
-	UpdatedAt: "updated_at",
 	UserID:    "user_id",
 	Subject:   "subject",
+	CreatedAt: "created_at",
+	UpdatedAt: "updated_at",
 }
 
 var AuthSubjectTableColumns = struct {
 	ID        string
-	CreatedAt string
-	UpdatedAt string
 	UserID    string
 	Subject   string
+	CreatedAt string
+	UpdatedAt string
 }{
 	ID:        "auth_subjects.id",
-	CreatedAt: "auth_subjects.created_at",
-	UpdatedAt: "auth_subjects.updated_at",
 	UserID:    "auth_subjects.user_id",
 	Subject:   "auth_subjects.subject",
+	CreatedAt: "auth_subjects.created_at",
+	UpdatedAt: "auth_subjects.updated_at",
 }
 
 // Generated where
@@ -84,27 +84,6 @@ func (w whereHelperint) NIN(slice []int) qm.QueryMod {
 		values = append(values, value)
 	}
 	return qm.WhereNotIn(fmt.Sprintf("%s NOT IN ?", w.field), values...)
-}
-
-type whereHelpertime_Time struct{ field string }
-
-func (w whereHelpertime_Time) EQ(x time.Time) qm.QueryMod {
-	return qmhelper.Where(w.field, qmhelper.EQ, x)
-}
-func (w whereHelpertime_Time) NEQ(x time.Time) qm.QueryMod {
-	return qmhelper.Where(w.field, qmhelper.NEQ, x)
-}
-func (w whereHelpertime_Time) LT(x time.Time) qm.QueryMod {
-	return qmhelper.Where(w.field, qmhelper.LT, x)
-}
-func (w whereHelpertime_Time) LTE(x time.Time) qm.QueryMod {
-	return qmhelper.Where(w.field, qmhelper.LTE, x)
-}
-func (w whereHelpertime_Time) GT(x time.Time) qm.QueryMod {
-	return qmhelper.Where(w.field, qmhelper.GT, x)
-}
-func (w whereHelpertime_Time) GTE(x time.Time) qm.QueryMod {
-	return qmhelper.Where(w.field, qmhelper.GTE, x)
 }
 
 type whereHelperstring struct{ field string }
@@ -134,18 +113,39 @@ func (w whereHelperstring) NIN(slice []string) qm.QueryMod {
 	return qm.WhereNotIn(fmt.Sprintf("%s NOT IN ?", w.field), values...)
 }
 
+type whereHelpertime_Time struct{ field string }
+
+func (w whereHelpertime_Time) EQ(x time.Time) qm.QueryMod {
+	return qmhelper.Where(w.field, qmhelper.EQ, x)
+}
+func (w whereHelpertime_Time) NEQ(x time.Time) qm.QueryMod {
+	return qmhelper.Where(w.field, qmhelper.NEQ, x)
+}
+func (w whereHelpertime_Time) LT(x time.Time) qm.QueryMod {
+	return qmhelper.Where(w.field, qmhelper.LT, x)
+}
+func (w whereHelpertime_Time) LTE(x time.Time) qm.QueryMod {
+	return qmhelper.Where(w.field, qmhelper.LTE, x)
+}
+func (w whereHelpertime_Time) GT(x time.Time) qm.QueryMod {
+	return qmhelper.Where(w.field, qmhelper.GT, x)
+}
+func (w whereHelpertime_Time) GTE(x time.Time) qm.QueryMod {
+	return qmhelper.Where(w.field, qmhelper.GTE, x)
+}
+
 var AuthSubjectWhere = struct {
 	ID        whereHelperint
-	CreatedAt whereHelpertime_Time
-	UpdatedAt whereHelpertime_Time
 	UserID    whereHelperint
 	Subject   whereHelperstring
+	CreatedAt whereHelpertime_Time
+	UpdatedAt whereHelpertime_Time
 }{
-	ID:        whereHelperint{field: "\"main\".\"auth_subjects\".\"id\""},
-	CreatedAt: whereHelpertime_Time{field: "\"main\".\"auth_subjects\".\"created_at\""},
-	UpdatedAt: whereHelpertime_Time{field: "\"main\".\"auth_subjects\".\"updated_at\""},
-	UserID:    whereHelperint{field: "\"main\".\"auth_subjects\".\"user_id\""},
-	Subject:   whereHelperstring{field: "\"main\".\"auth_subjects\".\"subject\""},
+	ID:        whereHelperint{field: "\"auth_subjects\".\"id\""},
+	UserID:    whereHelperint{field: "\"auth_subjects\".\"user_id\""},
+	Subject:   whereHelperstring{field: "\"auth_subjects\".\"subject\""},
+	CreatedAt: whereHelpertime_Time{field: "\"auth_subjects\".\"created_at\""},
+	UpdatedAt: whereHelpertime_Time{field: "\"auth_subjects\".\"updated_at\""},
 }
 
 // AuthSubjectRels is where relationship names are stored.
@@ -176,8 +176,8 @@ func (r *authSubjectR) GetUser() *User {
 type authSubjectL struct{}
 
 var (
-	authSubjectAllColumns            = []string{"id", "created_at", "updated_at", "user_id", "subject"}
-	authSubjectColumnsWithoutDefault = []string{"created_at", "updated_at", "user_id", "subject"}
+	authSubjectAllColumns            = []string{"id", "user_id", "subject", "created_at", "updated_at"}
+	authSubjectColumnsWithoutDefault = []string{"user_id", "subject", "created_at", "updated_at"}
 	authSubjectColumnsWithDefault    = []string{"id"}
 	authSubjectPrimaryKeyColumns     = []string{"id"}
 	authSubjectGeneratedColumns      = []string{"id"}
@@ -557,8 +557,8 @@ func (authSubjectL) LoadUser(ctx context.Context, e boil.ContextExecutor, singul
 	}
 
 	query := NewQuery(
-		qm.From(`main.users`),
-		qm.WhereIn(`main.users.id in ?`, argsSlice...),
+		qm.From(`users`),
+		qm.WhereIn(`users.id in ?`, argsSlice...),
 	)
 	if mods != nil {
 		mods.Apply(query)
@@ -631,7 +631,7 @@ func (o *AuthSubject) SetUser(ctx context.Context, exec boil.ContextExecutor, in
 	}
 
 	updateQuery := fmt.Sprintf(
-		"UPDATE \"main\".\"auth_subjects\" SET %s WHERE %s",
+		"UPDATE \"auth_subjects\" SET %s WHERE %s",
 		strmangle.SetParamNames("\"", "\"", 1, []string{"user_id"}),
 		strmangle.WhereClause("\"", "\"", 2, authSubjectPrimaryKeyColumns),
 	)
@@ -668,10 +668,10 @@ func (o *AuthSubject) SetUser(ctx context.Context, exec boil.ContextExecutor, in
 
 // AuthSubjects retrieves all the records using an executor.
 func AuthSubjects(mods ...qm.QueryMod) authSubjectQuery {
-	mods = append(mods, qm.From("\"main\".\"auth_subjects\""))
+	mods = append(mods, qm.From("\"auth_subjects\""))
 	q := NewQuery(mods...)
 	if len(queries.GetSelect(q)) == 0 {
-		queries.SetSelect(q, []string{"\"main\".\"auth_subjects\".*"})
+		queries.SetSelect(q, []string{"\"auth_subjects\".*"})
 	}
 
 	return authSubjectQuery{q}
@@ -687,7 +687,7 @@ func FindAuthSubject(ctx context.Context, exec boil.ContextExecutor, iD int, sel
 		sel = strings.Join(strmangle.IdentQuoteSlice(dialect.LQ, dialect.RQ, selectCols), ",")
 	}
 	query := fmt.Sprintf(
-		"select %s from \"main\".\"auth_subjects\" where \"id\"=$1", sel,
+		"select %s from \"auth_subjects\" where \"id\"=$1", sel,
 	)
 
 	q := queries.Raw(query, iD)
@@ -755,9 +755,9 @@ func (o *AuthSubject) Insert(ctx context.Context, exec boil.ContextExecutor, col
 			return err
 		}
 		if len(wl) != 0 {
-			cache.query = fmt.Sprintf("INSERT INTO \"main\".\"auth_subjects\" (\"%s\") %%sVALUES (%s)%%s", strings.Join(wl, "\",\""), strmangle.Placeholders(dialect.UseIndexPlaceholders, len(wl), 1, 1))
+			cache.query = fmt.Sprintf("INSERT INTO \"auth_subjects\" (\"%s\") %%sVALUES (%s)%%s", strings.Join(wl, "\",\""), strmangle.Placeholders(dialect.UseIndexPlaceholders, len(wl), 1, 1))
 		} else {
-			cache.query = "INSERT INTO \"main\".\"auth_subjects\" %sDEFAULT VALUES%s"
+			cache.query = "INSERT INTO \"auth_subjects\" %sDEFAULT VALUES%s"
 		}
 
 		var queryOutput, queryReturning string
@@ -830,7 +830,7 @@ func (o *AuthSubject) Update(ctx context.Context, exec boil.ContextExecutor, col
 			return 0, errors.New("boiler: unable to update auth_subjects, could not build whitelist")
 		}
 
-		cache.query = fmt.Sprintf("UPDATE \"main\".\"auth_subjects\" SET %s WHERE %s",
+		cache.query = fmt.Sprintf("UPDATE \"auth_subjects\" SET %s WHERE %s",
 			strmangle.SetParamNames("\"", "\"", 1, wl),
 			strmangle.WhereClause("\"", "\"", len(wl)+1, authSubjectPrimaryKeyColumns),
 		)
@@ -911,7 +911,7 @@ func (o AuthSubjectSlice) UpdateAll(ctx context.Context, exec boil.ContextExecut
 		args = append(args, pkeyArgs...)
 	}
 
-	sql := fmt.Sprintf("UPDATE \"main\".\"auth_subjects\" SET %s WHERE %s",
+	sql := fmt.Sprintf("UPDATE \"auth_subjects\" SET %s WHERE %s",
 		strmangle.SetParamNames("\"", "\"", 1, colNames),
 		strmangle.WhereClauseRepeated(string(dialect.LQ), string(dialect.RQ), len(colNames)+1, authSubjectPrimaryKeyColumns, len(o)))
 
@@ -1018,7 +1018,7 @@ func (o *AuthSubject) Upsert(ctx context.Context, exec boil.ContextExecutor, upd
 			conflict = make([]string, len(authSubjectPrimaryKeyColumns))
 			copy(conflict, authSubjectPrimaryKeyColumns)
 		}
-		cache.query = buildUpsertQueryPostgres(dialect, "\"main\".\"auth_subjects\"", updateOnConflict, ret, update, conflict, insert, opts...)
+		cache.query = buildUpsertQueryPostgres(dialect, "\"auth_subjects\"", updateOnConflict, ret, update, conflict, insert, opts...)
 
 		cache.valueMapping, err = queries.BindMapping(authSubjectType, authSubjectMapping, insert)
 		if err != nil {
@@ -1077,7 +1077,7 @@ func (o *AuthSubject) Delete(ctx context.Context, exec boil.ContextExecutor) (in
 	}
 
 	args := queries.ValuesFromMapping(reflect.Indirect(reflect.ValueOf(o)), authSubjectPrimaryKeyMapping)
-	sql := "DELETE FROM \"main\".\"auth_subjects\" WHERE \"id\"=$1"
+	sql := "DELETE FROM \"auth_subjects\" WHERE \"id\"=$1"
 
 	if boil.IsDebug(ctx) {
 		writer := boil.DebugWriterFrom(ctx)
@@ -1142,7 +1142,7 @@ func (o AuthSubjectSlice) DeleteAll(ctx context.Context, exec boil.ContextExecut
 		args = append(args, pkeyArgs...)
 	}
 
-	sql := "DELETE FROM \"main\".\"auth_subjects\" WHERE " +
+	sql := "DELETE FROM \"auth_subjects\" WHERE " +
 		strmangle.WhereClauseRepeated(string(dialect.LQ), string(dialect.RQ), 1, authSubjectPrimaryKeyColumns, len(o))
 
 	if boil.IsDebug(ctx) {
@@ -1197,7 +1197,7 @@ func (o *AuthSubjectSlice) ReloadAll(ctx context.Context, exec boil.ContextExecu
 		args = append(args, pkeyArgs...)
 	}
 
-	sql := "SELECT \"main\".\"auth_subjects\".* FROM \"main\".\"auth_subjects\" WHERE " +
+	sql := "SELECT \"auth_subjects\".* FROM \"auth_subjects\" WHERE " +
 		strmangle.WhereClauseRepeated(string(dialect.LQ), string(dialect.RQ), 1, authSubjectPrimaryKeyColumns, len(*o))
 
 	q := queries.Raw(sql, args...)
@@ -1215,7 +1215,7 @@ func (o *AuthSubjectSlice) ReloadAll(ctx context.Context, exec boil.ContextExecu
 // AuthSubjectExists checks if the AuthSubject row exists.
 func AuthSubjectExists(ctx context.Context, exec boil.ContextExecutor, iD int) (bool, error) {
 	var exists bool
-	sql := "select exists(select 1 from \"main\".\"auth_subjects\" where \"id\"=$1 limit 1)"
+	sql := "select exists(select 1 from \"auth_subjects\" where \"id\"=$1 limit 1)"
 
 	if boil.IsDebug(ctx) {
 		writer := boil.DebugWriterFrom(ctx)

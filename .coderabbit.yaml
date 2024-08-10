@@ -7,3 +7,5 @@ reviews:
   high_level_summary: true
   path_filters:
     - "!api/app/oas/**"
+    - "!api/app/infra/boiler/**"
+    - "!api/docs/tbls/generated/**"

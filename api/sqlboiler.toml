@@ -10,4 +10,4 @@ port = 5432
 user = "postgres"
 pass = "postgres"
 sslmode = "disable"
-schema = "main"
+schema = "public"
