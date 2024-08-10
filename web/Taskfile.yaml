@@ -4,7 +4,6 @@ interval: 50ms
 
 tasks:
   dev:
-    dir: share-cart
     cmds:
       - task: generate
       - task: format
@@ -36,6 +35,7 @@ tasks:
     dir: share-cart
     cmd: npx depcruise app --include-only "^app" --output-type dot | dot -Tpng > dependency-graph.png # cspell: disable-line
     sources:
-      - "share-cart/app/**/*.ts"
+      - "app/**/*.ts"
+      - "app/**/*.tsx"
     generates:
       - "dependency-graph.png"

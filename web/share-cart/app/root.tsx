@@ -1,3 +1,5 @@
+import { Theme } from "@radix-ui/themes";
+import "@radix-ui/themes/styles.css";
 import {
 	Links,
 	Meta,
@@ -17,9 +19,11 @@ export function Layout({ children }: { children: React.ReactNode }) {
 				<Links />
 			</head>
 			<body>
-				{children}
-				<ScrollRestoration />
-				<Scripts />
+				<Theme>
+					{children}
+					<ScrollRestoration />
+					<Scripts />
+				</Theme>
 			</body>
 		</html>
 	);
