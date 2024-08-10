@@ -16,6 +16,7 @@
 		"psql",
 		"sqlboiler",
 		"sslmode",
+		"tbls",
 		"testdata",
 		"tmpl",
 		"Usecase",
