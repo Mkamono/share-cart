@@ -1,0 +1,8 @@
+docPath: tbls/generated
+format:
+  adjust: true
+  sort: false
+  number: true
+
+er:
+  hideDef: true

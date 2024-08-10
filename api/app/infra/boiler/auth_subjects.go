@@ -14,7 +14,6 @@ import (
 	"time"
 
 	"github.com/friendsofgo/errors"
-	"github.com/volatiletech/null/v8"
 	"github.com/volatiletech/sqlboiler/v4/boil"
 	"github.com/volatiletech/sqlboiler/v4/queries"
 	"github.com/volatiletech/sqlboiler/v4/queries/qm"
@@ -27,7 +26,6 @@ type AuthSubject struct {
 	ID        int       `boil:"id" json:"id" toml:"id" yaml:"id"`
 	CreatedAt time.Time `boil:"created_at" json:"created_at" toml:"created_at" yaml:"created_at"`
 	UpdatedAt time.Time `boil:"updated_at" json:"updated_at" toml:"updated_at" yaml:"updated_at"`
-	DeletedAt null.Time `boil:"deleted_at" json:"deleted_at,omitempty" toml:"deleted_at" yaml:"deleted_at,omitempty"`
 	UserID    int       `boil:"user_id" json:"user_id" toml:"user_id" yaml:"user_id"`
 	Subject   string    `boil:"subject" json:"subject" toml:"subject" yaml:"subject"`
 
@@ -39,14 +37,12 @@ var AuthSubjectColumns = struct {
 	ID        string
 	CreatedAt string
 	UpdatedAt string
-	DeletedAt string
 	UserID    string
 	Subject   string
 }{
 	ID:        "id",
 	CreatedAt: "created_at",
 	UpdatedAt: "updated_at",
-	DeletedAt: "deleted_at",
 	UserID:    "user_id",
 	Subject:   "subject",
 }
@@ -55,14 +51,12 @@ var AuthSubjectTableColumns = struct {
 	ID        string
 	CreatedAt string
 	UpdatedAt string
-	DeletedAt string
 	UserID    string
 	Subject   string
 }{
 	ID:        "auth_subjects.id",
 	CreatedAt: "auth_subjects.created_at",
 	UpdatedAt: "auth_subjects.updated_at",
-	DeletedAt: "auth_subjects.deleted_at",
 	UserID:    "auth_subjects.user_id",
 	Subject:   "auth_subjects.subject",
 }
@@ -113,30 +107,6 @@ func (w whereHelpertime_Time) GTE(x time.Time) qm.QueryMod {
 	return qmhelper.Where(w.field, qmhelper.GTE, x)
 }
 
-type whereHelpernull_Time struct{ field string }
-
-func (w whereHelpernull_Time) EQ(x null.Time) qm.QueryMod {
-	return qmhelper.WhereNullEQ(w.field, false, x)
-}
-func (w whereHelpernull_Time) NEQ(x null.Time) qm.QueryMod {
-	return qmhelper.WhereNullEQ(w.field, true, x)
-}
-func (w whereHelpernull_Time) LT(x null.Time) qm.QueryMod {
-	return qmhelper.Where(w.field, qmhelper.LT, x)
-}
-func (w whereHelpernull_Time) LTE(x null.Time) qm.QueryMod {
-	return qmhelper.Where(w.field, qmhelper.LTE, x)
-}
-func (w whereHelpernull_Time) GT(x null.Time) qm.QueryMod {
-	return qmhelper.Where(w.field, qmhelper.GT, x)
-}
-func (w whereHelpernull_Time) GTE(x null.Time) qm.QueryMod {
-	return qmhelper.Where(w.field, qmhelper.GTE, x)
-}
-
-func (w whereHelpernull_Time) IsNull() qm.QueryMod    { return qmhelper.WhereIsNull(w.field) }
-func (w whereHelpernull_Time) IsNotNull() qm.QueryMod { return qmhelper.WhereIsNotNull(w.field) }
-
 type whereHelperstring struct{ field string }
 
 func (w whereHelperstring) EQ(x string) qm.QueryMod     { return qmhelper.Where(w.field, qmhelper.EQ, x) }
@@ -168,14 +138,12 @@ var AuthSubjectWhere = struct {
 	ID        whereHelperint
 	CreatedAt whereHelpertime_Time
 	UpdatedAt whereHelpertime_Time
-	DeletedAt whereHelpernull_Time
 	UserID    whereHelperint
 	Subject   whereHelperstring
 }{
 	ID:        whereHelperint{field: "\"main\".\"auth_subjects\".\"id\""},
 	CreatedAt: whereHelpertime_Time{field: "\"main\".\"auth_subjects\".\"created_at\""},
 	UpdatedAt: whereHelpertime_Time{field: "\"main\".\"auth_subjects\".\"updated_at\""},
-	DeletedAt: whereHelpernull_Time{field: "\"main\".\"auth_subjects\".\"deleted_at\""},
 	UserID:    whereHelperint{field: "\"main\".\"auth_subjects\".\"user_id\""},
 	Subject:   whereHelperstring{field: "\"main\".\"auth_subjects\".\"subject\""},
 }
@@ -208,9 +176,9 @@ func (r *authSubjectR) GetUser() *User {
 type authSubjectL struct{}
 
 var (
-	authSubjectAllColumns            = []string{"id", "created_at", "updated_at", "deleted_at", "user_id", "subject"}
+	authSubjectAllColumns            = []string{"id", "created_at", "updated_at", "user_id", "subject"}
 	authSubjectColumnsWithoutDefault = []string{"created_at", "updated_at", "user_id", "subject"}
-	authSubjectColumnsWithDefault    = []string{"id", "deleted_at"}
+	authSubjectColumnsWithDefault    = []string{"id"}
 	authSubjectPrimaryKeyColumns     = []string{"id"}
 	authSubjectGeneratedColumns      = []string{"id"}
 )
@@ -591,7 +559,6 @@ func (authSubjectL) LoadUser(ctx context.Context, e boil.ContextExecutor, singul
 	query := NewQuery(
 		qm.From(`main.users`),
 		qm.WhereIn(`main.users.id in ?`, argsSlice...),
-		qmhelper.WhereIsNull(`main.users.deleted_at`),
 	)
 	if mods != nil {
 		mods.Apply(query)
@@ -701,7 +668,7 @@ func (o *AuthSubject) SetUser(ctx context.Context, exec boil.ContextExecutor, in
 
 // AuthSubjects retrieves all the records using an executor.
 func AuthSubjects(mods ...qm.QueryMod) authSubjectQuery {
-	mods = append(mods, qm.From("\"main\".\"auth_subjects\""), qmhelper.WhereIsNull("\"main\".\"auth_subjects\".\"deleted_at\""))
+	mods = append(mods, qm.From("\"main\".\"auth_subjects\""))
 	q := NewQuery(mods...)
 	if len(queries.GetSelect(q)) == 0 {
 		queries.SetSelect(q, []string{"\"main\".\"auth_subjects\".*"})
@@ -720,7 +687,7 @@ func FindAuthSubject(ctx context.Context, exec boil.ContextExecutor, iD int, sel
 		sel = strings.Join(strmangle.IdentQuoteSlice(dialect.LQ, dialect.RQ, selectCols), ",")
 	}
 	query := fmt.Sprintf(
-		"select %s from \"main\".\"auth_subjects\" where \"id\"=$1 and \"deleted_at\" is null", sel,
+		"select %s from \"main\".\"auth_subjects\" where \"id\"=$1", sel,
 	)
 
 	q := queries.Raw(query, iD)
@@ -1100,7 +1067,7 @@ func (o *AuthSubject) Upsert(ctx context.Context, exec boil.ContextExecutor, upd
 
 // Delete deletes a single AuthSubject record with an executor.
 // Delete will match against the primary key column to find the record to delete.
-func (o *AuthSubject) Delete(ctx context.Context, exec boil.ContextExecutor, hardDelete bool) (int64, error) {
+func (o *AuthSubject) Delete(ctx context.Context, exec boil.ContextExecutor) (int64, error) {
 	if o == nil {
 		return 0, errors.New("boiler: no AuthSubject provided for delete")
 	}
@@ -1109,26 +1076,8 @@ func (o *AuthSubject) Delete(ctx context.Context, exec boil.ContextExecutor, har
 		return 0, err
 	}
 
-	var (
-		sql  string
-		args []interface{}
-	)
-	if hardDelete {
-		args = queries.ValuesFromMapping(reflect.Indirect(reflect.ValueOf(o)), authSubjectPrimaryKeyMapping)
-		sql = "DELETE FROM \"main\".\"auth_subjects\" WHERE \"id\"=$1"
-	} else {
-		currTime := time.Now().In(boil.GetLocation())
-		o.DeletedAt = null.TimeFrom(currTime)
-		wl := []string{"deleted_at"}
-		sql = fmt.Sprintf("UPDATE \"main\".\"auth_subjects\" SET %s WHERE \"id\"=$2",
-			strmangle.SetParamNames("\"", "\"", 1, wl),
-		)
-		valueMapping, err := queries.BindMapping(authSubjectType, authSubjectMapping, append(wl, authSubjectPrimaryKeyColumns...))
-		if err != nil {
-			return 0, err
-		}
-		args = queries.ValuesFromMapping(reflect.Indirect(reflect.ValueOf(o)), valueMapping)
-	}
+	args := queries.ValuesFromMapping(reflect.Indirect(reflect.ValueOf(o)), authSubjectPrimaryKeyMapping)
+	sql := "DELETE FROM \"main\".\"auth_subjects\" WHERE \"id\"=$1"
 
 	if boil.IsDebug(ctx) {
 		writer := boil.DebugWriterFrom(ctx)
@@ -1153,17 +1102,12 @@ func (o *AuthSubject) Delete(ctx context.Context, exec boil.ContextExecutor, har
 }
 
 // DeleteAll deletes all matching rows.
-func (q authSubjectQuery) DeleteAll(ctx context.Context, exec boil.ContextExecutor, hardDelete bool) (int64, error) {
+func (q authSubjectQuery) DeleteAll(ctx context.Context, exec boil.ContextExecutor) (int64, error) {
 	if q.Query == nil {
 		return 0, errors.New("boiler: no authSubjectQuery provided for delete all")
 	}
 
-	if hardDelete {
-		queries.SetDelete(q.Query)
-	} else {
-		currTime := time.Now().In(boil.GetLocation())
-		queries.SetUpdate(q.Query, M{"deleted_at": currTime})
-	}
+	queries.SetDelete(q.Query)
 
 	result, err := q.Query.ExecContext(ctx, exec)
 	if err != nil {
@@ -1179,7 +1123,7 @@ func (q authSubjectQuery) DeleteAll(ctx context.Context, exec boil.ContextExecut
 }
 
 // DeleteAll deletes all rows in the slice, using an executor.
-func (o AuthSubjectSlice) DeleteAll(ctx context.Context, exec boil.ContextExecutor, hardDelete bool) (int64, error) {
+func (o AuthSubjectSlice) DeleteAll(ctx context.Context, exec boil.ContextExecutor) (int64, error) {
 	if len(o) == 0 {
 		return 0, nil
 	}
@@ -1192,31 +1136,14 @@ func (o AuthSubjectSlice) DeleteAll(ctx context.Context, exec boil.ContextExecut
 		}
 	}
 
-	var (
-		sql  string
-		args []interface{}
-	)
-	if hardDelete {
-		for _, obj := range o {
-			pkeyArgs := queries.ValuesFromMapping(reflect.Indirect(reflect.ValueOf(obj)), authSubjectPrimaryKeyMapping)
-			args = append(args, pkeyArgs...)
-		}
-		sql = "DELETE FROM \"main\".\"auth_subjects\" WHERE " +
-			strmangle.WhereClauseRepeated(string(dialect.LQ), string(dialect.RQ), 1, authSubjectPrimaryKeyColumns, len(o))
-	} else {
-		currTime := time.Now().In(boil.GetLocation())
-		for _, obj := range o {
-			pkeyArgs := queries.ValuesFromMapping(reflect.Indirect(reflect.ValueOf(obj)), authSubjectPrimaryKeyMapping)
-			args = append(args, pkeyArgs...)
-			obj.DeletedAt = null.TimeFrom(currTime)
-		}
-		wl := []string{"deleted_at"}
-		sql = fmt.Sprintf("UPDATE \"main\".\"auth_subjects\" SET %s WHERE "+
-			strmangle.WhereClauseRepeated(string(dialect.LQ), string(dialect.RQ), 2, authSubjectPrimaryKeyColumns, len(o)),
-			strmangle.SetParamNames("\"", "\"", 1, wl),
-		)
-		args = append([]interface{}{currTime}, args...)
+	var args []interface{}
+	for _, obj := range o {
+		pkeyArgs := queries.ValuesFromMapping(reflect.Indirect(reflect.ValueOf(obj)), authSubjectPrimaryKeyMapping)
+		args = append(args, pkeyArgs...)
 	}
+
+	sql := "DELETE FROM \"main\".\"auth_subjects\" WHERE " +
+		strmangle.WhereClauseRepeated(string(dialect.LQ), string(dialect.RQ), 1, authSubjectPrimaryKeyColumns, len(o))
 
 	if boil.IsDebug(ctx) {
 		writer := boil.DebugWriterFrom(ctx)
@@ -1271,8 +1198,7 @@ func (o *AuthSubjectSlice) ReloadAll(ctx context.Context, exec boil.ContextExecu
 	}
 
 	sql := "SELECT \"main\".\"auth_subjects\".* FROM \"main\".\"auth_subjects\" WHERE " +
-		strmangle.WhereClauseRepeated(string(dialect.LQ), string(dialect.RQ), 1, authSubjectPrimaryKeyColumns, len(*o)) +
-		"and \"deleted_at\" is null"
+		strmangle.WhereClauseRepeated(string(dialect.LQ), string(dialect.RQ), 1, authSubjectPrimaryKeyColumns, len(*o))
 
 	q := queries.Raw(sql, args...)
 
@@ -1289,7 +1215,7 @@ func (o *AuthSubjectSlice) ReloadAll(ctx context.Context, exec boil.ContextExecu
 // AuthSubjectExists checks if the AuthSubject row exists.
 func AuthSubjectExists(ctx context.Context, exec boil.ContextExecutor, iD int) (bool, error) {
 	var exists bool
-	sql := "select exists(select 1 from \"main\".\"auth_subjects\" where \"id\"=$1 and \"deleted_at\" is null limit 1)"
+	sql := "select exists(select 1 from \"main\".\"auth_subjects\" where \"id\"=$1 limit 1)"
 
 	if boil.IsDebug(ctx) {
 		writer := boil.DebugWriterFrom(ctx)
