@@ -3,7 +3,8 @@ version: "3"
 env:
   POSTGRES_URL:
     sh: echo postgres://$POSTGRES_USER:$POSTGRES_PASSWORD@$POSTGRES_HOST/$POSTGRES_DB?sslmode=disable
-  SCHEMA_FILE: file://./docs/schema.hcl
+  SCHEMA_FILES:
+    sh: find docs/atlas -type f | sed 's|^|file://|' | paste -sd ","
 
 tasks:
   dev:
@@ -22,11 +23,11 @@ tasks:
       - ./**/*.go
 
   plan:
-    cmd: atlas schema apply -u $POSTGRES_URL --to $SCHEMA_FILE --dry-run
+    cmd: atlas schema apply -u $POSTGRES_URL --to $SCHEMA_FILES --dry-run
 
   apply:
     cmds:
-      - atlas schema apply -u $POSTGRES_URL --to $SCHEMA_FILE
+      - atlas schema apply -u $POSTGRES_URL --to $SCHEMA_FILES
       - task: tbls
       - task: sqlboiler
 
