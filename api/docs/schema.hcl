@@ -24,15 +24,11 @@ table "users" {
   // system managed columns
   column "created_at" {
     null = false
-    type = timestamp
+    type = timestamptz
   }
   column "updated_at" {
     null = false
-    type = timestamp
-  }
-  column "deleted_at" {
-    null = true
-    type = timestamp
+    type = timestamptz
   }
 }
 
@@ -56,7 +52,7 @@ table "auth_subjects" {
   foreign_key "user_fk" {
     columns = [column.user_id]
     ref_columns = [table.users.column.id]
-    on_delete = CASCADE
+    on_delete = NO_ACTION
     on_update = NO_ACTION
   }
 
@@ -71,14 +67,10 @@ table "auth_subjects" {
   // system managed columns
   column "created_at" {
     null = false
-    type = timestamp
+    type = timestamptz
   }
   column "updated_at" {
     null = false
-    type = timestamp
-  }
-  column "deleted_at" {
-    null = true
-    type = timestamp
+    type = timestamptz
   }
 }

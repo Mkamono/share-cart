@@ -21,11 +21,18 @@ tasks:
     sources:
       - ./**/*.go
 
-  apply:
-    cmd: atlas schema apply -u $POSTGRES_URL --to $SCHEMA_FILE
-
   plan:
     cmd: atlas schema apply -u $POSTGRES_URL --to $SCHEMA_FILE --dry-run
 
+  apply:
+    cmds:
+      - atlas schema apply -u $POSTGRES_URL --to $SCHEMA_FILE
+      - task: tbls
+      - task: sqlboiler
+
   sqlboiler:
-    cmd: sqlboiler psql --add-soft-deletes
+    cmd: sqlboiler psql
+
+  tbls:
+    dir: docs
+    cmd: tbls doc $POSTGRES_URL --rm-dist -c tbls/.tbls.yaml
