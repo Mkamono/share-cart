@@ -5,8 +5,12 @@ package boiler
 
 var TableNames = struct {
 	AuthSubjects string
+	Items        string
+	Markets      string
 	Users        string
 }{
 	AuthSubjects: "auth_subjects",
+	Items:        "items",
+	Markets:      "markets",
 	Users:        "users",
 }

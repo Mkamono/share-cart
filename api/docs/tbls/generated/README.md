@@ -6,6 +6,8 @@
 | - | ----------------------------------------------- | ------- | ------- | ---------- |
 | 1 | [public.users](public.users.md)                 | 4       |         | BASE TABLE |
 | 2 | [public.auth_subjects](public.auth_subjects.md) | 5       |         | BASE TABLE |
+| 3 | [public.markets](public.markets.md)             | 5       |         | BASE TABLE |
+| 4 | [public.items](public.items.md)                 | 6       |         | BASE TABLE |
 
 ## Relations
 

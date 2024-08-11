@@ -16,14 +16,14 @@
 | # | Name       | Type        | Definition       |
 | - | ---------- | ----------- | ---------------- |
 | 1 | users_pkey | PRIMARY KEY | PRIMARY KEY (id) |
-| 2 | name       | UNIQUE      | UNIQUE (name)    |
+| 2 | user_name  | UNIQUE      | UNIQUE (name)    |
 
 ## Indexes
 
-| # | Name       | Definition                                                      |
-| - | ---------- | --------------------------------------------------------------- |
-| 1 | users_pkey | CREATE UNIQUE INDEX users_pkey ON public.users USING btree (id) |
-| 2 | name       | CREATE UNIQUE INDEX name ON public.users USING btree (name)     |
+| # | Name       | Definition                                                       |
+| - | ---------- | ---------------------------------------------------------------- |
+| 1 | users_pkey | CREATE UNIQUE INDEX users_pkey ON public.users USING btree (id)  |
+| 2 | user_name  | CREATE UNIQUE INDEX user_name ON public.users USING btree (name) |
 
 ## Relations
 
