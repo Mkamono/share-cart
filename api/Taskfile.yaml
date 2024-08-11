@@ -37,3 +37,21 @@ tasks:
   tbls:
     dir: docs
     cmd: tbls doc $POSTGRES_URL --rm-dist -c tbls/.tbls.yaml
+
+  mockgen_base:
+    vars:
+      INTERFACE_FILES:
+        sh: find {{.INTERFACE_DIR}} -maxdepth 1 -name "*.go" -type f | sed 's!^.*/!!' # cspell:disable-line
+    cmds:
+      - rm -rf {{.INTERFACE_DIR}}/mock
+      - for: { var: INTERFACE_FILES }
+        cmd: mockgen -source={{.INTERFACE_DIR}}/{{.ITEM}} -destination={{.INTERFACE_DIR}}/mock/{{.ITEM}}
+    internal: true
+    requires:
+      vars: [INTERFACE_DIR]
+
+  mockgen:
+    cmds:
+      - task: mockgen_base
+        vars:
+          INTERFACE_DIR: app/domain/repository/db
