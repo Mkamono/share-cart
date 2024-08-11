@@ -9,3 +9,6 @@ reviews:
     - "!api/app/oas/**"
     - "!api/app/infra/boiler/**"
     - "!api/docs/tbls/generated/**"
+    - "!**/mock/**"
+    - "go.mod"
+    - "go.sum"
