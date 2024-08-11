@@ -13,7 +13,7 @@ var (
 
 func WithValue(parent context.Context, key string, val any) context.Context {
 	if parent == nil {
-		panic("cannot create context from nil parent")
+		parent = context.Background()
 	}
 	if v, ok := parent.Value(fields).(*sync.Map); ok {
 		mapCopy := copySyncMap(v)
