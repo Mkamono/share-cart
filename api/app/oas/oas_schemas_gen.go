@@ -19,6 +19,46 @@ func (s *DefaultSuccess) SetMessage(val string) {
 func (*DefaultSuccess) signUpPostRes() {}
 func (*DefaultSuccess) testGetRes()    {}
 
+type MarketGetOKApplicationJSON []MarketGetOKItem
+
+func (*MarketGetOKApplicationJSON) marketGetRes() {}
+
+type MarketGetOKItem struct {
+	ID          int    `json:"id"`
+	Name        string `json:"name"`
+	Description string `json:"description"`
+}
+
+// GetID returns the value of ID.
+func (s *MarketGetOKItem) GetID() int {
+	return s.ID
+}
+
+// GetName returns the value of Name.
+func (s *MarketGetOKItem) GetName() string {
+	return s.Name
+}
+
+// GetDescription returns the value of Description.
+func (s *MarketGetOKItem) GetDescription() string {
+	return s.Description
+}
+
+// SetID sets the value of ID.
+func (s *MarketGetOKItem) SetID(val int) {
+	s.ID = val
+}
+
+// SetName sets the value of Name.
+func (s *MarketGetOKItem) SetName(val string) {
+	s.Name = val
+}
+
+// SetDescription sets the value of Description.
+func (s *MarketGetOKItem) SetDescription(val string) {
+	s.Description = val
+}
+
 // NewOptString returns new OptString with value set to v.
 func NewOptString(v string) OptString {
 	return OptString{
@@ -95,6 +135,7 @@ func (s *R500InternalServerError) SetMessage(val string) {
 	s.Message = val
 }
 
+func (*R500InternalServerError) marketGetRes()  {}
 func (*R500InternalServerError) signUpPostRes() {}
 func (*R500InternalServerError) testGetRes()    {}
 
