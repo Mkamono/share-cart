@@ -15,7 +15,7 @@ table "users" {
     null = false
     type = text
   }
-  unique "name" {
+  unique "user_name" {
     columns = [column.name]
   }
 
@@ -47,11 +47,11 @@ table "auth_subjects" {
     null = false
     type = integer
   }
-  foreign_key "user_fk" {
-    columns = [column.user_id]
+  foreign_key "auth_subjects_user_id_fk" {
+    columns     = [column.user_id]
     ref_columns = [table.users.column.id]
-    on_delete = NO_ACTION
-    on_update = NO_ACTION
+    on_delete   = NO_ACTION
+    on_update   = NO_ACTION
   }
 
   column "subject" {

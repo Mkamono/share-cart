@@ -14,11 +14,11 @@
 
 ## Constraints
 
-| # | Name               | Type        | Definition                                 |
-| - | ------------------ | ----------- | ------------------------------------------ |
-| 1 | user_fk            | FOREIGN KEY | FOREIGN KEY (user_id) REFERENCES users(id) |
-| 2 | auth_subjects_pkey | PRIMARY KEY | PRIMARY KEY (id)                           |
-| 3 | subject            | UNIQUE      | UNIQUE (subject)                           |
+| # | Name                     | Type        | Definition                                 |
+| - | ------------------------ | ----------- | ------------------------------------------ |
+| 1 | auth_subjects_user_id_fk | FOREIGN KEY | FOREIGN KEY (user_id) REFERENCES users(id) |
+| 2 | auth_subjects_pkey       | PRIMARY KEY | PRIMARY KEY (id)                           |
+| 3 | subject                  | UNIQUE      | UNIQUE (subject)                           |
 
 ## Indexes
 
