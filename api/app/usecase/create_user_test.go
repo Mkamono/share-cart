@@ -2,40 +2,16 @@ package usecase
 
 import (
 	dbEntity "api/app/domain/entity/db"
-	dbRepo "api/app/domain/repository/db"
 	dbRepoMock "api/app/domain/repository/db/mock"
 	db "api/app/infra/repository"
 	"context"
 	"errors"
 	"io"
 	"log/slog"
-	"reflect"
 	"testing"
 
 	"go.uber.org/mock/gomock"
 )
-
-func TestNewCreateUserUsecase(t *testing.T) {
-	type args struct {
-		txRepo      dbRepo.TransactionRepository
-		userRepo    dbRepo.UserRepository
-		subjectRepo dbRepo.AuthSubjectRepository
-	}
-	tests := []struct {
-		name string
-		args args
-		want CreateUserUsecase
-	}{
-		// TODO: Add test cases.
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			if got := NewCreateUserUsecase(tt.args.txRepo, tt.args.userRepo, tt.args.subjectRepo); !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("NewCreateUserUsecase() = %v, want %v", got, tt.want)
-			}
-		})
-	}
-}
 
 func Test_createUserUsecase_Run(t *testing.T) {
 	slog.SetDefault(slog.New(slog.NewTextHandler(io.Discard, nil)))
