@@ -4,7 +4,6 @@ import (
 	"api/app/handler"
 	"context"
 	"log/slog"
-	"os"
 )
 
 type jwtClient struct {
@@ -16,12 +15,11 @@ func NewJwtClient(subjectKey string) handler.JwtClient {
 }
 
 func (j *jwtClient) GetSubject(ctx context.Context) string {
-	logger := slog.New(slog.NewJSONHandler(os.Stdout, nil))
 	v := ctx.Value(j.subjectKey)
 
 	subject, ok := v.(string)
 	if !ok {
-		logger.Info("failed to get subject from context")
+		slog.ErrorContext(ctx, "JwtClient: Failed to get subject", "error", "subject not found")
 		return ""
 	}
 

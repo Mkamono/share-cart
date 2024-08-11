@@ -1,38 +1,38 @@
 package middleware
 
 import (
+	"api/app/shared/ctxlogger"
 	"fmt"
 	"log/slog"
-	"os"
 
+	"github.com/google/uuid"
 	"github.com/ogen-go/ogen/middleware"
 )
 
 func NewSlogLogger() middleware.Middleware {
-	logger := slog.New(slog.NewJSONHandler(os.Stdout, nil))
 	return func(
 		req middleware.Request,
 		next func(req middleware.Request) (middleware.Response, error),
 	) (middleware.Response, error) {
-		logger.Info(
-			"Handling request",
-			slog.String("operation", req.OperationName),
-			slog.String("URL", req.Raw.URL.String()),
-			slog.String("operationId", req.OperationID),
-			slog.String("body", fmt.Sprintf("%#v", req.Body)),
-			slog.String("raw request", fmt.Sprintf("%+v", req.Raw)),
-		)
+		traceID := uuid.New()
+		req.Context = ctxlogger.WithValue(req.Context, "traceID", traceID.String())
+		req.Context = ctxlogger.WithValue(req.Context, "operation", req.OperationName)
+
+		slog.InfoContext(req.Context, "Received request", "request", struct {
+			URL  string
+			Body string
+		}{
+			URL:  req.Raw.URL.String(),
+			Body: fmt.Sprintf("%#v", req.Body),
+		})
+
 		resp, err := next(req)
 		if err != nil {
-			logger.Error("Fail", "error", err)
+			slog.ErrorContext(req.Context, "Error", "error", err)
 		} else {
-			logger.Info(
-				"Handled request",
-				"operation", req.OperationName,
-				"operationId", req.OperationID,
-				"raw response", fmt.Sprintf("%#v", resp.Type),
-			)
+			slog.InfoContext(req.Context, "Returned response", "response", resp)
 		}
+
 		return resp, err
 	}
 }

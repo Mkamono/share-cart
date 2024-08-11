@@ -4,6 +4,7 @@ import (
 	dbEntity "api/app/domain/entity/db"
 	dbRepo "api/app/domain/repository/db"
 	"context"
+	"log/slog"
 )
 
 type CreateUserUsecase interface {
@@ -36,22 +37,34 @@ func (u *createUserUsecase) Run(ctx context.Context, name string, sub string) er
 		user.Name = name
 		err := u.userRepo.Create(ctx, user)
 		if err != nil {
+			slog.ErrorContext(ctx, "Repo: Failed to create user", "error", err)
 			return err
 		}
+		slog.InfoContext(ctx, "Repo: Success to create user", "user", struct {
+			ID   int
+			Name string
+		}{
+			ID:   user.ID,
+			Name: user.Name,
+		})
 
 		subject := &dbEntity.AuthSubject{}
 		subject.Subject = sub
 		subject.UserID = user.ID
 		err = u.subjectRepo.Create(ctx, subject)
 		if err != nil {
+			slog.ErrorContext(ctx, "Repo: Failed to create auth subject", "error", err)
 			return err
 		}
+		slog.InfoContext(ctx, "Repo: Success to create auth subject")
 
 		return nil
 	})
 	if err != nil {
+		slog.ErrorContext(ctx, "Repo: Failed to run transaction", "error", err)
 		return err
 	}
+	slog.InfoContext(ctx, "Repo: Success to run transaction")
 
 	return nil
 }

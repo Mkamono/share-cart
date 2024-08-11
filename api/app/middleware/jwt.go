@@ -3,7 +3,6 @@ package middleware
 import (
 	"fmt"
 	"net/url"
-	"os"
 	"time"
 
 	"github.com/auth0/go-jwt-middleware/v2/jwks"
@@ -15,14 +14,12 @@ import (
 
 // NewJwtMiddleware : JWTを検証するミドルウェアを作成します。contextにsubjectを追加します。検証に失敗した場合は空文字列を追加します。
 func NewJwtMiddleware(auth0Domain string, auth0Audience string, subjectKey string) (middleware.Middleware, error) {
-	logger := slog.New(slog.NewJSONHandler(os.Stdout, nil))
 	issuer := fmt.Sprintf("https://%s/", auth0Domain)
 	audience := []string{auth0Audience}
 
 	jwtValidator, err := NewJwtValidator(issuer, audience)
 	if err != nil {
-		logger.Error("failed to create JWT validator")
-		logger.Error(err.Error())
+		slog.Error("Middleware: Failed to create JWT validator", "error", err)
 		return nil, err
 	}
 

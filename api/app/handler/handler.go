@@ -5,7 +5,6 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
-	"log/slog"
 	"time"
 )
 
@@ -17,19 +16,16 @@ type JwtClient interface {
 
 func NewHandler(
 	jc JwtClient,
-	l *slog.Logger,
 	db *sql.DB,
 ) oas.Handler {
 	return &handler{
 		jwtClient: jc,
-		logger:    l,
 		db:        db,
 	}
 }
 
 type handler struct {
 	jwtClient JwtClient
-	logger    *slog.Logger
 	db        *sql.DB
 }
 

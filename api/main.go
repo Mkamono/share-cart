@@ -7,6 +7,7 @@ import (
 	db "api/app/infra/repository"
 	mw "api/app/middleware"
 	"api/app/oas"
+	"api/app/shared/ctxlogger"
 	"fmt"
 	"log"
 	"log/slog"
@@ -22,6 +23,9 @@ func main() {
 
 	const auth0SubjectKey = "subject"
 
+	// logger
+	slog.SetDefault(slog.New(ctxlogger.NewHandler(slog.NewJSONHandler(os.Stdout, nil))))
+
 	// Middleware
 	loggerMiddleware := mw.NewSlogLogger()
 	jwtMiddleware, err := mw.NewJwtMiddleware(c.AUTH0.Domain, c.AUTH0.Audience, auth0SubjectKey)
@@ -31,7 +35,6 @@ func main() {
 
 	// Handler
 	jwtClient := jwt.NewJwtClient(auth0SubjectKey)
-	logger := slog.New(slog.NewJSONHandler(os.Stdout, nil))
 	db, err := db.New(c.GetDBConnStr())
 	if err != nil {
 		log.Fatal(err)
@@ -39,7 +42,6 @@ func main() {
 
 	service := h.NewHandler(
 		jwtClient,
-		logger,
 		db,
 	)
 
