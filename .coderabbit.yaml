@@ -10,5 +10,5 @@ reviews:
     - "!api/app/infra/boiler/**"
     - "!api/docs/tbls/generated/**"
     - "!**/mock/**"
-    - "go.mod"
-    - "go.sum"
+    - "!go.mod"
+    - "!go.sum"
