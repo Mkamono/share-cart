@@ -30,7 +30,7 @@ func NewSlogLogger() middleware.Middleware {
 		if err != nil {
 			slog.ErrorContext(req.Context, "Error", "error", err)
 		} else {
-			slog.InfoContext(req.Context, "Returned response", "response", resp)
+			slog.InfoContext(req.Context, "Returned response", "response", resp.Type)
 		}
 
 		return resp, err

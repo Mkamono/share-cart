@@ -8,6 +8,10 @@ import (
 
 // Handler handles operations described by OpenAPI v3 specification.
 type Handler interface {
+	// MarketGet implements GET /market operation.
+	//
+	// GET /market
+	MarketGet(ctx context.Context) (MarketGetRes, error)
 	// SignUpPost implements POST /sign-up operation.
 	//
 	// POST /sign-up

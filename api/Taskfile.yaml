@@ -18,7 +18,7 @@ tasks:
       - docs/openapi.yaml
 
   graph:
-    cmd: godepgraph -o .,api -s . | dot -Tpng -o ./docs/dependency.png # cspell:disable-line
+    cmd: godepgraph -o .,api -p api/app/shared -s . | dot -Tpng -o ./docs/dependency.png # cspell:disable-line
     sources:
       - ./**/*.go
 

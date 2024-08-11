@@ -13,6 +13,13 @@ type UnimplementedHandler struct{}
 
 var _ Handler = UnimplementedHandler{}
 
+// MarketGet implements GET /market operation.
+//
+// GET /market
+func (UnimplementedHandler) MarketGet(ctx context.Context) (r MarketGetRes, _ error) {
+	return r, ht.ErrNotImplemented
+}
+
 // SignUpPost implements POST /sign-up operation.
 //
 // POST /sign-up
