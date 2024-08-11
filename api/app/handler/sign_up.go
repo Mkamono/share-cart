@@ -5,6 +5,7 @@ import (
 	"api/app/oas"
 	"api/app/usecase"
 	"context"
+	"log/slog"
 )
 
 func (h *handler) SignUpPost(ctx context.Context, req *oas.SignUpPostReq) (oas.SignUpPostRes, error) {
@@ -24,12 +25,13 @@ func (h *handler) SignUpPost(ctx context.Context, req *oas.SignUpPostReq) (oas.S
 
 	err := createUserUsecase.Run(ctx, req.Name.Value, sub)
 	if err != nil {
-		h.logger.Error(err.Error())
+		slog.ErrorContext(ctx, "Usecase: Failed to create user", "error", err)
 		return &oas.R500InternalServerError{
 			Message: "Internal server error",
 		}, nil
 	}
 
+	slog.InfoContext(ctx, "Usecase: Create user success")
 	return &oas.DefaultSuccess{
 		Message: "Sign up success",
 	}, nil
