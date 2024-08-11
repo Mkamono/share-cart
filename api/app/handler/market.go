@@ -7,6 +7,8 @@ import (
 	"api/app/usecase"
 	"context"
 	"log/slog"
+
+	"github.com/samber/lo"
 )
 
 func (h *handler) MarketGet(ctx context.Context) (oas.MarketGetRes, error) {
@@ -17,17 +19,16 @@ func (h *handler) MarketGet(ctx context.Context) (oas.MarketGetRes, error) {
 		slog.ErrorContext(ctx, "Usecase: Failed to get markets", "error", err)
 		return nil, err
 	}
-
 	slog.InfoContext(ctx, "Usecase: Get markets success", "markets", lox.FromSlicePtr(markets))
 
-	marketGetRes := oas.MarketGetOKApplicationJSON{}
-	for _, market := range markets {
-		marketGetRes = append(marketGetRes, oas.MarketGetOKItem{
-			ID:          market.ID,
-			Name:        market.Name,
-			Description: market.Description,
-		})
+	oasMarkets := make([]oas.MarketGetOKItem, len(markets))
+	for i, m := range markets {
+		oasMarkets[i] = oas.MarketGetOKItem{
+			ID:          m.ID,
+			Name:        m.Name,
+			Description: m.Description,
+		}
 	}
 
-	return &marketGetRes, nil
+	return lo.ToPtr(append(oas.MarketGetOKApplicationJSON{}, oasMarkets...)), nil
 }
