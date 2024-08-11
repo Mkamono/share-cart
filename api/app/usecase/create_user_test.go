@@ -2,7 +2,7 @@ package usecase
 
 import (
 	dbEntity "api/app/domain/entity/db"
-	dbRepoMock "api/app/domain/repository/db/mock"
+	mock_db "api/app/domain/repository/db/mock"
 	db "api/app/infra/repository"
 	"context"
 	"errors"
@@ -16,14 +16,15 @@ import (
 func Test_createUserUsecase_Run(t *testing.T) {
 	slog.SetDefault(slog.New(slog.NewTextHandler(io.Discard, nil)))
 
+	type mocks struct {
+		userRepo    *mock_db.MockUserRepository
+		subjectRepo *mock_db.MockAuthSubjectRepository
+	}
+
 	type args struct {
 		ctx  context.Context
 		name string
 		sub  string
-	}
-	type mocks struct {
-		userRepo    *dbRepoMock.MockUserRepository
-		subjectRepo *dbRepoMock.MockAuthSubjectRepository
 	}
 	tests := []struct {
 		name       string
@@ -90,8 +91,8 @@ func Test_createUserUsecase_Run(t *testing.T) {
 			defer ctrl.Finish()
 
 			txRepo := db.NewMockTransactionRepository()
-			userRepo := dbRepoMock.NewMockUserRepository(ctrl)
-			subjectRepo := dbRepoMock.NewMockAuthSubjectRepository(ctrl)
+			userRepo := mock_db.NewMockUserRepository(ctrl)
+			subjectRepo := mock_db.NewMockAuthSubjectRepository(ctrl)
 
 			u := &createUserUsecase{
 				txRepo:      txRepo,

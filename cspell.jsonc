@@ -17,6 +17,7 @@
 		"ogen",
 		"openapi",
 		"psql",
+		"samber",
 		"sqlboiler",
 		"sslmode",
 		"tbls",
