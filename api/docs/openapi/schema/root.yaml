@@ -50,4 +50,5 @@ components:
     Bearer:
       type: http
       scheme: bearer
+      bearerFormat: JWT
       description: Credentials or access token for authentication
