@@ -1,0 +1,106 @@
+openapi: "3.0.3"
+info:
+  title: Share Cart API
+  version: "1.0"
+servers:
+  - url: http://localhost:8081
+
+paths:
+  /:
+    get:
+      responses:
+        "200":
+          description: OK
+
+components:
+  responses:
+    200OK:
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: "OK"
+            required:
+              - message
+
+    201Created:
+      description: Created
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: "Created"
+            required:
+              - message
+
+    400BadRequest:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: "Bad Request"
+            required:
+              - message
+
+    401Unauthorized:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: "Unauthorized"
+            required:
+              - message
+
+    403Forbidden:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: "Forbidden"
+            required:
+              - message
+
+    404NotFound:
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: "Not Found"
+            required:
+              - message
+
+    500InternalServerError:
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: "Internal Server Error"
+            required:
+              - message

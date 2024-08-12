@@ -13,9 +13,9 @@ tasks:
       - task: graph
 
   generate:
-    cmd: ogen --package oas --target app/oas --clean docs/openapi.yaml
+    cmd: ogen --package oas --target app/oas --clean --config docs/openapi/ogen_config.yaml docs/openapi/schema/root.yaml
     sources:
-      - docs/openapi.yaml
+      - docs/openapi/schema/root.yaml
 
   graph:
     cmd: godepgraph -o .,api -p api/app/shared -s . | dot -Tpng -o ./docs/dependency.png # cspell:disable-line

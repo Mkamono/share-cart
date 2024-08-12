@@ -10,10 +10,6 @@ import (
 
 var _ oas.Handler = (*handler)(nil)
 
-type JwtClient interface {
-	GetSubject(ctx context.Context) string
-}
-
 func NewHandler(
 	jc JwtClient,
 	db *sql.DB,
@@ -29,9 +25,18 @@ type handler struct {
 	db        *sql.DB
 }
 
-func (h *handler) TestGet(ctx context.Context) (oas.TestGetRes, error) {
+func (h *handler) NewError(ctx context.Context, err error) *oas.R500InternalServerErrorStatusCode {
+	return &oas.R500InternalServerErrorStatusCode{
+		StatusCode: 500,
+		Response: oas.R500InternalServerError{
+			Message: err.Error(),
+		},
+	}
+}
+
+func (h *handler) TestGet(ctx context.Context) (*oas.R200OK, error) {
 	s := fmt.Sprintf("Hello, world! : %s", time.Now().String())
-	return &oas.DefaultSuccess{
+	return &oas.R200OK{
 		Message: s,
 	}, nil
 }

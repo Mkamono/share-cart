@@ -9,10 +9,9 @@ import (
 )
 
 func (h *handler) SignUpPost(ctx context.Context, req *oas.SignUpPostReq) (oas.SignUpPostRes, error) {
-	sub := h.jwtClient.GetSubject(ctx)
-
-	if sub == "" {
-		return &oas.R401UnauthorizedError{
+	sub, ok := h.jwtClient.GetSubjectFromContext(ctx)
+	if !ok {
+		return &oas.R401Unauthorized{
 			Message: "Unauthorized",
 		}, nil
 	}
@@ -26,13 +25,11 @@ func (h *handler) SignUpPost(ctx context.Context, req *oas.SignUpPostReq) (oas.S
 	err := createUserUsecase.Run(ctx, req.Name.Value, sub)
 	if err != nil {
 		slog.ErrorContext(ctx, "Usecase: Failed to create user", "error", err)
-		return &oas.R500InternalServerError{
-			Message: "Internal server error",
-		}, nil
+		return nil, err
 	}
 
 	slog.InfoContext(ctx, "Usecase: Create user success")
-	return &oas.DefaultSuccess{
-		Message: "Sign up success",
+	return &oas.R201Created{
+		Message: "Created",
 	}, nil
 }

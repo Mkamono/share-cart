@@ -10,8 +10,10 @@ import (
 type Handler interface {
 	// MarketGet implements GET /market operation.
 	//
+	// Get all markets.
+	//
 	// GET /market
-	MarketGet(ctx context.Context) (MarketGetRes, error)
+	MarketGet(ctx context.Context) ([]Market, error)
 	// SignUpPost implements POST /sign-up operation.
 	//
 	// POST /sign-up
@@ -19,24 +21,30 @@ type Handler interface {
 	// TestGet implements GET /test operation.
 	//
 	// GET /test
-	TestGet(ctx context.Context) (TestGetRes, error)
+	TestGet(ctx context.Context) (*R200OK, error)
+	// NewError creates *R500InternalServerErrorStatusCode from error returned by handler.
+	//
+	// Used for common default response.
+	NewError(ctx context.Context, err error) *R500InternalServerErrorStatusCode
 }
 
 // Server implements http server based on OpenAPI v3 specification and
 // calls Handler to handle requests.
 type Server struct {
-	h Handler
+	h   Handler
+	sec SecurityHandler
 	baseServer
 }
 
 // NewServer creates new Server.
-func NewServer(h Handler, opts ...ServerOption) (*Server, error) {
+func NewServer(h Handler, sec SecurityHandler, opts ...ServerOption) (*Server, error) {
 	s, err := newServerConfig(opts...).baseServer()
 	if err != nil {
 		return nil, err
 	}
 	return &Server{
 		h:          h,
+		sec:        sec,
 		baseServer: s,
 	}, nil
 }

@@ -1,0 +1,47 @@
+openapi: "3.0.3"
+info:
+  title: Share Cart API
+  version: "1.0"
+servers:
+  - url: http://localhost:8081
+
+paths:
+  /market:
+    get:
+      summary: Get all markets
+      security:
+        - Bearer: []
+      responses:
+        "200":
+          $ref: "#/components/responses/getMarket"
+        "default":
+          $ref: "http_response.yaml#/components/responses/500InternalServerError"
+
+components:
+  responses:
+    getMarket:
+      description: A list of markets.
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: "#/components/schemas/market"
+
+  schemas:
+    market:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: "market_name"
+        description:
+          type: string
+          example: "market_description"
+      required:
+        - id
+        - name
+        - description
