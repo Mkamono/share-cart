@@ -2,60 +2,62 @@
 
 package oas
 
-type DefaultSuccess struct {
-	Message string `json:"message"`
+import (
+	"fmt"
+)
+
+func (s *R500InternalServerErrorStatusCode) Error() string {
+	return fmt.Sprintf("code %d: %+v", s.StatusCode, s.Response)
 }
 
-// GetMessage returns the value of Message.
-func (s *DefaultSuccess) GetMessage() string {
-	return s.Message
+type Bearer struct {
+	Token string
 }
 
-// SetMessage sets the value of Message.
-func (s *DefaultSuccess) SetMessage(val string) {
-	s.Message = val
+// GetToken returns the value of Token.
+func (s *Bearer) GetToken() string {
+	return s.Token
 }
 
-func (*DefaultSuccess) signUpPostRes() {}
-func (*DefaultSuccess) testGetRes()    {}
+// SetToken sets the value of Token.
+func (s *Bearer) SetToken(val string) {
+	s.Token = val
+}
 
-type MarketGetOKApplicationJSON []MarketGetOKItem
-
-func (*MarketGetOKApplicationJSON) marketGetRes() {}
-
-type MarketGetOKItem struct {
+// Ref: #/components/schemas/market
+type Market struct {
 	ID          int    `json:"id"`
 	Name        string `json:"name"`
 	Description string `json:"description"`
 }
 
 // GetID returns the value of ID.
-func (s *MarketGetOKItem) GetID() int {
+func (s *Market) GetID() int {
 	return s.ID
 }
 
 // GetName returns the value of Name.
-func (s *MarketGetOKItem) GetName() string {
+func (s *Market) GetName() string {
 	return s.Name
 }
 
 // GetDescription returns the value of Description.
-func (s *MarketGetOKItem) GetDescription() string {
+func (s *Market) GetDescription() string {
 	return s.Description
 }
 
 // SetID sets the value of ID.
-func (s *MarketGetOKItem) SetID(val int) {
+func (s *Market) SetID(val int) {
 	s.ID = val
 }
 
 // SetName sets the value of Name.
-func (s *MarketGetOKItem) SetName(val string) {
+func (s *Market) SetName(val string) {
 	s.Name = val
 }
 
 // SetDescription sets the value of Description.
-func (s *MarketGetOKItem) SetDescription(val string) {
+func (s *Market) SetDescription(val string) {
 	s.Description = val
 }
 
@@ -105,21 +107,51 @@ func (o OptString) Or(d string) string {
 	return d
 }
 
-type R401UnauthorizedError struct {
+type R200OK struct {
 	Message string `json:"message"`
 }
 
 // GetMessage returns the value of Message.
-func (s *R401UnauthorizedError) GetMessage() string {
+func (s *R200OK) GetMessage() string {
 	return s.Message
 }
 
 // SetMessage sets the value of Message.
-func (s *R401UnauthorizedError) SetMessage(val string) {
+func (s *R200OK) SetMessage(val string) {
 	s.Message = val
 }
 
-func (*R401UnauthorizedError) signUpPostRes() {}
+type R201Created struct {
+	Message string `json:"message"`
+}
+
+// GetMessage returns the value of Message.
+func (s *R201Created) GetMessage() string {
+	return s.Message
+}
+
+// SetMessage sets the value of Message.
+func (s *R201Created) SetMessage(val string) {
+	s.Message = val
+}
+
+func (*R201Created) signUpPostRes() {}
+
+type R401Unauthorized struct {
+	Message string `json:"message"`
+}
+
+// GetMessage returns the value of Message.
+func (s *R401Unauthorized) GetMessage() string {
+	return s.Message
+}
+
+// SetMessage sets the value of Message.
+func (s *R401Unauthorized) SetMessage(val string) {
+	s.Message = val
+}
+
+func (*R401Unauthorized) signUpPostRes() {}
 
 type R500InternalServerError struct {
 	Message string `json:"message"`
@@ -135,9 +167,31 @@ func (s *R500InternalServerError) SetMessage(val string) {
 	s.Message = val
 }
 
-func (*R500InternalServerError) marketGetRes()  {}
-func (*R500InternalServerError) signUpPostRes() {}
-func (*R500InternalServerError) testGetRes()    {}
+// R500InternalServerErrorStatusCode wraps R500InternalServerError with StatusCode.
+type R500InternalServerErrorStatusCode struct {
+	StatusCode int
+	Response   R500InternalServerError
+}
+
+// GetStatusCode returns the value of StatusCode.
+func (s *R500InternalServerErrorStatusCode) GetStatusCode() int {
+	return s.StatusCode
+}
+
+// GetResponse returns the value of Response.
+func (s *R500InternalServerErrorStatusCode) GetResponse() R500InternalServerError {
+	return s.Response
+}
+
+// SetStatusCode sets the value of StatusCode.
+func (s *R500InternalServerErrorStatusCode) SetStatusCode(val int) {
+	s.StatusCode = val
+}
+
+// SetResponse sets the value of Response.
+func (s *R500InternalServerErrorStatusCode) SetResponse(val R500InternalServerError) {
+	s.Response = val
+}
 
 type SignUpPostReq struct {
 	Name OptString `json:"name"`

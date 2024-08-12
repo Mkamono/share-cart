@@ -16,6 +16,7 @@ import (
 	"go.opentelemetry.io/otel/trace"
 
 	ht "github.com/ogen-go/ogen/http"
+	"github.com/ogen-go/ogen/ogenerrors"
 	"github.com/ogen-go/ogen/uri"
 )
 
@@ -23,8 +24,10 @@ import (
 type Invoker interface {
 	// MarketGet invokes GET /market operation.
 	//
+	// Get all markets.
+	//
 	// GET /market
-	MarketGet(ctx context.Context) (MarketGetRes, error)
+	MarketGet(ctx context.Context) ([]Market, error)
 	// SignUpPost invokes POST /sign-up operation.
 	//
 	// POST /sign-up
@@ -32,16 +35,21 @@ type Invoker interface {
 	// TestGet invokes GET /test operation.
 	//
 	// GET /test
-	TestGet(ctx context.Context) (TestGetRes, error)
+	TestGet(ctx context.Context) (*R200OK, error)
 }
 
 // Client implements OAS client.
 type Client struct {
 	serverURL *url.URL
+	sec       SecuritySource
 	baseClient
+}
+type errorHandler interface {
+	NewError(ctx context.Context, err error) *R500InternalServerErrorStatusCode
 }
 
 var _ Handler = struct {
+	errorHandler
 	*Client
 }{}
 
@@ -51,7 +59,7 @@ func trimTrailingSlashes(u *url.URL) {
 }
 
 // NewClient initializes new Client defined by OAS.
-func NewClient(serverURL string, opts ...ClientOption) (*Client, error) {
+func NewClient(serverURL string, sec SecuritySource, opts ...ClientOption) (*Client, error) {
 	u, err := url.Parse(serverURL)
 	if err != nil {
 		return nil, err
@@ -64,6 +72,7 @@ func NewClient(serverURL string, opts ...ClientOption) (*Client, error) {
 	}
 	return &Client{
 		serverURL:  u,
+		sec:        sec,
 		baseClient: c,
 	}, nil
 }
@@ -85,13 +94,15 @@ func (c *Client) requestURL(ctx context.Context) *url.URL {
 
 // MarketGet invokes GET /market operation.
 //
+// Get all markets.
+//
 // GET /market
-func (c *Client) MarketGet(ctx context.Context) (MarketGetRes, error) {
+func (c *Client) MarketGet(ctx context.Context) ([]Market, error) {
 	res, err := c.sendMarketGet(ctx)
 	return res, err
 }
 
-func (c *Client) sendMarketGet(ctx context.Context) (res MarketGetRes, err error) {
+func (c *Client) sendMarketGet(ctx context.Context) (res []Market, err error) {
 	otelAttrs := []attribute.KeyValue{
 		semconv.HTTPMethodKey.String("GET"),
 		semconv.HTTPRouteKey.String("/market"),
@@ -134,6 +145,39 @@ func (c *Client) sendMarketGet(ctx context.Context) (res MarketGetRes, err error
 	r, err := ht.NewRequest(ctx, "GET", u)
 	if err != nil {
 		return res, errors.Wrap(err, "create request")
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+			stage = "Security:Bearer"
+			switch err := c.securityBearer(ctx, "MarketGet", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"Bearer\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
 	}
 
 	stage = "SendRequest"
@@ -208,6 +252,39 @@ func (c *Client) sendSignUpPost(ctx context.Context, request *SignUpPostReq) (re
 		return res, errors.Wrap(err, "encode request")
 	}
 
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+			stage = "Security:Bearer"
+			switch err := c.securityBearer(ctx, "SignUpPost", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"Bearer\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
 	stage = "SendRequest"
 	resp, err := c.cfg.Client.Do(r)
 	if err != nil {
@@ -227,12 +304,12 @@ func (c *Client) sendSignUpPost(ctx context.Context, request *SignUpPostReq) (re
 // TestGet invokes GET /test operation.
 //
 // GET /test
-func (c *Client) TestGet(ctx context.Context) (TestGetRes, error) {
+func (c *Client) TestGet(ctx context.Context) (*R200OK, error) {
 	res, err := c.sendTestGet(ctx)
 	return res, err
 }
 
-func (c *Client) sendTestGet(ctx context.Context) (res TestGetRes, err error) {
+func (c *Client) sendTestGet(ctx context.Context) (res *R200OK, err error) {
 	otelAttrs := []attribute.KeyValue{
 		semconv.HTTPMethodKey.String("GET"),
 		semconv.HTTPRouteKey.String("/test"),
@@ -275,6 +352,39 @@ func (c *Client) sendTestGet(ctx context.Context) (res TestGetRes, err error) {
 	r, err := ht.NewRequest(ctx, "GET", u)
 	if err != nil {
 		return res, errors.Wrap(err, "create request")
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+			stage = "Security:Bearer"
+			switch err := c.securityBearer(ctx, "TestGet", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"Bearer\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
 	}
 
 	stage = "SendRequest"

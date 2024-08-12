@@ -15,8 +15,10 @@ var _ Handler = UnimplementedHandler{}
 
 // MarketGet implements GET /market operation.
 //
+// Get all markets.
+//
 // GET /market
-func (UnimplementedHandler) MarketGet(ctx context.Context) (r MarketGetRes, _ error) {
+func (UnimplementedHandler) MarketGet(ctx context.Context) (r []Market, _ error) {
 	return r, ht.ErrNotImplemented
 }
 
@@ -30,6 +32,14 @@ func (UnimplementedHandler) SignUpPost(ctx context.Context, req *SignUpPostReq) 
 // TestGet implements GET /test operation.
 //
 // GET /test
-func (UnimplementedHandler) TestGet(ctx context.Context) (r TestGetRes, _ error) {
+func (UnimplementedHandler) TestGet(ctx context.Context) (r *R200OK, _ error) {
 	return r, ht.ErrNotImplemented
+}
+
+// NewError creates *R500InternalServerErrorStatusCode from error returned by handler.
+//
+// Used for common default response.
+func (UnimplementedHandler) NewError(ctx context.Context, err error) (r *R500InternalServerErrorStatusCode) {
+	r = new(R500InternalServerErrorStatusCode)
+	return r
 }

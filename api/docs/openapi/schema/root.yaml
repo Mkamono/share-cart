@@ -1,0 +1,53 @@
+openapi: "3.0.3"
+info:
+  title: Share Cart API
+  version: "1.0"
+servers:
+  - url: http://localhost:8081
+
+paths:
+  /test:
+    get:
+      security:
+        - Bearer: []
+      responses:
+        "200":
+          $ref: "http_response.yaml#/components/responses/200OK"
+        "default":
+          $ref: "http_response.yaml#/components/responses/500InternalServerError"
+
+  /sign-up:
+    post:
+      security:
+        - Bearer: []
+      requestBody:
+        $ref: "#/components/requestBodies/SignUp"
+      responses:
+        "201":
+          $ref: "http_response.yaml#/components/responses/201Created"
+        "401":
+          $ref: "http_response.yaml#/components/responses/401Unauthorized"
+        "default":
+          $ref: "http_response.yaml#/components/responses/500InternalServerError"
+
+  /market:
+    $ref: "market.yaml#/paths/~1market"
+
+components:
+  requestBodies:
+    SignUp:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+                example: "your_name"
+
+  securitySchemes:
+    Bearer:
+      type: http
+      scheme: bearer
+      description: Credentials or access token for authentication
