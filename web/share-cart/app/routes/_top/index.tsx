@@ -1,6 +1,7 @@
+import { Box } from "@radix-ui/themes";
 import { type MetaFunction } from "@remix-run/node";
 import { Outlet, useLocation } from "@remix-run/react";
-import Footer from "~/routes/_top/footer";
+import { Footer } from "~/routes/_top/Footer";
 
 export const meta: MetaFunction = () => {
 	return [
@@ -12,11 +13,13 @@ export const meta: MetaFunction = () => {
 export default function Index() {
 	const location = useLocation();
 	return (
-		<div className="flex flex-col min-h-screen">
-			<div>location.pathname : {location.pathname}</div>
-			<Outlet />
-			<div className="flex-grow"></div>
-			<Footer />
-		</div>
+		<Box className="flex flex-col h-dvh">
+			<Box className="flex-grow overflow-auto p-2 pb-0">
+				<Outlet />
+			</Box>
+			<Box className="sticky bottom-0">
+				<Footer />
+			</Box>
+		</Box>
 	);
 }

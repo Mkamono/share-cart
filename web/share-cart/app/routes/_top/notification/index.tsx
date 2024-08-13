@@ -1,5 +1,5 @@
 function Notification() {
-	return <div>Notification death</div>;
+	return <div>Notification</div>;
 }
 
 export default Notification;

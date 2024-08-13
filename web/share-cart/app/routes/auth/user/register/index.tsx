@@ -1,9 +1,8 @@
 import { ActionFunction, ActionFunctionArgs } from "@remix-run/node";
 import { Form, redirect } from "@remix-run/react";
-import createClient from "openapi-fetch";
 import { $path } from "remix-routes";
-import type { paths } from "~/models/schema";
 import { authenticator } from "~/service/auth.server";
+import { shareCartClient } from "~/service/client";
 
 export async function loader({ request }: { request: Request }) {
 	const jwt = await authenticator.isAuthenticated(request);
@@ -17,10 +16,9 @@ export const action: ActionFunction = async ({
 	request,
 }: ActionFunctionArgs) => {
 	const jwt = await authenticator.isAuthenticated(request);
-	const client = createClient<paths>({ baseUrl: process.env.API_HOST });
+	const client = shareCartClient(jwt?.accessToken);
 	const formData = await request.formData();
 	const data = await client.POST("/sign-up", {
-		params: { header: { Authorization: jwt?.accessToken ?? "" } },
 		body: { name: formData.get("name")?.toString() },
 	});
 

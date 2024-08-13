@@ -1,18 +1,16 @@
 import { type MetaFunction, json } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
-import createClient from "openapi-fetch";
-import type { paths } from "~/models/schema";
 import Login from "~/routes/auth/login";
 import Logout from "~/routes/auth/logout";
 import { authenticator } from "~/service/auth.server";
+import { shareCartClient } from "~/service/client";
 import { config } from "~/service/config.server";
 
 export async function loader({ request }: { request: Request }) {
-	const client = createClient<paths>({ baseUrl: process.env.API_HOST });
 	const jwt = await authenticator.isAuthenticated(request);
-	const { data } = await client.GET("/test", {
-		params: { header: { Authorization: jwt?.accessToken ?? "" } },
-	});
+	const client = shareCartClient(jwt?.accessToken);
+	const { data } = await client.GET("/test");
+
 	return json({
 		testData: data,
 		config,

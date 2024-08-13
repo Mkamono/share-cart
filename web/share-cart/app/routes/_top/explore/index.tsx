@@ -1,5 +1,5 @@
 function Explore() {
-	return <div>Explore death</div>;
+	return <div>Explore</div>;
 }
 
 export default Explore;
