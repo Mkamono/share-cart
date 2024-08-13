@@ -1,7 +1,7 @@
 import { Box } from "@radix-ui/themes";
 import { type MetaFunction } from "@remix-run/node";
 import { Outlet, useLocation } from "@remix-run/react";
-import { Footer } from "~/routes/_top/Footer";
+import { Footer } from "~/routes/_top/footer2";
 
 export const meta: MetaFunction = () => {
 	return [
