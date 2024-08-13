@@ -2,6 +2,7 @@ import { cleanEnv, str, url } from "envalid"; // cspell:disable-line
 
 export const config = cleanEnv(process.env, {
 	SESSION_SECRET: str(),
+	API_HOST: url(),
 	AUTH0_CALLBACK_URL: url(),
 	AUTH0_CLIENT_ID: str(),
 	AUTH0_CLIENT_SECRET: str(),

@@ -11,9 +11,9 @@ tasks:
       - task: dep_graph
 
   generate:
-    cmd: npx -y openapi-typescript ../api/docs/openapi.yaml -o share-cart/app/models/schema.d.ts
+    cmd: npx -y openapi-typescript ../api/docs/openapi/schema/root.yaml -o share-cart/app/models/schema.d.ts
     sources:
-      - "../api/docs/openapi.yaml"
+      - "../api/docs/openapi/schema/root.yaml"
     generates:
       - "share-cart/app/models/schema.d.ts"
 

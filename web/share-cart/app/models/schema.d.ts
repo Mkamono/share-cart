@@ -14,17 +14,14 @@ export interface paths {
 		get: {
 			parameters: {
 				query?: never;
-				header: {
-					/** @description Bearer token */
-					Authorization: components["parameters"]["Authorization"];
-				};
+				header?: never;
 				path?: never;
 				cookie?: never;
 			};
 			requestBody?: never;
 			responses: {
-				200: components["responses"]["DefaultSuccess"];
-				500: components["responses"]["500InternalServerError"];
+				200: components["responses"]["200OK"];
+				default: components["responses"]["500InternalServerError"];
 			};
 		};
 		put?: never;
@@ -47,20 +44,46 @@ export interface paths {
 		post: {
 			parameters: {
 				query?: never;
-				header: {
-					/** @description Bearer token */
-					Authorization: components["parameters"]["Authorization"];
-				};
+				header?: never;
 				path?: never;
 				cookie?: never;
 			};
 			requestBody: components["requestBodies"]["SignUp"];
 			responses: {
-				201: components["responses"]["DefaultSuccess"];
-				401: components["responses"]["401UnauthorizedError"];
-				500: components["responses"]["500InternalServerError"];
+				201: components["responses"]["201Created"];
+				401: components["responses"]["401Unauthorized"];
+				default: components["responses"]["500InternalServerError"];
 			};
 		};
+		delete?: never;
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
+	"/market": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		/** Get all markets */
+		get: {
+			parameters: {
+				query?: never;
+				header?: never;
+				path?: never;
+				cookie?: never;
+			};
+			requestBody?: never;
+			responses: {
+				200: components["responses"]["getMarket"];
+				default: components["responses"]["500InternalServerError"];
+			};
+		};
+		put?: never;
+		post?: never;
 		delete?: never;
 		options?: never;
 		head?: never;
@@ -70,44 +93,17 @@ export interface paths {
 }
 export type webhooks = Record<string, never>;
 export interface components {
-	schemas: never;
+	schemas: {
+		market: {
+			/** @example 1 */
+			id: number;
+			/** @example market_name */
+			name: string;
+			/** @example market_description */
+			description: string;
+		};
+	};
 	responses: {
-		/** @description OK */
-		DefaultSuccess: {
-			headers: {
-				[name: string]: unknown;
-			};
-			content: {
-				"application/json": {
-					/** @example Success */
-					message: string;
-				};
-			};
-		};
-		/** @description Unauthorized */
-		"401UnauthorizedError": {
-			headers: {
-				[name: string]: unknown;
-			};
-			content: {
-				"application/json": {
-					/** @example Unauthorized */
-					message: string;
-				};
-			};
-		};
-		/** @description Forbidden */
-		"403ForbiddenError": {
-			headers: {
-				[name: string]: unknown;
-			};
-			content: {
-				"application/json": {
-					/** @example Forbidden */
-					message: string;
-				};
-			};
-		};
 		/** @description Internal Server Error */
 		"500InternalServerError": {
 			headers: {
@@ -120,11 +116,53 @@ export interface components {
 				};
 			};
 		};
+		/** @description OK */
+		"200OK": {
+			headers: {
+				[name: string]: unknown;
+			};
+			content: {
+				"application/json": {
+					/** @example OK */
+					message: string;
+				};
+			};
+		};
+		/** @description Created */
+		"201Created": {
+			headers: {
+				[name: string]: unknown;
+			};
+			content: {
+				"application/json": {
+					/** @example Created */
+					message: string;
+				};
+			};
+		};
+		/** @description Unauthorized */
+		"401Unauthorized": {
+			headers: {
+				[name: string]: unknown;
+			};
+			content: {
+				"application/json": {
+					/** @example Unauthorized */
+					message: string;
+				};
+			};
+		};
+		/** @description A list of markets. */
+		getMarket: {
+			headers: {
+				[name: string]: unknown;
+			};
+			content: {
+				"application/json": components["schemas"]["market"][];
+			};
+		};
 	};
-	parameters: {
-		/** @description Bearer token */
-		Authorization: string;
-	};
+	parameters: never;
 	requestBodies: {
 		SignUp: {
 			content: {
