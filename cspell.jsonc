@@ -20,6 +20,7 @@
 		"samber",
 		"sqlboiler",
 		"sslmode",
+		"taskfiles",
 		"tbls",
 		"testdata",
 		"tmpl",

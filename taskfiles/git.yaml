@@ -1,0 +1,26 @@
+version: 3
+
+tasks:
+  prune_branch:
+    desc: ローカルのブランチをリモートのブランチと比較して削除します
+    cmds:
+      - git fetch --prune
+      - task: checkout_default_branch
+      - git branch | grep -v {{.DEFAULT_BRANCH}} | xargs git branch -D
+    status:
+      - test $(git branch | wc -l) -eq 1
+    vars:
+      DEFAULT_BRANCH:
+        sh: git remote show origin | grep 'HEAD branch' | awk '{print $NF}'
+      CURRENT_BRANCH:
+        sh: git branch --show-current
+
+  checkout_default_branch:
+    cmds:
+      - git checkout {{.DEFAULT_BRANCH}}
+    status:
+      - git branch --show-current | grep {{.DEFAULT_BRANCH}}
+    vars:
+      DEFAULT_BRANCH:
+        sh: git remote show origin | grep 'HEAD branch' | awk '{print $NF}'
+    internal: true
