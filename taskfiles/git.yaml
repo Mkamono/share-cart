@@ -7,6 +7,7 @@ tasks:
       - git fetch --prune
       - task: checkout_default_branch
       - git branch | grep -v {{.DEFAULT_BRANCH}} | xargs git branch -D
+      - git pull --all
     status:
       - test $(git branch | wc -l) -eq 1
     vars:
