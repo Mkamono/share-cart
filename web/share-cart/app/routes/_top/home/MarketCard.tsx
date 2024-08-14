@@ -29,7 +29,7 @@ export const MarketCard = (props: MarketCardProps) => {
 					className="w-full h-full object-cover"
 				/>
 			</Inset>
-			<Text as="p" size="2">
+			<Text as="p" size="1">
 				<Strong>{props.market.name}</Strong>
 			</Text>
 		</Card>

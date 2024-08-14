@@ -1,4 +1,4 @@
-import { Box, Grid } from "@radix-ui/themes";
+import { Box, Flex } from "@radix-ui/themes";
 import { json } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import { authenticator } from "~/service/auth.server";
@@ -18,23 +18,16 @@ const testImageURL =
 export const Home = () => {
 	const { markets } = useLoaderData<typeof loader>();
 	return (
-		<Box>
-			<Grid
-				columns="2"
-				gap="2"
-				rows="repeat(2)"
-				width="auto"
-				height="auto"
-				pb="9"
-			>
-				{markets?.map((market) => (
+		<Flex gap="2" wrap="wrap" pb="9">
+			{markets?.map((market) => (
+				<Box key={market.id} className="flex-grow w-28">
 					<MarketCard
 						key={market.id}
 						market={{ ...market, imageURL: testImageURL }}
 					/>
-				))}
-			</Grid>
-		</Box>
+				</Box>
+			))}
+		</Flex>
 	);
 };
 
