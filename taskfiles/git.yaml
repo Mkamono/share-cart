@@ -1,0 +1,26 @@
+version: 3
+
+tasks:
+  prune_branch:
+    desc: マージ済みのブランチを削除
+    cmds:
+      - git fetch --prune
+      - task: checkout_default_branch
+      - git branch | grep -v {{.DEFAULT_BRANCH}} | xargs git branch -D
+    vars:
+      DEFAULT_BRANCH:
+        sh: git remote show origin | grep 'HEAD branch' | awk '{print $NF}'
+      CURRENT_BRANCH:
+        sh: git branch --show-current
+    status:
+      - test $(git branch | wc -l) -eq 1
+
+  checkout_default_branch:
+    cmds:
+      - git checkout {{.DEFAULT_BRANCH}}
+    vars:
+      DEFAULT_BRANCH:
+        sh: git remote show origin | grep 'HEAD branch' | awk '{print $NF}'
+    status:
+      - git branch --show-current | grep {{.DEFAULT_BRANCH}}
+    internal: true
