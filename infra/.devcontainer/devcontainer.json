@@ -7,12 +7,15 @@
 	"customizations": {
 		"vscode": {
 			"extensions": [
-				"hashicorp.terraform"
+				"hashicorp.terraform",
+				"redhat.vscode-yaml",
+				"task.vscode-task"
 			]
 		}
 	},
 	"features": {
 		"ghcr.io/devcontainers/features/github-cli:1": {},
+		"ghcr.io/eitsupi/devcontainer-features/go-task:1": {},
 		"ghcr.io/devcontainers/features/terraform:1": {},
 		"ghcr.io/meaningful-ooo/devcontainer-features/fish:1": {},
 		"ghcr.io/joshuanianji/devcontainer-features/github-cli-persistence:1": {},

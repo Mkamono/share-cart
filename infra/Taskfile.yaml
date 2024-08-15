@@ -1,0 +1,17 @@
+version: 3
+
+tasks:
+  plan:
+    dir: terraform/remote
+    cmds:
+      - terraform fmt
+      - terraform validate
+      - tflint
+      - terraform plan
+    sources:
+      - "**/*.tf"
+
+  apply:
+    dir: terraform/remote
+    cmds:
+      - terraform apply
