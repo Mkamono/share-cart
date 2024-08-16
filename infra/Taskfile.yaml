@@ -15,3 +15,12 @@ tasks:
     dir: terraform/remote
     cmds:
       - terraform apply
+
+  impersonate-service-account:
+    cmds:
+      - gcloud config set auth/impersonate_service_account {{.WIF_SA_EMAIL}}
+      - gcloud auth application-default login --impersonate-service-account {{.WIF_SA_EMAIL}}
+      - read -p "Now login as {{.WIF_SA_EMAIL}}. Press enter to finish and re-authenticate as yourself."
+      - defer: gcloud config unset auth/impersonate_service_account && gcloud auth application-default login
+    vars:
+      WIF_SA_EMAIL: gha-wif-sa@coastal-fiber-430001-s0.iam.gserviceaccount.com

@@ -10,8 +10,10 @@
 		"ctxlogger",
 		"dbname",
 		"envconfig",
+		"gcloud",
 		"godepgraph",
 		"gomock",
+		"gserviceaccount",
 		"jwks",
 		"mockgen",
 		"ogen",
@@ -23,6 +25,7 @@
 		"taskfiles",
 		"tbls",
 		"testdata",
+		"tflint",
 		"tmpl",
 		"Usecase",
 		"volatiletech"

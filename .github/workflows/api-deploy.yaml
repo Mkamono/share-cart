@@ -4,14 +4,12 @@ on:
     branches:
       - main
     paths:
-      - "infra/terraform/remote/**"
+      - "api/**"
+      - ".github/workflows/api-deploy.yaml"
 
 jobs:
-  apply:
+  deploy:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: infra/terraform/remote
     permissions:
       contents: "read"
       id-token: "write"
@@ -22,12 +20,11 @@ jobs:
         with:
           workload_identity_provider: ${{secrets.WIF_PROVIDER_NAME}}
           service_account: ${{secrets.WIF_SA_EMAIL}}
-      - uses: hashicorp/setup-terraform@v3
+      - id: "deploy"
+        uses: "google-github-actions/deploy-cloudrun@v2"
+        with:
+          service: "api"
+          image: "asia-northeast1-docker.pkg.dev/coastal-fiber-430001-s0/api-repo/api:latest"
 
-      - name: Terraform Init
-        id: init
-        run: terraform init
-
-      - name: Terraform Apply
-        id: apply
-        run: terraform apply -auto-approve
+      - name: "Use output"
+        run: 'curl "${{ steps.deploy.outputs.url }}"'
