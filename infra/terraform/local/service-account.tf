@@ -9,9 +9,11 @@ resource "google_storage_bucket_iam_member" "gha_wif_sa_iam" {
   member = "serviceAccount:${google_service_account.gha_wif_sa.email}"
 }
 
-// editor権限つける
 resource "google_project_iam_member" "gha_wif_sa_iam" {
   project = data.google_project.share-cart.project_id
-  role    = "roles/editor"
-  member  = "serviceAccount:${google_service_account.gha_wif_sa.email}"
+  for_each = toset([
+    "roles/editor",
+  ])
+  role   = each.value
+  member = "serviceAccount:${google_service_account.gha_wif_sa.email}"
 }
