@@ -25,9 +25,9 @@ WORKDIR /app
 
 RUN --mount=type=bind,target=. go build -o /go/bin/app
 
-FROM gcr.io/distroless/static-debian12 AS production
+FROM gcr.io/distroless/base-debian12 AS production
 
-COPY --from=builder /go/bin/app /
+COPY --from=builder /go/bin/app /app
 
 CMD ["/app"]
 
