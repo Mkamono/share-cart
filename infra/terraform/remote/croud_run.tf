@@ -103,7 +103,7 @@ resource "google_cloud_run_v2_service" "web" {
       min_instance_count = 0
     }
     containers {
-      image = "us-docker.pkg.dev/cloudrun/container/hello"
+      image = "asia-northeast1-docker.pkg.dev/coastal-fiber-430001-s0/web-repo/web:latest"
       resources {
         cpu_idle = true
         limits = {
