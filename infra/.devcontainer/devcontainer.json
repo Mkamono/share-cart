@@ -9,7 +9,9 @@
 			"extensions": [
 				"hashicorp.terraform",
 				"redhat.vscode-yaml",
-				"task.vscode-task"
+				"task.vscode-task",
+				"fredwangwang.vscode-hcl-format",
+				"eamodio.gitlens"
 			]
 		}
 	},
