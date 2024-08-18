@@ -188,6 +188,10 @@ resource "google_cloud_run_v2_service" "web" {
           }
         }
       }
+      env {
+        name  = "API_HOST"
+        value = google_cloud_run_v2_service.api.uri
+      }
     }
   }
 }
