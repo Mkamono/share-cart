@@ -7,7 +7,7 @@
 		"build": "remix vite:build",
 		"dev": "remix vite:dev --host",
 		"format": "biome check --write",
-		"start": "PORT=5173 remix-serve ./build/server/index.js",
+		"start": "remix-serve ./build/server/index.js",
 		"typecheck": "tsc"
 	},
 	"dependencies": {

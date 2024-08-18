@@ -28,7 +28,7 @@ WORKDIR /app/share-cart
 COPY ./share-cart/package.json .
 RUN yarn install --production
 
-FROM gcr.io/distroless/nodejs22-debian12 AS production
+FROM node:22-slim AS production
 
 ENV NODE_ENV=production
 ENV TZ=Asia/Tokyo
@@ -38,4 +38,4 @@ COPY --from=builder /app/share-cart/build /app/share-cart/build
 COPY --from=production-deps /app/share-cart/package.json /app/share-cart/package.json
 COPY --from=production-deps /app/share-cart/node_modules /app/share-cart/node_modules
 
-CMD ["./build/server/index.js"]
+CMD ["yarn", "start"]
