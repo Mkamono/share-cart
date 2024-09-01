@@ -31,6 +31,7 @@ jobs:
         run: |
           curl -sSf https://atlasgo.sh | sh -s -- -y
       - name: task plan
+        id: plan
         run: |
           POSTGRES_USER="$(gcloud secrets versions access latest --secret='supabase_user')"
           POSTGRES_PASSWORD="$(gcloud secrets versions access latest --secret='supabase_password')"
@@ -43,3 +44,28 @@ jobs:
           export POSTGRES_HOST
           export POSTGRES_PORT
           task plan
+
+      - uses: actions/github-script@v7
+        if: github.event_name == 'pull_request'
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const output = `## Atlas Plan 📖\`${{ steps.plan.outcome }}\`
+
+
+            <details><summary>Show Plan</summary>
+
+            \`\`\`\n
+            ${process.plan.stdout}
+            \`\`\`
+
+            </details>
+
+            *Pusher: @${{ github.actor }}, Action: \`${{ github.event_name }}\`, Working Directory: \`infra/terraform/remote\`, Workflow: \`${{ github.workflow }}\`*`;
+
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: output
+            })
