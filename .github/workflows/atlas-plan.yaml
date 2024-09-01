@@ -43,7 +43,7 @@ jobs:
           export POSTGRES_DB
           export POSTGRES_HOST
           export POSTGRES_PORT
-          task plan
+          echo "$(task plan)"
       - uses: actions/github-script@v7
         if: github.event_name == 'pull_request'
         env:
