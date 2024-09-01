@@ -17,6 +17,7 @@ RUN go install -v github.com/air-verse/air@latest
 RUN go install -v github.com/kisielk/godepgraph@latest
 RUN go install -v github.com/cweill/gotests/gotests@latest
 RUN go install -v go.uber.org/mock/mockgen@latest
+RUN go install -v github.com/k1LoW/tbls@latest
 
 # デプロイ用
 FROM golang:1.22.5 AS builder

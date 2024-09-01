@@ -5,6 +5,7 @@ on:
       - main
     paths:
       - "infra/terraform/remote/**"
+      - ".github/workflows/terraform-apply.yaml"
 
 jobs:
   apply:
