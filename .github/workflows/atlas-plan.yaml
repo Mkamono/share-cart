@@ -34,7 +34,7 @@ jobs:
         id: set-output
         run: |
           echo tests
-          echo "test=test" >> $GITHUB_OUTPUT
+          echo "test=$(pwd)" >> $GITHUB_OUTPUT
       - id: echo-output
         run: echo ${{ steps.set-output.outputs.test }}
       - name: task plan
