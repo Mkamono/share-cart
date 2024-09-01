@@ -87,6 +87,10 @@ resource "google_cloud_run_v2_service" "api" {
           }
         }
       }
+      env {
+        name  = "PROJECT_ID"
+        value = local.project_id
+      }
     }
   }
 }
