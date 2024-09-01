@@ -35,7 +35,7 @@ jobs:
         run: |
           echo tests
           echo "test=$(pwd)" >> $GITHUB_OUTPUT
-          echo (gh --version) >> $GITHUB_OUTPUT
+          echo $(gh --version) >> $GITHUB_OUTPUT
       - id: echo-output
         run: |
           echo ${{ steps.set-output.outputs.test }}
