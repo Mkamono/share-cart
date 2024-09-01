@@ -24,7 +24,7 @@ func (h Handler) Enabled(ctx context.Context, level slog.Level) bool {
 }
 
 func (h Handler) Handle(ctx context.Context, record slog.Record) error {
-	ctx = WithValue(ctx, "spanId", shared.Uuid())
+	ctx = WithValue(ctx, "logging.googleapis.com/spanId", shared.Uuid())
 	if v, ok := ctx.Value(fields).(*sync.Map); ok {
 		v.Range(func(key, val any) bool {
 			if keyString, ok := key.(string); ok {

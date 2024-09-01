@@ -47,11 +47,11 @@ func addTraceID(ctx context.Context, traceHeader string, projectID string) conte
 	traceID, ok := extractTraceID(traceHeader)
 	if ok {
 		trace := fmt.Sprintf("projects/%s/traces/%s", projectID, traceID)
-		return ctxlogger.WithValue(ctx, "trace", trace)
+		return ctxlogger.WithValue(ctx, "logging.googleapis.com/trace", trace)
 	} else {
 		fmt.Println("traceID", "not found")
 		trace := fmt.Sprintf("projects/%s/traces/%s", projectID, shared.Uuid())
-		return ctxlogger.WithValue(ctx, "trace", trace)
+		return ctxlogger.WithValue(ctx, "logging.googleapis.com/trace", trace)
 	}
 }
 
