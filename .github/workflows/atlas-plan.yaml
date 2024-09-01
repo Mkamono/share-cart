@@ -30,6 +30,11 @@ jobs:
       - name: Download and install Atlas CLI
         run: |
           curl -sSf https://atlasgo.sh | sh -s -- -y
+      - name: Set output
+        id: set-output
+        run: echo "test=test" >> $GITHUB_OUTPUT
+      - id: echo-output
+        run: echo ${{ steps.set-output.outputs.test }}
       - name: task plan
         id: plan
         run: |
@@ -56,6 +61,7 @@ jobs:
             <details><summary>Show Plan</summary>
 
             \`\`\`\n
+            ${{ steps.set-output.outputs.test }}
             ${process.env.PLAN}
             \`\`\`
 
