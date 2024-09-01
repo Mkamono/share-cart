@@ -32,10 +32,16 @@ func main() {
 	}
 
 	// logger
-	slog.SetDefault(slog.New(ctxlogger.NewHandler(slog.NewJSONHandler(os.Stdout, nil))))
+	baseHandler := slog.NewJSONHandler(os.Stdout, &slog.HandlerOptions{
+		AddSource:   true,
+		ReplaceAttr: ctxlogger.GoogleCloudReplacer,
+	})
+
+	slogHandler := ctxlogger.NewHandler(baseHandler)
+	slog.SetDefault(slog.New(slogHandler))
 
 	// Middleware
-	loggerMiddleware := mw.NewSlogLogger()
+	loggerMiddleware := mw.NewRequestLogger(c.ProjectID)
 
 	// Handler
 	db, err := db.New(c.GetDBConnStr())
