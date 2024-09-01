@@ -3,8 +3,9 @@ package config
 import "github.com/kelseyhightower/envconfig" // cspell:disable-line
 
 type Config struct {
-	Env  string `required:"true" envconfig:"GO_ENV" default:"local"`
-	Port string `required:"true" envconfig:"PORT" default:"8081"`
+	Env       string `required:"true" envconfig:"GO_ENV" default:"local"`
+	Port      string `required:"true" envconfig:"PORT" default:"8081"`
+	ProjectID string `required:"true" envconfig:"PROJECT_ID" default:"local"`
 
 	DB
 	AUTH0
