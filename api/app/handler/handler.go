@@ -6,9 +6,17 @@ import (
 	"database/sql"
 	"fmt"
 	"time"
+
+	"github.com/auth0/go-jwt-middleware/v2/validator"
 )
 
 var _ oas.Handler = (*handler)(nil)
+
+type JwtClient interface {
+	Validate(ctx context.Context, token string) (*validator.ValidatedClaims, error)
+	WithSubjectContext(ctx context.Context, subject string) context.Context
+	GetSubjectFromContext(ctx context.Context) (string, bool)
+}
 
 func NewHandler(
 	jc JwtClient,

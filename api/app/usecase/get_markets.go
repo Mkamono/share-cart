@@ -3,7 +3,6 @@ package usecase
 import (
 	dbEntity "api/app/domain/entity/db"
 	dbRepo "api/app/domain/repository/db"
-	"api/app/shared/lox"
 
 	"context"
 	"log/slog"
@@ -30,11 +29,11 @@ func NewGetMarketsUsecase(
 func (u *getMarketsUsecase) Run(ctx context.Context) ([]*dbEntity.Market, error) {
 	markets, err := u.marketRepo.GetAll(ctx)
 	if err != nil {
-		slog.ErrorContext(ctx, "Repo: Failed to get markets", "error", err)
+		slog.ErrorContext(ctx, "Failed to get markets", "error", err)
 		return nil, err
 	}
 
-	slog.InfoContext(ctx, "Repo: Success to get markets", "markets", lox.FromSlicePtr(markets))
+	slog.InfoContext(ctx, "Success to get markets")
 
 	return markets, nil
 }
