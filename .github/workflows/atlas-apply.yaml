@@ -6,7 +6,6 @@ on:
     paths:
       - "api/docs/atlas/**"
       - ".github/workflows/atlas-apply.yaml"
-      - ".github/workflows/atlas-plan.yaml"
 
 jobs:
   apply:
