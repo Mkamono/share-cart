@@ -14,3 +14,4 @@ reviews:
     - "!**/go.sum"
     - "!**/cspell.jsonc"
     - "!.coderabbit.yaml" # cspell:disable-line
+    - "!infra/terraform/remote/.terraform.lock.hcl"
