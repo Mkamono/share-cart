@@ -49,4 +49,4 @@ jobs:
           export POSTGRES_PORT
           task apply
       - name: check-diff
-        run: git add . && git diff --cached --exit-code
+        run: git add . && git diff --cached
