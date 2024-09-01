@@ -37,9 +37,4 @@ jobs:
           POSTGRES_DB="$(gcloud secrets versions access latest --secret='supabase_db_dev')"
           POSTGRES_HOST="$(gcloud secrets versions access latest --secret='supabase_host')"
           POSTGRES_PORT="$(gcloud secrets versions access latest --secret='supabase_port')"
-          export POSTGRES_USER
-          export POSTGRES_PASSWORD
-          export POSTGRES_DB
-          export POSTGRES_HOST
-          export POSTGRES_PORT
           task plan
