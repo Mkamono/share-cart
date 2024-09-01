@@ -23,12 +23,12 @@ tasks:
       - ./**/*.go
 
   plan:
-    cmd: atlas schema apply -u $POSTGRES_URL --to $SCHEMA_FILES --dry-run
+    cmds:
+      - echo $POSTGRES_URL
+      - atlas schema apply -u $POSTGRES_URL --to $SCHEMA_FILES --dry-run
 
   apply:
     cmds:
-      - echo POSTGRES_URL=$POSTGRES_URL
-      - echo $POSTGRES_URL # debug
       - atlas schema apply -u $POSTGRES_URL --to $SCHEMA_FILES
       - task: tbls
       - task: sqlboiler
