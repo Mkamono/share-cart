@@ -31,17 +31,12 @@ jobs:
       - name: Download and install Atlas CLI
         run: |
           curl -sSf https://atlasgo.sh | sh -s -- -y
-      - name: task plan
-        id: plan
+      - name: set env
         run: |
-          POSTGRES_USER="$(gcloud secrets versions access latest --secret='supabase_user')"
-          POSTGRES_PASSWORD="$(gcloud secrets versions access latest --secret='supabase_password')"
-          POSTGRES_DB="$(gcloud secrets versions access latest --secret='supabase_db_dev')"
-          POSTGRES_HOST="$(gcloud secrets versions access latest --secret='supabase_host')"
-          POSTGRES_PORT="$(gcloud secrets versions access latest --secret='supabase_port')"
-          export POSTGRES_USER
-          export POSTGRES_PASSWORD
-          export POSTGRES_DB
-          export POSTGRES_HOST
-          export POSTGRES_PORT
-          task plan
+          echo POSTGRES_USER="$(gcloud secrets versions access latest --secret='supabase_user')" >> $GITHUB_ENV
+          echo POSTGRES_PASSWORD="$(gcloud secrets versions access latest --secret='supabase_password')" >> $GITHUB_ENV
+          echo POSTGRES_DB="$(gcloud secrets versions access latest --secret='supabase_db_dev')" >> $GITHUB_ENV
+          echo POSTGRES_HOST="$(gcloud secrets versions access latest --secret='supabase_host')" >> $GITHUB_ENV
+          echo POSTGRES_PORT="$(gcloud secrets versions access latest --secret='supabase_port')" >> $GITHUB_ENV
+      - id: plan
+        run: task plan
