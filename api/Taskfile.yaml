@@ -23,9 +23,7 @@ tasks:
       - ./**/*.go
 
   plan:
-    cmds:
-      - echo $POSTGRES_URL
-      - atlas schema apply -u $POSTGRES_URL --to $SCHEMA_FILES --dry-run
+    cmd: atlas schema apply -u $POSTGRES_URL --to $SCHEMA_FILES --dry-run
 
   apply:
     cmds:
