@@ -44,35 +44,28 @@ jobs:
           export POSTGRES_HOST
           export POSTGRES_PORT
           task plan
-      - name: print result
+      - uses: actions/github-script@v7
+        if: github.event_name == 'pull_request'
         env:
           PLAN: "\n${{ steps.plan.outputs.stdout }}"
-        run: |
-          echo "${{ steps.plan.outputs }}"
-          echo "${{ steps.plan.outcome }}"
-          echo "${{ process.env.PLAN }}"
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const output = `## Atlas Plan 📖\`${{ steps.plan.outcome }}\`
 
-      # - uses: actions/github-script@v7
-      #   if: github.event_name == 'pull_request'
-      #   with:
-      #     github-token: ${{ secrets.GITHUB_TOKEN }}
-      #     script: |
-      #       const output = `## Atlas Plan 📖\`${{ steps.plan.outcome }}\`
+            <details><summary>Show Plan</summary>
 
-      #       <details><summary>Show Plan</summary>
+            \`\`\`\n
+            ${process.env.PLAN}
+            \`\`\`
 
-      #       \`\`\`\n
-      #       ${{ steps.plan.outputs.stdout }}
-      #       test
-      #       \`\`\`
+            </details>
 
-      #       </details>
+            *Pusher: @${{ github.actor }}, Action: \`${{ github.event_name }}\`, Working Directory: \`infra/terraform/remote\`, Workflow: \`${{ github.workflow }}\`*`;
 
-      #       *Pusher: @${{ github.actor }}, Action: \`${{ github.event_name }}\`, Working Directory: \`infra/terraform/remote\`, Workflow: \`${{ github.workflow }}\`*`;
-
-      #       github.rest.issues.createComment({
-      #         issue_number: context.issue.number,
-      #         owner: context.repo.owner,
-      #         repo: context.repo.repo,
-      #         body: output
-      #       })
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: output
+            })
