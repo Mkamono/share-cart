@@ -14,6 +14,7 @@ resource "google_project_iam_member" "gha_wif_sa_iam" {
   for_each = toset([
     "roles/editor",
     "roles/run.admin",
+    "roles/secretmanager.secretAccessor",
   ])
   role   = each.value
   member = "serviceAccount:${google_service_account.gha_wif_sa.email}"
