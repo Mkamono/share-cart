@@ -31,6 +31,7 @@ jobs:
         run: |
           POSTGRES_PORT="$(gcloud secrets versions access latest --secret='supabase_port')"
           export POSTGRES_PORT
+          echo "POSTGRES_PORT=$POSTGRES_PORT"
 
 # export POSTGRES_USER=$(gcloud secrets versions access latest --secret="supabase_user")
 # export POSTGRES_PASSWORD=$(gcloud secrets versions access latest --secret="supabase_password")
