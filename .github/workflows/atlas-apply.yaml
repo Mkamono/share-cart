@@ -29,11 +29,6 @@ jobs:
         run: |
           curl -sSf https://atlasgo.sh | sh -s -- -y
       - uses: actions/setup-go@v5
-      - name: Install tools
-        run: |
-          go install -v github.com/k1LoW/tbls@latest
-          go install -v github.com/volatiletech/sqlboiler/v4@latest
-          go install -v github.com/volatiletech/sqlboiler/v4/drivers/sqlboiler-psql@latest
       - name: task apply
         id: apply
         run: |
@@ -47,6 +42,14 @@ jobs:
           export POSTGRES_DB
           export POSTGRES_HOST
           export POSTGRES_PORT
-          task apply
-      - name: check-diff
-        run: git add . && git diff --cached
+          task apply_ci
+      - name: tbls
+        run: |
+          task tbls
+          git add .
+          git diff --cached --exit-code
+      - name: sqlboiler
+        run: |
+          task sqlboiler
+          git add .
+          git diff --cached --exit-code
