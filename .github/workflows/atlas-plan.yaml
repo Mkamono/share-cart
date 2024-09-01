@@ -45,8 +45,10 @@ jobs:
           export POSTGRES_PORT
           task plan >> plan-result.txt
       - name: echo result
-        run: |
-          cat plan-result.txt
+        id: echo
+        run: cat plan-result.txt
+      - name: echo
+        run: echo ${{ steps.echo.outputs.stdout }}
       # - uses: actions/github-script@v7
       #   if: github.event_name == 'pull_request'
       #   env:
