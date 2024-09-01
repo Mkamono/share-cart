@@ -45,11 +45,14 @@ jobs:
           task apply_ci
       - name: tbls
         run: |
+          go install -v github.com/k1LoW/tbls@latest
           task tbls
           git add .
           git diff --cached --exit-code
       - name: sqlboiler
         run: |
+          go install -v github.com/volatiletech/sqlboiler/v4@latest
+          go install -v github.com/volatiletech/sqlboiler/v4/drivers/sqlboiler-psql@latest
           task sqlboiler
           git add .
           git diff --cached --exit-code
