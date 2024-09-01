@@ -28,7 +28,6 @@ jobs:
       - name: Download and install Atlas CLI
         run: |
           curl -sSf https://atlasgo.sh | sh -s -- -y
-      - uses: actions/setup-go@v5
       - name: set env
         run: |
           echo POSTGRES_USER="$(gcloud secrets versions access latest --secret='supabase_user')" >> $GITHUB_ENV
@@ -40,16 +39,3 @@ jobs:
         id: apply
         run: |
           task apply_ci
-      - name: tbls
-        run: |
-          go install -v github.com/k1LoW/tbls@latest
-          task tbls
-          git add .
-          git diff --cached --exit-code
-      - name: sqlboiler
-        run: |
-          go install -v github.com/volatiletech/sqlboiler/v4@latest
-          go install -v github.com/volatiletech/sqlboiler/v4/drivers/sqlboiler-psql@latest
-          task sqlboiler
-          git add .
-          git diff --cached --exit-code
