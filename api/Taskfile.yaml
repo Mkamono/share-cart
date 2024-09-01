@@ -27,6 +27,7 @@ tasks:
 
   apply:
     cmds:
+      - echo POSTGRES_URL=$POSTGRES_URL
       - echo $POSTGRES_URL # debug
       - atlas schema apply -u $POSTGRES_URL --to $SCHEMA_FILES
       - task: tbls
