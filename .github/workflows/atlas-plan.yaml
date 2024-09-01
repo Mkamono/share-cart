@@ -43,34 +43,4 @@ jobs:
           export POSTGRES_DB
           export POSTGRES_HOST
           export POSTGRES_PORT
-          task plan >> plan-result.txt
-      - name: echo result
-        id: echo
-        run: cat plan-result.txt
-      - name: echo
-        run: echo ${{ steps.echo.outputs.stdout }}
-      # - uses: actions/github-script@v7
-      #   if: github.event_name == 'pull_request'
-      #   env:
-      #     PLAN: $(cat plan-result.txt)
-      #   with:
-      #     github-token: ${{ secrets.GITHUB_TOKEN }}
-      #     script: |
-      #       const output = `## Atlas Plan 📖\`${{ steps.plan.outcome }}\`
-
-      #       <details><summary>Show Plan</summary>
-
-      #       \`\`\`\n
-      #       ${process.env.PLAN}
-      #       \`\`\`
-
-      #       </details>
-
-      #       *Pusher: @${{ github.actor }}, Action: \`${{ github.event_name }}\`, Working Directory: \`infra/terraform/remote\`, Workflow: \`${{ github.workflow }}\`*`;
-
-      #       github.rest.issues.createComment({
-      #         issue_number: context.issue.number,
-      #         owner: context.repo.owner,
-      #         repo: context.repo.repo,
-      #         body: output
-      #       })
+          task plan
