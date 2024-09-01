@@ -6,6 +6,10 @@ terraform {
       source  = "hashicorp/google"
       version = "5.37.0"
     }
+    google-beta = {
+      source  = "hashicorp/google-beta"
+      version = "~> 5.42.0"
+    }
   }
 
   backend "gcs" {
