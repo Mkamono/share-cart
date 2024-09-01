@@ -31,6 +31,10 @@ tasks:
       - task: tbls
       - task: sqlboiler
 
+  apply_ci:
+    cmds:
+      - atlas schema apply -u $POSTGRES_URL --to $SCHEMA_FILES --auto-approve
+
   sqlboiler:
     cmd: sqlboiler psql
 
