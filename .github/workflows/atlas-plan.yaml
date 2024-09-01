@@ -29,7 +29,14 @@ jobs:
         uses: arduino/setup-task@v2
       - name: export variables
         run: |
-          export POSTGRES_PORT=$(gcloud secrets versions access latest --secret="supabase_port")
+          POSTGRES_PORT=$(gcloud secrets versions access latest --secret="supabase_port")
+          export POSTGRES_PORT
+
+# export POSTGRES_USER=$(gcloud secrets versions access latest --secret="supabase_user")
+# export POSTGRES_PASSWORD=$(gcloud secrets versions access latest --secret="supabase_password")
+# export POSTGRES_DB=$(gcloud secrets versions access latest --secret="supabase_db_dev")
+# export POSTGRES_HOST=$(gcloud secrets versions access latest --secret="supabase_host")
+# export POSTGRES_PORT=$(gcloud secrets versions access latest --secret="
 
 # POSTGRES_USER="postgres"
 # POSTGRES_PASSWORD="postgres"
