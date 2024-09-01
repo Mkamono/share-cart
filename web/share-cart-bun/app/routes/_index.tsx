@@ -1,4 +1,23 @@
-import type { MetaFunction } from "@remix-run/node";
+import { type MetaFunction, json } from "@remix-run/node";
+import { useLoaderData } from "@remix-run/react";
+import Login from "~/routes/auth/login";
+import Logout from "~/routes/auth/logout";
+import { authenticator } from "~/service/auth.server";
+import { shareCartClient } from "~/service/client";
+import { config } from "~/service/config.server";
+
+export async function loader({ request }: { request: Request }) {
+  // return redirect($path("/home"));
+  const jwt = await authenticator.isAuthenticated(request);
+  const client = shareCartClient(jwt?.accessToken);
+  const { data } = await client.GET("/test");
+
+  return json({
+    testData: data,
+    config,
+    jwt,
+  });
+}
 
 export const meta: MetaFunction = () => {
   return [
@@ -8,39 +27,31 @@ export const meta: MetaFunction = () => {
 };
 
 export default function Index() {
+  const data = useLoaderData<typeof loader>();
   return (
     <div className="font-sans p-4">
       <h1 className="text-3xl">Welcome to Remix</h1>
       <ul className="list-disc mt-4 pl-6 space-y-2">
         <li>
-          <a
-            className="text-blue-700 underline visited:text-purple-900"
-            target="_blank"
-            href="https://remix.run/start/quickstart"
-            rel="noreferrer"
-          >
-            5m Quick Start
-          </a>
-        </li>
-        <li>
-          <a
-            className="text-blue-700 underline visited:text-purple-900"
-            target="_blank"
-            href="https://remix.run/start/tutorial"
-            rel="noreferrer"
-          >
-            30m Tutorial
-          </a>
-        </li>
-        <li>
-          <a
-            className="text-blue-700 underline visited:text-purple-900"
-            target="_blank"
-            href="https://remix.run/docs"
-            rel="noreferrer"
-          >
-            Remix Docs
-          </a>
+          <p>{data.testData?.message}</p>
+          {data.config.NODE_ENV === "development" && (
+            <p className="text-red-700">You are in development mode</p>
+          )}
+          <Login />
+          <Logout />
+          {data.jwt ? (
+            <div>
+              <p className="text-green-700">You are logged in</p>
+              <p>{data.jwt.profile.id}</p>
+              <p>{data.jwt.profile.displayName}</p>
+              {data.jwt?.profile.emails?.map((email) => (
+                <p key={email.value}>{email.value}</p>
+              ))}
+              <p>{data.jwt.accessToken}</p>
+            </div>
+          ) : (
+            <p className="text-red-700">You are not logged in</p>
+          )}
         </li>
       </ul>
     </div>
