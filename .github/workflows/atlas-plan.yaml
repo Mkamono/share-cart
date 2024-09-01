@@ -32,12 +32,11 @@ jobs:
           curl -sSf https://atlasgo.sh | sh -s -- -y
       - name: task plan
         run: |
-          POSTGRES_USER="$(gcloud secrets versions access latest --secret='supabase_user')" &
-          POSTGRES_PASSWORD="$(gcloud secrets versions access latest --secret='supabase_password')" &
-          POSTGRES_DB="$(gcloud secrets versions access latest --secret='supabase_db_dev')" &
-          POSTGRES_HOST="$(gcloud secrets versions access latest --secret='supabase_host')" &
+          POSTGRES_USER="$(gcloud secrets versions access latest --secret='supabase_user')"
+          POSTGRES_PASSWORD="$(gcloud secrets versions access latest --secret='supabase_password')"
+          POSTGRES_DB="$(gcloud secrets versions access latest --secret='supabase_db_dev')"
+          POSTGRES_HOST="$(gcloud secrets versions access latest --secret='supabase_host')"
           POSTGRES_PORT="$(gcloud secrets versions access latest --secret='supabase_port')"
-          wait
           export POSTGRES_USER
           export POSTGRES_PASSWORD
           export POSTGRES_DB
