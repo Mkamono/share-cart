@@ -29,18 +29,15 @@ jobs:
         uses: arduino/setup-task@v2
       - name: export variables
         run: |
+          POSTGRES_USER="$(gcloud secrets versions access latest --secret='supabase_user')"
+          POSTGRES_PASSWORD="$(gcloud secrets versions access latest --secret='supabase_password')"
+          POSTGRES_DB="$(gcloud secrets versions access latest --secret='supabase_db_dev')"
+          POSTGRES_HOST="$(gcloud secrets versions access latest --secret='supabase_host')"
           POSTGRES_PORT="$(gcloud secrets versions access latest --secret='supabase_port')"
+          export POSTGRES_USER
+          export POSTGRES_PASSWORD
+          export POSTGRES_DB
+          export POSTGRES_HOST
           export POSTGRES_PORT
-          echo "POSTGRES_PORT=$POSTGRES_PORT"
-
-# export POSTGRES_USER=$(gcloud secrets versions access latest --secret="supabase_user")
-# export POSTGRES_PASSWORD=$(gcloud secrets versions access latest --secret="supabase_password")
-# export POSTGRES_DB=$(gcloud secrets versions access latest --secret="supabase_db_dev")
-# export POSTGRES_HOST=$(gcloud secrets versions access latest --secret="supabase_host")
-# export POSTGRES_PORT=$(gcloud secrets versions access latest --secret="
-
-# POSTGRES_USER="postgres"
-# POSTGRES_PASSWORD="postgres"
-# POSTGRES_DB="share_cart"
-# POSTGRES_HOST="db"
-# POSTGRES_PORT="5432"
+      - name: atlas plan
+        run: task plan
