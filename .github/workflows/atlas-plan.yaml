@@ -42,42 +42,42 @@ jobs:
           echo ${{ steps.set-output.outputs.test }}
           echo ${{ steps.set-output.outputs.gh }}
           echo ${{ steps.set-output.outputs.task }}
-      - name: task plan
-        id: plan
-        run: |
-          POSTGRES_USER="$(gcloud secrets versions access latest --secret='supabase_user')"
-          POSTGRES_PASSWORD="$(gcloud secrets versions access latest --secret='supabase_password')"
-          POSTGRES_DB="$(gcloud secrets versions access latest --secret='supabase_db_dev')"
-          POSTGRES_HOST="$(gcloud secrets versions access latest --secret='supabase_host')"
-          POSTGRES_PORT="$(gcloud secrets versions access latest --secret='supabase_port')"
-          export POSTGRES_USER
-          export POSTGRES_PASSWORD
-          export POSTGRES_DB
-          export POSTGRES_HOST
-          export POSTGRES_PORT
-          echo "result=$(task plan)" >> $GITHUB_OUTPUT
-      - uses: actions/github-script@v7
-        if: github.event_name == 'pull_request'
-        env:
-          PLAN: "terraform\n${{ steps.plan.outputs.result }}"
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            const output = `## Atlas Plan 📖\`${{ steps.plan.outcome }}\`
+      # - name: task plan
+      #   id: plan
+      #   run: |
+      #     POSTGRES_USER="$(gcloud secrets versions access latest --secret='supabase_user')"
+      #     POSTGRES_PASSWORD="$(gcloud secrets versions access latest --secret='supabase_password')"
+      #     POSTGRES_DB="$(gcloud secrets versions access latest --secret='supabase_db_dev')"
+      #     POSTGRES_HOST="$(gcloud secrets versions access latest --secret='supabase_host')"
+      #     POSTGRES_PORT="$(gcloud secrets versions access latest --secret='supabase_port')"
+      #     export POSTGRES_USER
+      #     export POSTGRES_PASSWORD
+      #     export POSTGRES_DB
+      #     export POSTGRES_HOST
+      #     export POSTGRES_PORT
+      #     echo "result=$(task plan)" >> $GITHUB_OUTPUT
+      # - uses: actions/github-script@v7
+      #   if: github.event_name == 'pull_request'
+      #   env:
+      #     PLAN: "terraform\n${{ steps.plan.outputs.result }}"
+      #   with:
+      #     github-token: ${{ secrets.GITHUB_TOKEN }}
+      #     script: |
+      #       const output = `## Atlas Plan 📖\`${{ steps.plan.outcome }}\`
 
-            <details><summary>Show Plan</summary>
+      #       <details><summary>Show Plan</summary>
 
-            \`\`\`\n
-            ${process.env.PLAN}
-            \`\`\`
+      #       \`\`\`\n
+      #       ${process.env.PLAN}
+      #       \`\`\`
 
-            </details>
+      #       </details>
 
-            *Pusher: @${{ github.actor }}, Action: \`${{ github.event_name }}\`, Working Directory: \`infra/terraform/remote\`, Workflow: \`${{ github.workflow }}\`*`;
+      #       *Pusher: @${{ github.actor }}, Action: \`${{ github.event_name }}\`, Working Directory: \`infra/terraform/remote\`, Workflow: \`${{ github.workflow }}\`*`;
 
-            github.rest.issues.createComment({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: output
-            })
+      #       github.rest.issues.createComment({
+      #         issue_number: context.issue.number,
+      #         owner: context.repo.owner,
+      #         repo: context.repo.repo,
+      #         body: output
+      #       })
