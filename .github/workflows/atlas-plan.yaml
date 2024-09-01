@@ -36,7 +36,7 @@ jobs:
           echo tests
       - id: echo-output
         run: |
-          echo ${{ steps.set-output.outputs }}
+          echo ${{ steps.set-output.outputs.stdout }}
       # - name: task plan
       #   id: plan
       #   run: |
