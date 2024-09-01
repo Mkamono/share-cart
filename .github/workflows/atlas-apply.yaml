@@ -1,0 +1,52 @@
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - "api/docs/atlas/**"
+      - ".github/workflows/atlas-apply.yaml"
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: api
+    permissions:
+      contents: "read"
+      id-token: "write"
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: "google-github-actions/auth@v2"
+        with:
+          workload_identity_provider: ${{secrets.WIF_PROVIDER_NAME}}
+          service_account: ${{secrets.WIF_SA_EMAIL}}
+      - name: Install Task
+        uses: arduino/setup-task@v2
+      - name: Download and install Atlas CLI
+        run: |
+          curl -sSf https://atlasgo.sh | sh -s -- -y
+      - uses: actions/setup-go@v5
+      - name: Install tools
+        run: |
+          go install -v github.com/k1LoW/tbls@latest
+          go install -v github.com/volatiletech/sqlboiler/v4@latest
+          go install -v github.com/volatiletech/sqlboiler/v4/drivers/sqlboiler-psql@latest
+      - name: task apply
+        id: apply
+        run: |
+          POSTGRES_USER="$(gcloud secrets versions access latest --secret='supabase_user')"
+          POSTGRES_PASSWORD="$(gcloud secrets versions access latest --secret='supabase_password')"
+          POSTGRES_DB="$(gcloud secrets versions access latest --secret='supabase_db_dev')"
+          POSTGRES_HOST="$(gcloud secrets versions access latest --secret='supabase_host')"
+          POSTGRES_PORT="$(gcloud secrets versions access latest --secret='supabase_port')"
+          export POSTGRES_USER
+          export POSTGRES_PASSWORD
+          export POSTGRES_DB
+          export POSTGRES_HOST
+          export POSTGRES_PORT
+          task apply
+      - name: check-diff
+        run: git add . && git diff --cached --exit-code
