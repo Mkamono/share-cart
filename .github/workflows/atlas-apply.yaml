@@ -35,7 +35,6 @@ jobs:
           echo POSTGRES_DB="$(gcloud secrets versions access latest --secret='supabase_db_dev')" >> $GITHUB_ENV
           echo POSTGRES_HOST="$(gcloud secrets versions access latest --secret='supabase_host')" >> $GITHUB_ENV
           echo POSTGRES_PORT="$(gcloud secrets versions access latest --secret='supabase_port')" >> $GITHUB_ENV
-      - name: task apply
-        id: apply
+      - id: apply
         run: |
           task apply_ci
