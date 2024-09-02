@@ -1,39 +1,37 @@
-FROM oven/bun:1.1.26 AS local
+# ベースイメージ
+FROM oven/bun:1.1.26 AS base
 
 ENV TZ=Asia/Tokyo
 WORKDIR /app/share-cart
 
-RUN apt-get update && apt-get install -y \
-    graphviz
+# ローカル開発
+FROM base AS local
 
-COPY share-cart/yarn.lock share-cart/package.json ./
+COPY share-cart/bun.lockb share-cart/package.json ./
 RUN bun install
 
-FROM node:22-slim AS builder
+# ビルダー
+FROM base AS builder
 
-ENV TZ=Asia/Tokyo
-WORKDIR /app/share-cart
+COPY share-cart/ .
+RUN bun install --frozen-lockfile
+RUN bun run build
 
-COPY ./share-cart/ .
-RUN yarn install && yarn build
+FROM base AS production-deps
 
-FROM node:22-slim AS production-deps
+COPY share-cart/bun.lockb share-cart/package.json ./
+RUN bun install --production --frozen-lockfile
 
-ENV NODE_ENV=production
-ENV TZ=Asia/Tokyo
-WORKDIR /app/share-cart
+# 本番環境
+FROM oven/bun:1.1.26-slim AS production
 
-COPY ./share-cart/package.json .
-RUN yarn install --production
-
-FROM node:22-slim AS production
-
-ENV NODE_ENV=production
 ENV TZ=Asia/Tokyo
 WORKDIR /app/share-cart
 
 COPY --from=builder /app/share-cart/build /app/share-cart/build
-COPY --from=production-deps /app/share-cart/package.json /app/share-cart/package.json
+COPY --from=builder /app/share-cart/package.json /app/share-cart/package.json
 COPY --from=production-deps /app/share-cart/node_modules /app/share-cart/node_modules
 
-CMD ["yarn", "start"]
+USER bun
+
+CMD ["bun", "run", "start"]

@@ -10,14 +10,14 @@ tasks:
       - dep_graph
 
   generate:
-    cmd: bunx -y openapi-typescript ../api/docs/openapi/schema/root.yaml -o share-cart-bun/app/models/schema.d.ts
+    cmd: bunx -y openapi-typescript ../api/docs/openapi/schema/root.yaml -o share-cart/app/models/schema.d.ts
     sources:
       - "../api/docs/openapi/schema/root.yaml"
     generates:
-      - "share-cart-bun/app/models/schema.d.ts"
+      - "share-cart/app/models/schema.d.ts"
 
   format:
-    dir: share-cart-bun/app
+    dir: share-cart/app
     cmds:
       - bunx biome format --write
     sources:
@@ -32,10 +32,17 @@ tasks:
       - ".env.example"
 
   dep_graph:
-    dir: share-cart-bun
+    deps:
+      - install-graphviz
+    dir: share-cart
     cmd: bunx depcruise app --include-only "^app" --output-type dot | dot -Tpng > dependency-graph.png # cspell: disable-line
     sources:
       - "app/**/*.ts"
       - "app/**/*.tsx"
     generates:
       - "dependency-graph.png"
+
+  install-graphviz:
+    cmd: apt update && apt install -y graphviz
+    status:
+      - dot -V
