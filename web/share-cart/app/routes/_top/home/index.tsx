@@ -1,4 +1,3 @@
-import { Box, Flex } from "@radix-ui/themes";
 import { json } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import { authenticator } from "~/service/auth.server";
@@ -15,19 +14,22 @@ export async function loader({ request }: { request: Request }) {
 const testImageURL =
 	"https://images.unsplash.com/photo-1617050318658-a9a3175e34cb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80";
 
+
 export const Home = () => {
 	const { markets } = useLoaderData<typeof loader>();
 	return (
-		<Flex gap="2" wrap="wrap" pb="9">
-			{markets?.map((market) => (
-				<Box key={market.id} className="flex-grow w-28">
-					<MarketCard
-						key={market.id}
-						market={{ ...market, imageURL: testImageURL }}
-					/>
-				</Box>
-			))}
-		</Flex>
+		<div>
+			<h2 className="text-2xl font-bold tracking-tight text-gray-900">
+				Your Markets
+			</h2>
+			<div className="grid grid-cols-2 gap-4">
+				{markets?.map((market) => (
+					<div key={market.id} className="rounded-md">
+						<MarketCard market={{ ...market, imageURL: testImageURL }} />
+					</div>
+				))}
+			</div>
+		</div>
 	);
 };
 

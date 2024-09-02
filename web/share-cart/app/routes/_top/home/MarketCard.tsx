@@ -1,5 +1,3 @@
-import { Avatar, Card, Inset, Strong, Text } from "@radix-ui/themes";
-
 type MarketCardProps = {
 	market: {
 		id: number;
@@ -8,30 +6,23 @@ type MarketCardProps = {
 		description: string;
 	};
 };
-
-const noImageURL =
-	"https://placehold.jp/eeeeee/cccccc/240x140.png?text=No%20Image";
+const defaultImageURL = "https://cdn.pixabay.com/photo/2021/01/01/12/44/concert-5878452_640.jpg";
 
 export const MarketCard = (props: MarketCardProps) => {
 	return (
-		<Card size="2">
-			<Inset clip="padding-box" side="top" pb="current" className="h-44">
-				<Avatar
-					src={props.market.imageURL}
-					alt={props.market.name}
-					fallback={
-						<img
-							src={noImageURL}
-							alt={props.market.name}
-							className="w-full h-full object-cover"
-						/>
-					}
-					className="w-full h-full object-cover"
-				/>
-			</Inset>
-			<Text as="p" size="1">
-				<Strong>{props.market.name}</Strong>
-			</Text>
-		</Card>
+		<div>
+			<img
+				src={props.market.imageURL}
+				className="object-cover w-full h-32"
+				alt="market"
+				onError={(e) => {
+					(e.target as HTMLImageElement).src =
+						defaultImageURL;
+				}}
+			/>
+			<p>
+				<strong>{props.market.name}</strong>
+			</p>
+		</div>
 	);
 };

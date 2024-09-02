@@ -22,6 +22,7 @@ services:
       context: ./web
       dockerfile: Dockerfile
       target: local
+      # target: production
     volumes:
       - ./web/:/app/
       - share-cart-node-modules:/app/share-cart/node_modules
@@ -29,10 +30,9 @@ services:
       - "5173:5173"
     environment:
       API_HOST: http://api:8081
+      PORT: 5173
     env_file:
       - ./web/.env
-    working_dir: /app/share-cart
-    command: ["yarn", "dev"]
   db:
     image: postgres:15
     environment:

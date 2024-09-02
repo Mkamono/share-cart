@@ -1,6 +1,5 @@
-import { type MetaFunction, json, redirect } from "@remix-run/node";
+import { type MetaFunction, json } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
-import { $path } from "remix-routes";
 import Login from "~/routes/auth/login";
 import Logout from "~/routes/auth/logout";
 import { authenticator } from "~/service/auth.server";
@@ -8,7 +7,7 @@ import { shareCartClient } from "~/service/client";
 import { config } from "~/service/config.server";
 
 export async function loader({ request }: { request: Request }) {
-	return redirect($path("/home"));
+	// return redirect($path("/home"));
 	const jwt = await authenticator.isAuthenticated(request);
 	const client = shareCartClient(jwt?.accessToken);
 	const { data } = await client.GET("/test");

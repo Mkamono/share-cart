@@ -1,5 +1,3 @@
-import { Theme } from "@radix-ui/themes";
-import "@radix-ui/themes/styles.css";
 import {
 	Links,
 	Meta,
@@ -11,7 +9,7 @@ import "./tailwind.css";
 
 export function Layout({ children }: { children: React.ReactNode }) {
 	return (
-		<html lang="ja">
+		<html lang="en">
 			<head>
 				<meta charSet="utf-8" />
 				<meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -19,11 +17,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
 				<Links />
 			</head>
 			<body>
-				<Theme>
-					{children}
-					<ScrollRestoration />
-					<Scripts />
-				</Theme>
+				{children}
+				<ScrollRestoration />
+				<Scripts />
 			</body>
 		</html>
 	);
