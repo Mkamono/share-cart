@@ -1,15 +1,13 @@
-FROM node:22-slim AS local
+FROM oven/bun:1.1.26 AS local
 
 ENV TZ=Asia/Tokyo
 WORKDIR /app/share-cart
-
-RUN yarn global add @biomejs/biome
 
 RUN apt-get update && apt-get install -y \
     graphviz
 
 COPY share-cart/yarn.lock share-cart/package.json ./
-RUN yarn install
+RUN bun install
 
 FROM node:22-slim AS builder
 

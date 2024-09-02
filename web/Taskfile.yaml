@@ -4,36 +4,36 @@ interval: 50ms
 
 tasks:
   dev:
-    cmds:
-      - task: generate
-      - task: format
-      - task: gen_env
-      - task: dep_graph
+    deps:
+      - generate
+      - gen_env
+      - dep_graph
 
   generate:
-    cmd: npx -y openapi-typescript ../api/docs/openapi/schema/root.yaml -o share-cart/app/models/schema.d.ts
+    cmd: bunx -y openapi-typescript ../api/docs/openapi/schema/root.yaml -o share-cart-bun/app/models/schema.d.ts
     sources:
       - "../api/docs/openapi/schema/root.yaml"
     generates:
-      - "share-cart/app/models/schema.d.ts"
+      - "share-cart-bun/app/models/schema.d.ts"
 
   format:
+    dir: share-cart-bun/app
     cmds:
-      - biome format --write
+      - bunx biome format --write
     sources:
       - "**/*.tsx"
       - "**/*.ts"
 
   gen_env:
-    cmd: npx gen-env-template .env .env.example
+    cmd: bunx gen-env-template .env .env.example
     sources:
       - ".env"
     generates:
       - ".env.example"
 
   dep_graph:
-    dir: share-cart
-    cmd: npx depcruise app --include-only "^app" --output-type dot | dot -Tpng > dependency-graph.png # cspell: disable-line
+    dir: share-cart-bun
+    cmd: bunx depcruise app --include-only "^app" --output-type dot | dot -Tpng > dependency-graph.png # cspell: disable-line
     sources:
       - "app/**/*.ts"
       - "app/**/*.tsx"
