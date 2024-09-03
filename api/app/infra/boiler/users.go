@@ -23,7 +23,7 @@ import (
 
 // User is an object representing the database table.
 type User struct {
-	ID        int       `boil:"id" json:"id" toml:"id" yaml:"id"`
+	ID        string    `boil:"id" json:"id" toml:"id" yaml:"id"`
 	Name      string    `boil:"name" json:"name" toml:"name" yaml:"name"`
 	CreatedAt time.Time `boil:"created_at" json:"created_at" toml:"created_at" yaml:"created_at"`
 	UpdatedAt time.Time `boil:"updated_at" json:"updated_at" toml:"updated_at" yaml:"updated_at"`
@@ -59,12 +59,12 @@ var UserTableColumns = struct {
 // Generated where
 
 var UserWhere = struct {
-	ID        whereHelperint
+	ID        whereHelperstring
 	Name      whereHelperstring
 	CreatedAt whereHelpertime_Time
 	UpdatedAt whereHelpertime_Time
 }{
-	ID:        whereHelperint{field: "\"users\".\"id\""},
+	ID:        whereHelperstring{field: "\"users\".\"id\""},
 	Name:      whereHelperstring{field: "\"users\".\"name\""},
 	CreatedAt: whereHelpertime_Time{field: "\"users\".\"created_at\""},
 	UpdatedAt: whereHelpertime_Time{field: "\"users\".\"updated_at\""},
@@ -99,10 +99,10 @@ type userL struct{}
 
 var (
 	userAllColumns            = []string{"id", "name", "created_at", "updated_at"}
-	userColumnsWithoutDefault = []string{"name", "created_at", "updated_at"}
-	userColumnsWithDefault    = []string{"id"}
+	userColumnsWithoutDefault = []string{"id", "name", "created_at", "updated_at"}
+	userColumnsWithDefault    = []string{}
 	userPrimaryKeyColumns     = []string{"id"}
-	userGeneratedColumns      = []string{"id"}
+	userGeneratedColumns      = []string{}
 )
 
 type (
@@ -603,7 +603,7 @@ func Users(mods ...qm.QueryMod) userQuery {
 
 // FindUser retrieves a single record by ID with an executor.
 // If selectCols is empty Find will return all columns.
-func FindUser(ctx context.Context, exec boil.ContextExecutor, iD int, selectCols ...string) (*User, error) {
+func FindUser(ctx context.Context, exec boil.ContextExecutor, iD string, selectCols ...string) (*User, error) {
 	userObj := &User{}
 
 	sel := "*"
@@ -668,7 +668,6 @@ func (o *User) Insert(ctx context.Context, exec boil.ContextExecutor, columns bo
 			userColumnsWithoutDefault,
 			nzDefaults,
 		)
-		wl = strmangle.SetComplement(wl, userGeneratedColumns)
 
 		cache.valueMapping, err = queries.BindMapping(userType, userMapping, wl)
 		if err != nil {
@@ -745,7 +744,6 @@ func (o *User) Update(ctx context.Context, exec boil.ContextExecutor, columns bo
 			userAllColumns,
 			userPrimaryKeyColumns,
 		)
-		wl = strmangle.SetComplement(wl, userGeneratedColumns)
 
 		if !columns.IsWhitelist() {
 			wl = strmangle.SetComplement(wl, []string{"created_at"})
@@ -923,9 +921,6 @@ func (o *User) Upsert(ctx context.Context, exec boil.ContextExecutor, updateOnCo
 			userAllColumns,
 			userPrimaryKeyColumns,
 		)
-
-		insert = strmangle.SetComplement(insert, userGeneratedColumns)
-		update = strmangle.SetComplement(update, userGeneratedColumns)
 
 		if updateOnConflict && len(update) == 0 {
 			return errors.New("boiler: unable to upsert users, could not build update column list")
@@ -1137,7 +1132,7 @@ func (o *UserSlice) ReloadAll(ctx context.Context, exec boil.ContextExecutor) er
 }
 
 // UserExists checks if the User row exists.
-func UserExists(ctx context.Context, exec boil.ContextExecutor, iD int) (bool, error) {
+func UserExists(ctx context.Context, exec boil.ContextExecutor, iD string) (bool, error) {
 	var exists bool
 	sql := "select exists(select 1 from \"users\" where \"id\"=$1 limit 1)"
 

@@ -46,13 +46,13 @@ func Test_getMarketsUsecase_Run(t *testing.T) {
 			mockExpect: func(args args, m mocks) {
 				markets := []*dbEntity.Market{{
 					Market: boiler.Market{
-						ID:          1,
+						ID:          "market1",
 						Name:        "market name",
 						Description: "market description",
 					},
 				}, {
 					Market: boiler.Market{
-						ID:          2,
+						ID:          "market2",
 						Name:        "market name2",
 						Description: "market description2",
 					},
@@ -62,13 +62,13 @@ func Test_getMarketsUsecase_Run(t *testing.T) {
 			},
 			want: []*dbEntity.Market{{
 				Market: boiler.Market{
-					ID:          1,
+					ID:          "market1",
 					Name:        "market name",
 					Description: "market description",
 				},
 			}, {
 				Market: boiler.Market{
-					ID:          2,
+					ID:          "market2",
 					Name:        "market name2",
 					Description: "market description2",
 				},

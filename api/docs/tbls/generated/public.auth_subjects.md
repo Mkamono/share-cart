@@ -6,8 +6,8 @@
 
 | # | Name       | Type                     | Default | Nullable | Children | Parents                         | Comment |
 | - | ---------- | ------------------------ | ------- | -------- | -------- | ------------------------------- | ------- |
-| 1 | id         | integer                  |         | false    |          |                                 |         |
-| 2 | user_id    | integer                  |         | false    |          | [public.users](public.users.md) |         |
+| 1 | id         | uuid                     |         | false    |          |                                 |         |
+| 2 | user_id    | uuid                     |         | false    |          | [public.users](public.users.md) |         |
 | 3 | subject    | text                     |         | false    |          |                                 |         |
 | 4 | created_at | timestamp with time zone |         | false    |          |                                 |         |
 | 5 | updated_at | timestamp with time zone |         | false    |          |                                 |         |

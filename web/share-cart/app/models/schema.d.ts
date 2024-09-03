@@ -95,8 +95,11 @@ export type webhooks = Record<string, never>;
 export interface components {
     schemas: {
         market: {
-            /** @example 1 */
-            id: number;
+            /**
+             * @description The market ID(uuid).
+             * @example xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+             */
+            id: string;
             /** @example market_name */
             name: string;
             /** @example market_description */

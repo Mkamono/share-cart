@@ -33,8 +33,9 @@ components:
       type: object
       properties:
         id:
-          type: integer
-          example: 1
+          type: string
+          description: The market ID(uuid).
+          example: "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
         name:
           type: string
           example: "market_name"

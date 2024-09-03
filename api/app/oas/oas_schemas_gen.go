@@ -26,13 +26,14 @@ func (s *Bearer) SetToken(val string) {
 
 // Ref: #/components/schemas/market
 type Market struct {
-	ID          int    `json:"id"`
+	// The market ID(uuid).
+	ID          string `json:"id"`
 	Name        string `json:"name"`
 	Description string `json:"description"`
 }
 
 // GetID returns the value of ID.
-func (s *Market) GetID() int {
+func (s *Market) GetID() string {
 	return s.ID
 }
 
@@ -47,7 +48,7 @@ func (s *Market) GetDescription() string {
 }
 
 // SetID sets the value of ID.
-func (s *Market) SetID(val int) {
+func (s *Market) SetID(val string) {
 	s.ID = val
 }
 

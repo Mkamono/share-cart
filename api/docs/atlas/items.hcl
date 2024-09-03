@@ -2,10 +2,7 @@ table "items" {
   schema = schema.public
   column "id" {
     null = false
-    type = integer
-    identity {
-      generated = ALWAYS
-    }
+    type = uuid
   }
   primary_key {
     columns = [column.id]
@@ -13,7 +10,7 @@ table "items" {
 
   column "market_id" {
     null = false
-    type = integer
+    type = uuid
   }
   foreign_key "items_market_id_fk" {
     columns     = [column.market_id]

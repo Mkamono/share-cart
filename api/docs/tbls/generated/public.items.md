@@ -6,8 +6,8 @@
 
 | # | Name       | Type                     | Default | Nullable | Children | Parents                             | Comment |
 | - | ---------- | ------------------------ | ------- | -------- | -------- | ----------------------------------- | ------- |
-| 1 | id         | integer                  |         | false    |          |                                     |         |
-| 2 | market_id  | integer                  |         | false    |          | [public.markets](public.markets.md) |         |
+| 1 | id         | uuid                     |         | false    |          |                                     |         |
+| 2 | market_id  | uuid                     |         | false    |          | [public.markets](public.markets.md) |         |
 | 3 | name       | text                     |         | false    |          |                                     |         |
 | 4 | price      | numeric                  |         | false    |          |                                     |         |
 | 5 | created_at | timestamp with time zone |         | false    |          |                                     |         |

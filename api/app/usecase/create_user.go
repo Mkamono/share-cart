@@ -41,7 +41,7 @@ func (u *createUserUsecase) Run(ctx context.Context, name string, sub string) er
 			return err
 		}
 		slog.InfoContext(ctx, "Repo: Success to create user", "user", struct {
-			ID   int
+			ID   string
 			Name string
 		}{
 			ID:   user.ID,

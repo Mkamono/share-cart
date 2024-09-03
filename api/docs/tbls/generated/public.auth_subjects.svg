@@ -19,10 +19,10 @@
 <text text-anchor="start" x="249.9464" y="-485.3" font-family="Arial" font-size="14.00" fill="#666666">[BASE TABLE]</text>
 <polygon fill="none" stroke="#000000" points="46,-442.5 46,-472.5 350,-472.5 350,-442.5 46,-442.5"/>
 <text text-anchor="start" x="53" y="-453.9" font-family="Arial" font-size="14.00" fill="#000000">id </text>
-<text text-anchor="start" x="67.7798" y="-453.9" font-family="Arial" font-size="14.00" fill="#666666">[integer]</text>
+<text text-anchor="start" x="67.7798" y="-453.9" font-family="Arial" font-size="14.00" fill="#666666">[uuid]</text>
 <polygon fill="none" stroke="#000000" points="46,-412.5 46,-442.5 350,-442.5 350,-412.5 46,-412.5"/>
 <text text-anchor="start" x="53" y="-423.9" font-family="Arial" font-size="14.00" fill="#000000">user_id </text>
-<text text-anchor="start" x="102.7882" y="-423.9" font-family="Arial" font-size="14.00" fill="#666666">[integer]</text>
+<text text-anchor="start" x="102.7882" y="-423.9" font-family="Arial" font-size="14.00" fill="#666666">[uuid]</text>
 <polygon fill="none" stroke="#000000" points="46,-382.5 46,-412.5 350,-412.5 350,-382.5 46,-382.5"/>
 <text text-anchor="start" x="53" y="-393.9" font-family="Arial" font-size="14.00" fill="#000000">subject </text>
 <text text-anchor="start" x="101.2356" y="-393.9" font-family="Arial" font-size="14.00" fill="#666666">[text]</text>
@@ -44,7 +44,7 @@
 <text text-anchor="start" x="215.9277" y="-175.3" font-family="Arial" font-size="14.00" fill="#666666">[BASE TABLE]</text>
 <polygon fill="none" stroke="#000000" points="56,-132.5 56,-162.5 339,-162.5 339,-132.5 56,-132.5"/>
 <text text-anchor="start" x="63" y="-143.9" font-family="Arial" font-size="14.00" fill="#000000">id    </text>
-<text text-anchor="start" x="108.094" y="-143.9" font-family="Arial" font-size="14.00" fill="#666666">[integer]</text>
+<text text-anchor="start" x="108.094" y="-143.9" font-family="Arial" font-size="14.00" fill="#666666">[uuid]</text>
 <polygon fill="none" stroke="#000000" points="56,-102.5 56,-132.5 339,-132.5 339,-102.5 56,-102.5"/>
 <text text-anchor="start" x="63" y="-113.9" font-family="Arial" font-size="14.00" fill="#000000">name    </text>
 <text text-anchor="start" x="132.2132" y="-113.9" font-family="Arial" font-size="14.00" fill="#666666">[text]</text>
