@@ -19,19 +19,19 @@
 <text text-anchor="start" x="215.9169" y="-208.3" font-family="Arial" font-size="14.00" fill="#666666">[BASE TABLE]</text>
 <polygon fill="none" stroke="#000000" points="58.992,-165.5 58.992,-195.5 315.992,-195.5 315.992,-165.5 58.992,-165.5"/>
 <text text-anchor="start" x="65.992" y="-176.9" font-family="Arial" font-size="14.00" fill="#000000">id </text>
-<text text-anchor="start" x="80.7718" y="-176.9" font-family="Arial" font-size="14.00" fill="#666666">[integer]</text>
+<text text-anchor="start" x="80.7718" y="-176.9" font-family="Arial" font-size="14.00" fill="#666666">[uuid]</text>
 <polygon fill="none" stroke="#000000" points="58.992,-135.5 58.992,-165.5 315.992,-165.5 315.992,-135.5 58.992,-135.5"/>
-<text text-anchor="start" x="65.992" y="-146.9" font-family="Arial" font-size="14.00" fill="#000000">description </text>
-<text text-anchor="start" x="137.56" y="-146.9" font-family="Arial" font-size="14.00" fill="#666666">[text]</text>
+<text text-anchor="start" x="65.992" y="-146.9" font-family="Arial" font-size="14.00" fill="#000000">name </text>
+<text text-anchor="start" x="104.891" y="-146.9" font-family="Arial" font-size="14.00" fill="#666666">[text]</text>
 <polygon fill="none" stroke="#000000" points="58.992,-105.5 58.992,-135.5 315.992,-135.5 315.992,-105.5 58.992,-105.5"/>
-<text text-anchor="start" x="65.992" y="-116.9" font-family="Arial" font-size="14.00" fill="#000000">created_at </text>
-<text text-anchor="start" x="136.02" y="-116.9" font-family="Arial" font-size="14.00" fill="#666666">[timestamp with time zone]</text>
+<text text-anchor="start" x="65.992" y="-116.9" font-family="Arial" font-size="14.00" fill="#000000">description </text>
+<text text-anchor="start" x="137.56" y="-116.9" font-family="Arial" font-size="14.00" fill="#666666">[text]</text>
 <polygon fill="none" stroke="#000000" points="58.992,-75.5 58.992,-105.5 315.992,-105.5 315.992,-75.5 58.992,-75.5"/>
-<text text-anchor="start" x="65.992" y="-86.9" font-family="Arial" font-size="14.00" fill="#000000">updated_at </text>
-<text text-anchor="start" x="139.9246" y="-86.9" font-family="Arial" font-size="14.00" fill="#666666">[timestamp with time zone]</text>
+<text text-anchor="start" x="65.992" y="-86.9" font-family="Arial" font-size="14.00" fill="#000000">created_at </text>
+<text text-anchor="start" x="136.02" y="-86.9" font-family="Arial" font-size="14.00" fill="#666666">[timestamp with time zone]</text>
 <polygon fill="none" stroke="#000000" points="58.992,-45.5 58.992,-75.5 315.992,-75.5 315.992,-45.5 58.992,-45.5"/>
-<text text-anchor="start" x="65.992" y="-56.9" font-family="Arial" font-size="14.00" fill="#000000">name </text>
-<text text-anchor="start" x="104.891" y="-56.9" font-family="Arial" font-size="14.00" fill="#666666">[text]</text>
+<text text-anchor="start" x="65.992" y="-56.9" font-family="Arial" font-size="14.00" fill="#000000">updated_at </text>
+<text text-anchor="start" x="139.9246" y="-56.9" font-family="Arial" font-size="14.00" fill="#666666">[timestamp with time zone]</text>
 <polygon fill="none" stroke="#000000" stroke-width="3" points="56.992,-44.5 56.992,-232.5 316.992,-232.5 316.992,-44.5 56.992,-44.5"/>
 </g>
 <!-- public.items -->
@@ -44,10 +44,10 @@
 <text text-anchor="start" x="205.4148" y="-548.3" font-family="Arial" font-size="14.00" fill="#666666">[BASE TABLE]</text>
 <polygon fill="none" stroke="#000000" points="45.992,-505.5 45.992,-535.5 328.992,-535.5 328.992,-505.5 45.992,-505.5"/>
 <text text-anchor="start" x="52.992" y="-516.9" font-family="Arial" font-size="14.00" fill="#000000">id    </text>
-<text text-anchor="start" x="98.086" y="-516.9" font-family="Arial" font-size="14.00" fill="#666666">[integer]</text>
+<text text-anchor="start" x="98.086" y="-516.9" font-family="Arial" font-size="14.00" fill="#666666">[uuid]</text>
 <polygon fill="none" stroke="#000000" points="45.992,-475.5 45.992,-505.5 328.992,-505.5 328.992,-475.5 45.992,-475.5"/>
 <text text-anchor="start" x="52.992" y="-486.9" font-family="Arial" font-size="14.00" fill="#000000">market_id    </text>
-<text text-anchor="start" x="148.6456" y="-486.9" font-family="Arial" font-size="14.00" fill="#666666">[integer]</text>
+<text text-anchor="start" x="148.6456" y="-486.9" font-family="Arial" font-size="14.00" fill="#666666">[uuid]</text>
 <polygon fill="none" stroke="#000000" points="45.992,-445.5 45.992,-475.5 328.992,-475.5 328.992,-445.5 45.992,-445.5"/>
 <text text-anchor="start" x="52.992" y="-456.9" font-family="Arial" font-size="14.00" fill="#000000">name    </text>
 <text text-anchor="start" x="122.2052" y="-456.9" font-family="Arial" font-size="14.00" fill="#666666">[text]</text>

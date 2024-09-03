@@ -6,7 +6,7 @@
 
 | # | Name       | Type                     | Default | Nullable | Children                                        | Parents | Comment |
 | - | ---------- | ------------------------ | ------- | -------- | ----------------------------------------------- | ------- | ------- |
-| 1 | id         | integer                  |         | false    | [public.auth_subjects](public.auth_subjects.md) |         |         |
+| 1 | id         | uuid                     |         | false    | [public.auth_subjects](public.auth_subjects.md) |         |         |
 | 2 | name       | text                     |         | false    |                                                 |         |         |
 | 3 | created_at | timestamp with time zone |         | false    |                                                 |         |         |
 | 4 | updated_at | timestamp with time zone |         | false    |                                                 |         |         |

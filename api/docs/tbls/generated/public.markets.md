@@ -6,11 +6,11 @@
 
 | # | Name        | Type                     | Default | Nullable | Children                        | Parents | Comment |
 | - | ----------- | ------------------------ | ------- | -------- | ------------------------------- | ------- | ------- |
-| 1 | id          | integer                  |         | false    | [public.items](public.items.md) |         |         |
-| 2 | description | text                     |         | false    |                                 |         |         |
-| 3 | created_at  | timestamp with time zone |         | false    |                                 |         |         |
-| 4 | updated_at  | timestamp with time zone |         | false    |                                 |         |         |
-| 5 | name        | text                     |         | false    |                                 |         |         |
+| 1 | id          | uuid                     |         | false    | [public.items](public.items.md) |         |         |
+| 2 | name        | text                     |         | false    |                                 |         |         |
+| 3 | description | text                     |         | false    |                                 |         |         |
+| 4 | created_at  | timestamp with time zone |         | false    |                                 |         |         |
+| 5 | updated_at  | timestamp with time zone |         | false    |                                 |         |         |
 
 ## Constraints
 

@@ -23,8 +23,8 @@ import (
 
 // AuthSubject is an object representing the database table.
 type AuthSubject struct {
-	ID        int       `boil:"id" json:"id" toml:"id" yaml:"id"`
-	UserID    int       `boil:"user_id" json:"user_id" toml:"user_id" yaml:"user_id"`
+	ID        string    `boil:"id" json:"id" toml:"id" yaml:"id"`
+	UserID    string    `boil:"user_id" json:"user_id" toml:"user_id" yaml:"user_id"`
 	Subject   string    `boil:"subject" json:"subject" toml:"subject" yaml:"subject"`
 	CreatedAt time.Time `boil:"created_at" json:"created_at" toml:"created_at" yaml:"created_at"`
 	UpdatedAt time.Time `boil:"updated_at" json:"updated_at" toml:"updated_at" yaml:"updated_at"`
@@ -62,29 +62,6 @@ var AuthSubjectTableColumns = struct {
 }
 
 // Generated where
-
-type whereHelperint struct{ field string }
-
-func (w whereHelperint) EQ(x int) qm.QueryMod  { return qmhelper.Where(w.field, qmhelper.EQ, x) }
-func (w whereHelperint) NEQ(x int) qm.QueryMod { return qmhelper.Where(w.field, qmhelper.NEQ, x) }
-func (w whereHelperint) LT(x int) qm.QueryMod  { return qmhelper.Where(w.field, qmhelper.LT, x) }
-func (w whereHelperint) LTE(x int) qm.QueryMod { return qmhelper.Where(w.field, qmhelper.LTE, x) }
-func (w whereHelperint) GT(x int) qm.QueryMod  { return qmhelper.Where(w.field, qmhelper.GT, x) }
-func (w whereHelperint) GTE(x int) qm.QueryMod { return qmhelper.Where(w.field, qmhelper.GTE, x) }
-func (w whereHelperint) IN(slice []int) qm.QueryMod {
-	values := make([]interface{}, 0, len(slice))
-	for _, value := range slice {
-		values = append(values, value)
-	}
-	return qm.WhereIn(fmt.Sprintf("%s IN ?", w.field), values...)
-}
-func (w whereHelperint) NIN(slice []int) qm.QueryMod {
-	values := make([]interface{}, 0, len(slice))
-	for _, value := range slice {
-		values = append(values, value)
-	}
-	return qm.WhereNotIn(fmt.Sprintf("%s NOT IN ?", w.field), values...)
-}
 
 type whereHelperstring struct{ field string }
 
@@ -135,14 +112,14 @@ func (w whereHelpertime_Time) GTE(x time.Time) qm.QueryMod {
 }
 
 var AuthSubjectWhere = struct {
-	ID        whereHelperint
-	UserID    whereHelperint
+	ID        whereHelperstring
+	UserID    whereHelperstring
 	Subject   whereHelperstring
 	CreatedAt whereHelpertime_Time
 	UpdatedAt whereHelpertime_Time
 }{
-	ID:        whereHelperint{field: "\"auth_subjects\".\"id\""},
-	UserID:    whereHelperint{field: "\"auth_subjects\".\"user_id\""},
+	ID:        whereHelperstring{field: "\"auth_subjects\".\"id\""},
+	UserID:    whereHelperstring{field: "\"auth_subjects\".\"user_id\""},
 	Subject:   whereHelperstring{field: "\"auth_subjects\".\"subject\""},
 	CreatedAt: whereHelpertime_Time{field: "\"auth_subjects\".\"created_at\""},
 	UpdatedAt: whereHelpertime_Time{field: "\"auth_subjects\".\"updated_at\""},
@@ -177,10 +154,10 @@ type authSubjectL struct{}
 
 var (
 	authSubjectAllColumns            = []string{"id", "user_id", "subject", "created_at", "updated_at"}
-	authSubjectColumnsWithoutDefault = []string{"user_id", "subject", "created_at", "updated_at"}
-	authSubjectColumnsWithDefault    = []string{"id"}
+	authSubjectColumnsWithoutDefault = []string{"id", "user_id", "subject", "created_at", "updated_at"}
+	authSubjectColumnsWithDefault    = []string{}
 	authSubjectPrimaryKeyColumns     = []string{"id"}
-	authSubjectGeneratedColumns      = []string{"id"}
+	authSubjectGeneratedColumns      = []string{}
 )
 
 type (
@@ -679,7 +656,7 @@ func AuthSubjects(mods ...qm.QueryMod) authSubjectQuery {
 
 // FindAuthSubject retrieves a single record by ID with an executor.
 // If selectCols is empty Find will return all columns.
-func FindAuthSubject(ctx context.Context, exec boil.ContextExecutor, iD int, selectCols ...string) (*AuthSubject, error) {
+func FindAuthSubject(ctx context.Context, exec boil.ContextExecutor, iD string, selectCols ...string) (*AuthSubject, error) {
 	authSubjectObj := &AuthSubject{}
 
 	sel := "*"
@@ -744,7 +721,6 @@ func (o *AuthSubject) Insert(ctx context.Context, exec boil.ContextExecutor, col
 			authSubjectColumnsWithoutDefault,
 			nzDefaults,
 		)
-		wl = strmangle.SetComplement(wl, authSubjectGeneratedColumns)
 
 		cache.valueMapping, err = queries.BindMapping(authSubjectType, authSubjectMapping, wl)
 		if err != nil {
@@ -821,7 +797,6 @@ func (o *AuthSubject) Update(ctx context.Context, exec boil.ContextExecutor, col
 			authSubjectAllColumns,
 			authSubjectPrimaryKeyColumns,
 		)
-		wl = strmangle.SetComplement(wl, authSubjectGeneratedColumns)
 
 		if !columns.IsWhitelist() {
 			wl = strmangle.SetComplement(wl, []string{"created_at"})
@@ -999,9 +974,6 @@ func (o *AuthSubject) Upsert(ctx context.Context, exec boil.ContextExecutor, upd
 			authSubjectAllColumns,
 			authSubjectPrimaryKeyColumns,
 		)
-
-		insert = strmangle.SetComplement(insert, authSubjectGeneratedColumns)
-		update = strmangle.SetComplement(update, authSubjectGeneratedColumns)
 
 		if updateOnConflict && len(update) == 0 {
 			return errors.New("boiler: unable to upsert auth_subjects, could not build update column list")
@@ -1213,7 +1185,7 @@ func (o *AuthSubjectSlice) ReloadAll(ctx context.Context, exec boil.ContextExecu
 }
 
 // AuthSubjectExists checks if the AuthSubject row exists.
-func AuthSubjectExists(ctx context.Context, exec boil.ContextExecutor, iD int) (bool, error) {
+func AuthSubjectExists(ctx context.Context, exec boil.ContextExecutor, iD string) (bool, error) {
 	var exists bool
 	sql := "select exists(select 1 from \"auth_subjects\" where \"id\"=$1 limit 1)"
 

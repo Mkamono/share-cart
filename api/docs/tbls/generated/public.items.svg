@@ -19,10 +19,10 @@
 <text text-anchor="start" x="204.5594" y="-545.3" font-family="Arial" font-size="14.00" fill="#666666">[BASE TABLE]</text>
 <polygon fill="none" stroke="#000000" points="60.1366,-502.5 60.1366,-532.5 313.1366,-532.5 313.1366,-502.5 60.1366,-502.5"/>
 <text text-anchor="start" x="67.1366" y="-513.9" font-family="Arial" font-size="14.00" fill="#000000">id </text>
-<text text-anchor="start" x="81.9164" y="-513.9" font-family="Arial" font-size="14.00" fill="#666666">[integer]</text>
+<text text-anchor="start" x="81.9164" y="-513.9" font-family="Arial" font-size="14.00" fill="#666666">[uuid]</text>
 <polygon fill="none" stroke="#000000" points="60.1366,-472.5 60.1366,-502.5 313.1366,-502.5 313.1366,-472.5 60.1366,-472.5"/>
 <text text-anchor="start" x="67.1366" y="-483.9" font-family="Arial" font-size="14.00" fill="#000000">market_id </text>
-<text text-anchor="start" x="132.476" y="-483.9" font-family="Arial" font-size="14.00" fill="#666666">[integer]</text>
+<text text-anchor="start" x="132.476" y="-483.9" font-family="Arial" font-size="14.00" fill="#666666">[uuid]</text>
 <polygon fill="none" stroke="#000000" points="60.1366,-442.5 60.1366,-472.5 313.1366,-472.5 313.1366,-442.5 60.1366,-442.5"/>
 <text text-anchor="start" x="67.1366" y="-453.9" font-family="Arial" font-size="14.00" fill="#000000">name </text>
 <text text-anchor="start" x="106.0356" y="-453.9" font-family="Arial" font-size="14.00" fill="#666666">[text]</text>
@@ -47,19 +47,19 @@
 <text text-anchor="start" x="215.0615" y="-205.3" font-family="Arial" font-size="14.00" fill="#666666">[BASE TABLE]</text>
 <polygon fill="none" stroke="#000000" points="45.1366,-162.5 45.1366,-192.5 328.1366,-192.5 328.1366,-162.5 45.1366,-162.5"/>
 <text text-anchor="start" x="52.1366" y="-173.9" font-family="Arial" font-size="14.00" fill="#000000">id    </text>
-<text text-anchor="start" x="97.2306" y="-173.9" font-family="Arial" font-size="14.00" fill="#666666">[integer]</text>
+<text text-anchor="start" x="97.2306" y="-173.9" font-family="Arial" font-size="14.00" fill="#666666">[uuid]</text>
 <polygon fill="none" stroke="#000000" points="45.1366,-132.5 45.1366,-162.5 328.1366,-162.5 328.1366,-132.5 45.1366,-132.5"/>
-<text text-anchor="start" x="52.1366" y="-143.9" font-family="Arial" font-size="14.00" fill="#000000">description    </text>
-<text text-anchor="start" x="154.0188" y="-143.9" font-family="Arial" font-size="14.00" fill="#666666">[text]</text>
+<text text-anchor="start" x="52.1366" y="-143.9" font-family="Arial" font-size="14.00" fill="#000000">name    </text>
+<text text-anchor="start" x="121.3498" y="-143.9" font-family="Arial" font-size="14.00" fill="#666666">[text]</text>
 <polygon fill="none" stroke="#000000" points="45.1366,-102.5 45.1366,-132.5 328.1366,-132.5 328.1366,-102.5 45.1366,-102.5"/>
-<text text-anchor="start" x="52.1366" y="-113.9" font-family="Arial" font-size="14.00" fill="#000000">created_at    </text>
-<text text-anchor="start" x="152.4788" y="-113.9" font-family="Arial" font-size="14.00" fill="#666666">[timestamp with time zone]</text>
+<text text-anchor="start" x="52.1366" y="-113.9" font-family="Arial" font-size="14.00" fill="#000000">description    </text>
+<text text-anchor="start" x="154.0188" y="-113.9" font-family="Arial" font-size="14.00" fill="#666666">[text]</text>
 <polygon fill="none" stroke="#000000" points="45.1366,-72.5 45.1366,-102.5 328.1366,-102.5 328.1366,-72.5 45.1366,-72.5"/>
-<text text-anchor="start" x="51.671" y="-83.9" font-family="Arial" font-size="14.00" fill="#000000">updated_at    </text>
-<text text-anchor="start" x="155.9178" y="-83.9" font-family="Arial" font-size="14.00" fill="#666666">[timestamp with time zone]</text>
+<text text-anchor="start" x="52.1366" y="-83.9" font-family="Arial" font-size="14.00" fill="#000000">created_at    </text>
+<text text-anchor="start" x="152.4788" y="-83.9" font-family="Arial" font-size="14.00" fill="#666666">[timestamp with time zone]</text>
 <polygon fill="none" stroke="#000000" points="45.1366,-42.5 45.1366,-72.5 328.1366,-72.5 328.1366,-42.5 45.1366,-42.5"/>
-<text text-anchor="start" x="52.1366" y="-53.9" font-family="Arial" font-size="14.00" fill="#000000">name    </text>
-<text text-anchor="start" x="121.3498" y="-53.9" font-family="Arial" font-size="14.00" fill="#666666">[text]</text>
+<text text-anchor="start" x="51.671" y="-53.9" font-family="Arial" font-size="14.00" fill="#000000">updated_at    </text>
+<text text-anchor="start" x="155.9178" y="-53.9" font-family="Arial" font-size="14.00" fill="#666666">[timestamp with time zone]</text>
 </g>
 <!-- public.items&#45;&gt;public.markets -->
 <g id="edge1" class="edge">

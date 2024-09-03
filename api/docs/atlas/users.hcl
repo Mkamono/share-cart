@@ -2,10 +2,7 @@ table "users" {
   schema = schema.public
   column "id" {
     null = false
-    type = integer
-    identity {
-      generated = ALWAYS
-    }
+    type = uuid
   }
   primary_key {
     columns = [column.id]
@@ -34,10 +31,7 @@ table "auth_subjects" {
   schema = schema.public
   column "id" {
     null = false
-    type = integer
-    identity {
-      generated = ALWAYS
-    }
+    type = uuid
   }
   primary_key {
     columns = [column.id]
@@ -45,7 +39,7 @@ table "auth_subjects" {
 
   column "user_id" {
     null = false
-    type = integer
+    type = uuid
   }
   foreign_key "auth_subjects_user_id_fk" {
     columns     = [column.user_id]

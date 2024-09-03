@@ -23,11 +23,11 @@ import (
 
 // Market is an object representing the database table.
 type Market struct {
-	ID          int       `boil:"id" json:"id" toml:"id" yaml:"id"`
+	ID          string    `boil:"id" json:"id" toml:"id" yaml:"id"`
+	Name        string    `boil:"name" json:"name" toml:"name" yaml:"name"`
 	Description string    `boil:"description" json:"description" toml:"description" yaml:"description"`
 	CreatedAt   time.Time `boil:"created_at" json:"created_at" toml:"created_at" yaml:"created_at"`
 	UpdatedAt   time.Time `boil:"updated_at" json:"updated_at" toml:"updated_at" yaml:"updated_at"`
-	Name        string    `boil:"name" json:"name" toml:"name" yaml:"name"`
 
 	R *marketR `boil:"-" json:"-" toml:"-" yaml:"-"`
 	L marketL  `boil:"-" json:"-" toml:"-" yaml:"-"`
@@ -35,46 +35,46 @@ type Market struct {
 
 var MarketColumns = struct {
 	ID          string
+	Name        string
 	Description string
 	CreatedAt   string
 	UpdatedAt   string
-	Name        string
 }{
 	ID:          "id",
+	Name:        "name",
 	Description: "description",
 	CreatedAt:   "created_at",
 	UpdatedAt:   "updated_at",
-	Name:        "name",
 }
 
 var MarketTableColumns = struct {
 	ID          string
+	Name        string
 	Description string
 	CreatedAt   string
 	UpdatedAt   string
-	Name        string
 }{
 	ID:          "markets.id",
+	Name:        "markets.name",
 	Description: "markets.description",
 	CreatedAt:   "markets.created_at",
 	UpdatedAt:   "markets.updated_at",
-	Name:        "markets.name",
 }
 
 // Generated where
 
 var MarketWhere = struct {
-	ID          whereHelperint
+	ID          whereHelperstring
+	Name        whereHelperstring
 	Description whereHelperstring
 	CreatedAt   whereHelpertime_Time
 	UpdatedAt   whereHelpertime_Time
-	Name        whereHelperstring
 }{
-	ID:          whereHelperint{field: "\"markets\".\"id\""},
+	ID:          whereHelperstring{field: "\"markets\".\"id\""},
+	Name:        whereHelperstring{field: "\"markets\".\"name\""},
 	Description: whereHelperstring{field: "\"markets\".\"description\""},
 	CreatedAt:   whereHelpertime_Time{field: "\"markets\".\"created_at\""},
 	UpdatedAt:   whereHelpertime_Time{field: "\"markets\".\"updated_at\""},
-	Name:        whereHelperstring{field: "\"markets\".\"name\""},
 }
 
 // MarketRels is where relationship names are stored.
@@ -105,11 +105,11 @@ func (r *marketR) GetItems() ItemSlice {
 type marketL struct{}
 
 var (
-	marketAllColumns            = []string{"id", "description", "created_at", "updated_at", "name"}
-	marketColumnsWithoutDefault = []string{"description", "created_at", "updated_at", "name"}
-	marketColumnsWithDefault    = []string{"id"}
+	marketAllColumns            = []string{"id", "name", "description", "created_at", "updated_at"}
+	marketColumnsWithoutDefault = []string{"id", "name", "description", "created_at", "updated_at"}
+	marketColumnsWithDefault    = []string{}
 	marketPrimaryKeyColumns     = []string{"id"}
-	marketGeneratedColumns      = []string{"id"}
+	marketGeneratedColumns      = []string{}
 )
 
 type (
@@ -610,7 +610,7 @@ func Markets(mods ...qm.QueryMod) marketQuery {
 
 // FindMarket retrieves a single record by ID with an executor.
 // If selectCols is empty Find will return all columns.
-func FindMarket(ctx context.Context, exec boil.ContextExecutor, iD int, selectCols ...string) (*Market, error) {
+func FindMarket(ctx context.Context, exec boil.ContextExecutor, iD string, selectCols ...string) (*Market, error) {
 	marketObj := &Market{}
 
 	sel := "*"
@@ -675,7 +675,6 @@ func (o *Market) Insert(ctx context.Context, exec boil.ContextExecutor, columns 
 			marketColumnsWithoutDefault,
 			nzDefaults,
 		)
-		wl = strmangle.SetComplement(wl, marketGeneratedColumns)
 
 		cache.valueMapping, err = queries.BindMapping(marketType, marketMapping, wl)
 		if err != nil {
@@ -752,7 +751,6 @@ func (o *Market) Update(ctx context.Context, exec boil.ContextExecutor, columns 
 			marketAllColumns,
 			marketPrimaryKeyColumns,
 		)
-		wl = strmangle.SetComplement(wl, marketGeneratedColumns)
 
 		if !columns.IsWhitelist() {
 			wl = strmangle.SetComplement(wl, []string{"created_at"})
@@ -930,9 +928,6 @@ func (o *Market) Upsert(ctx context.Context, exec boil.ContextExecutor, updateOn
 			marketAllColumns,
 			marketPrimaryKeyColumns,
 		)
-
-		insert = strmangle.SetComplement(insert, marketGeneratedColumns)
-		update = strmangle.SetComplement(update, marketGeneratedColumns)
 
 		if updateOnConflict && len(update) == 0 {
 			return errors.New("boiler: unable to upsert markets, could not build update column list")
@@ -1144,7 +1139,7 @@ func (o *MarketSlice) ReloadAll(ctx context.Context, exec boil.ContextExecutor) 
 }
 
 // MarketExists checks if the Market row exists.
-func MarketExists(ctx context.Context, exec boil.ContextExecutor, iD int) (bool, error) {
+func MarketExists(ctx context.Context, exec boil.ContextExecutor, iD string) (bool, error) {
 	var exists bool
 	sql := "select exists(select 1 from \"markets\" where \"id\"=$1 limit 1)"
 

@@ -2,10 +2,7 @@ table "markets" {
   schema = schema.public
   column "id" {
     null = false
-    type = integer
-    identity {
-      generated = ALWAYS
-    }
+    type = uuid
   }
   primary_key {
     columns = [column.id]

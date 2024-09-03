@@ -23,7 +23,7 @@ func (s *Market) Encode(e *jx.Encoder) {
 func (s *Market) encodeFields(e *jx.Encoder) {
 	{
 		e.FieldStart("id")
-		e.Int(s.ID)
+		e.Str(s.ID)
 	}
 	{
 		e.FieldStart("name")
@@ -53,8 +53,8 @@ func (s *Market) Decode(d *jx.Decoder) error {
 		case "id":
 			requiredBitSet[0] |= 1 << 0
 			if err := func() error {
-				v, err := d.Int()
-				s.ID = int(v)
+				v, err := d.Str()
+				s.ID = string(v)
 				if err != nil {
 					return err
 				}

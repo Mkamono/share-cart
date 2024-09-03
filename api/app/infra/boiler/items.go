@@ -24,8 +24,8 @@ import (
 
 // Item is an object representing the database table.
 type Item struct {
-	ID        int           `boil:"id" json:"id" toml:"id" yaml:"id"`
-	MarketID  int           `boil:"market_id" json:"market_id" toml:"market_id" yaml:"market_id"`
+	ID        string        `boil:"id" json:"id" toml:"id" yaml:"id"`
+	MarketID  string        `boil:"market_id" json:"market_id" toml:"market_id" yaml:"market_id"`
 	Name      string        `boil:"name" json:"name" toml:"name" yaml:"name"`
 	Price     types.Decimal `boil:"price" json:"price" toml:"price" yaml:"price"`
 	CreatedAt time.Time     `boil:"created_at" json:"created_at" toml:"created_at" yaml:"created_at"`
@@ -91,15 +91,15 @@ func (w whereHelpertypes_Decimal) GTE(x types.Decimal) qm.QueryMod {
 }
 
 var ItemWhere = struct {
-	ID        whereHelperint
-	MarketID  whereHelperint
+	ID        whereHelperstring
+	MarketID  whereHelperstring
 	Name      whereHelperstring
 	Price     whereHelpertypes_Decimal
 	CreatedAt whereHelpertime_Time
 	UpdatedAt whereHelpertime_Time
 }{
-	ID:        whereHelperint{field: "\"items\".\"id\""},
-	MarketID:  whereHelperint{field: "\"items\".\"market_id\""},
+	ID:        whereHelperstring{field: "\"items\".\"id\""},
+	MarketID:  whereHelperstring{field: "\"items\".\"market_id\""},
 	Name:      whereHelperstring{field: "\"items\".\"name\""},
 	Price:     whereHelpertypes_Decimal{field: "\"items\".\"price\""},
 	CreatedAt: whereHelpertime_Time{field: "\"items\".\"created_at\""},
@@ -135,10 +135,10 @@ type itemL struct{}
 
 var (
 	itemAllColumns            = []string{"id", "market_id", "name", "price", "created_at", "updated_at"}
-	itemColumnsWithoutDefault = []string{"market_id", "name", "price", "created_at", "updated_at"}
-	itemColumnsWithDefault    = []string{"id"}
+	itemColumnsWithoutDefault = []string{"id", "market_id", "name", "price", "created_at", "updated_at"}
+	itemColumnsWithDefault    = []string{}
 	itemPrimaryKeyColumns     = []string{"id"}
-	itemGeneratedColumns      = []string{"id"}
+	itemGeneratedColumns      = []string{}
 )
 
 type (
@@ -637,7 +637,7 @@ func Items(mods ...qm.QueryMod) itemQuery {
 
 // FindItem retrieves a single record by ID with an executor.
 // If selectCols is empty Find will return all columns.
-func FindItem(ctx context.Context, exec boil.ContextExecutor, iD int, selectCols ...string) (*Item, error) {
+func FindItem(ctx context.Context, exec boil.ContextExecutor, iD string, selectCols ...string) (*Item, error) {
 	itemObj := &Item{}
 
 	sel := "*"
@@ -702,7 +702,6 @@ func (o *Item) Insert(ctx context.Context, exec boil.ContextExecutor, columns bo
 			itemColumnsWithoutDefault,
 			nzDefaults,
 		)
-		wl = strmangle.SetComplement(wl, itemGeneratedColumns)
 
 		cache.valueMapping, err = queries.BindMapping(itemType, itemMapping, wl)
 		if err != nil {
@@ -779,7 +778,6 @@ func (o *Item) Update(ctx context.Context, exec boil.ContextExecutor, columns bo
 			itemAllColumns,
 			itemPrimaryKeyColumns,
 		)
-		wl = strmangle.SetComplement(wl, itemGeneratedColumns)
 
 		if !columns.IsWhitelist() {
 			wl = strmangle.SetComplement(wl, []string{"created_at"})
@@ -957,9 +955,6 @@ func (o *Item) Upsert(ctx context.Context, exec boil.ContextExecutor, updateOnCo
 			itemAllColumns,
 			itemPrimaryKeyColumns,
 		)
-
-		insert = strmangle.SetComplement(insert, itemGeneratedColumns)
-		update = strmangle.SetComplement(update, itemGeneratedColumns)
 
 		if updateOnConflict && len(update) == 0 {
 			return errors.New("boiler: unable to upsert items, could not build update column list")
@@ -1171,7 +1166,7 @@ func (o *ItemSlice) ReloadAll(ctx context.Context, exec boil.ContextExecutor) er
 }
 
 // ItemExists checks if the Item row exists.
-func ItemExists(ctx context.Context, exec boil.ContextExecutor, iD int) (bool, error) {
+func ItemExists(ctx context.Context, exec boil.ContextExecutor, iD string) (bool, error) {
 	var exists bool
 	sql := "select exists(select 1 from \"items\" where \"id\"=$1 limit 1)"
 
