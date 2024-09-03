@@ -1,12 +1,13 @@
 type MarketCardProps = {
 	market: {
-		id: number;
+		id: string;
 		name: string;
 		imageURL: string;
 		description: string;
 	};
 };
-const defaultImageURL = "https://cdn.pixabay.com/photo/2021/01/01/12/44/concert-5878452_640.jpg";
+const defaultImageURL =
+	"https://cdn.pixabay.com/photo/2021/01/01/12/44/concert-5878452_640.jpg";
 
 export const MarketCard = (props: MarketCardProps) => {
 	return (
@@ -16,8 +17,7 @@ export const MarketCard = (props: MarketCardProps) => {
 				className="object-cover w-full h-32"
 				alt="market"
 				onError={(e) => {
-					(e.target as HTMLImageElement).src =
-						defaultImageURL;
+					(e.target as HTMLImageElement).src = defaultImageURL;
 				}}
 			/>
 			<p>
