@@ -24,14 +24,14 @@
 <text text-anchor="start" x="53" y="-453.9" font-family="Arial" font-size="14.00" fill="#000000">market_id </text>
 <text text-anchor="start" x="118.3394" y="-453.9" font-family="Arial" font-size="14.00" fill="#666666">[uuid]</text>
 <polygon fill="none" stroke="#000000" points="46,-412.5 46,-442.5 362,-442.5 362,-412.5 46,-412.5"/>
-<text text-anchor="start" x="53" y="-423.9" font-family="Arial" font-size="14.00" fill="#000000">url </text>
-<text text-anchor="start" x="72.4404" y="-423.9" font-family="Arial" font-size="14.00" fill="#666666">[text]</text>
+<text text-anchor="start" x="53" y="-423.9" font-family="Arial" font-size="14.00" fill="#000000">created_at </text>
+<text text-anchor="start" x="123.028" y="-423.9" font-family="Arial" font-size="14.00" fill="#666666">[timestamp with time zone]</text>
 <polygon fill="none" stroke="#000000" points="46,-382.5 46,-412.5 362,-412.5 362,-382.5 46,-382.5"/>
-<text text-anchor="start" x="53" y="-393.9" font-family="Arial" font-size="14.00" fill="#000000">created_at </text>
-<text text-anchor="start" x="123.028" y="-393.9" font-family="Arial" font-size="14.00" fill="#666666">[timestamp with time zone]</text>
+<text text-anchor="start" x="53" y="-393.9" font-family="Arial" font-size="14.00" fill="#000000">updated_at </text>
+<text text-anchor="start" x="126.9326" y="-393.9" font-family="Arial" font-size="14.00" fill="#666666">[timestamp with time zone]</text>
 <polygon fill="none" stroke="#000000" points="46,-352.5 46,-382.5 362,-382.5 362,-352.5 46,-352.5"/>
-<text text-anchor="start" x="53" y="-363.9" font-family="Arial" font-size="14.00" fill="#000000">updated_at </text>
-<text text-anchor="start" x="126.9326" y="-363.9" font-family="Arial" font-size="14.00" fill="#666666">[timestamp with time zone]</text>
+<text text-anchor="start" x="53" y="-363.9" font-family="Arial" font-size="14.00" fill="#000000">image_id </text>
+<text text-anchor="start" x="113.6774" y="-363.9" font-family="Arial" font-size="14.00" fill="#666666">[uuid]</text>
 <polygon fill="none" stroke="#000000" stroke-width="3" points="44.5,-351.5 44.5,-539.5 363.5,-539.5 363.5,-351.5 44.5,-351.5"/>
 </g>
 <!-- public.markets -->

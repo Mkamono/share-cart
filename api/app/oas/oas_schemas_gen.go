@@ -30,6 +30,8 @@ type Market struct {
 	ID          string `json:"id"`
 	Name        string `json:"name"`
 	Description string `json:"description"`
+	// The market images uuid.
+	Images []string `json:"images"`
 }
 
 // GetID returns the value of ID.
@@ -47,6 +49,11 @@ func (s *Market) GetDescription() string {
 	return s.Description
 }
 
+// GetImages returns the value of Images.
+func (s *Market) GetImages() []string {
+	return s.Images
+}
+
 // SetID sets the value of ID.
 func (s *Market) SetID(val string) {
 	s.ID = val
@@ -60,6 +67,11 @@ func (s *Market) SetName(val string) {
 // SetDescription sets the value of Description.
 func (s *Market) SetDescription(val string) {
 	s.Description = val
+}
+
+// SetImages sets the value of Images.
+func (s *Market) SetImages(val []string) {
+	s.Images = val
 }
 
 // NewOptString returns new OptString with value set to v.

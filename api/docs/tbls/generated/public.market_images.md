@@ -8,9 +8,9 @@
 | - | ---------- | ------------------------ | ------- | -------- | -------- | ----------------------------------- | ------- |
 | 1 | id         | uuid                     |         | false    |          |                                     |         |
 | 2 | market_id  | uuid                     |         | false    |          | [public.markets](public.markets.md) |         |
-| 3 | url        | text                     |         | false    |          |                                     |         |
-| 4 | created_at | timestamp with time zone |         | false    |          |                                     |         |
-| 5 | updated_at | timestamp with time zone |         | false    |          |                                     |         |
+| 3 | created_at | timestamp with time zone |         | false    |          |                                     |         |
+| 4 | updated_at | timestamp with time zone |         | false    |          |                                     |         |
+| 5 | image_id   | uuid                     |         | false    |          |                                     |         |
 
 ## Constraints
 

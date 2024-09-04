@@ -51,9 +51,10 @@ table "market_images" {
     ref_columns = [table.markets.column.id]
   }
 
-  column "url" {
-    null = false
-    type = text
+  column "image_id" {
+    null        = false
+    type        = uuid
+    description = "The image id (gcs) of the market"
   }
 
   // system managed columns
