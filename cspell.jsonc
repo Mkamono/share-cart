@@ -13,6 +13,7 @@
 		"envconfig",
 		"gcloud",
 		"godepgraph",
+		"gofakeit",
 		"gomock",
 		"googleapis",
 		"graphviz",

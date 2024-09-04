@@ -1,34 +1,79 @@
 package usecase
 
 import (
-	dbEntity "api/app/domain/entity/db"
-	mock_db "api/app/domain/repository/db/mock"
-	"api/app/infra/boiler"
 	"context"
 	"errors"
 	"io"
 	"log/slog"
-	"reflect"
+	"math/rand"
 	"testing"
+	"time"
 
+	"github.com/brianvoe/gofakeit/v7"
+	"github.com/samber/lo"
+	"github.com/stretchr/testify/assert"
 	"go.uber.org/mock/gomock"
+
+	dbEntity "api/app/domain/entity/db"
+	mock_db "api/app/domain/repository/db/mock"
+	"api/app/oas"
+	"api/app/shared"
 )
 
 func Test_getMarketsUsecase_Run(t *testing.T) {
 	slog.SetDefault(slog.New(slog.NewTextHandler(io.Discard, nil)))
 
+	// テストデータ
+	type fakeMarket struct {
+		ID          string
+		Name        string
+		Description string
+		CreatedAt   time.Time
+		UpdatedAt   time.Time
+	}
+
+	var markets []*dbEntity.Market
+	for i := 0; i < 3+rand.Intn(10); i++ {
+		var fm fakeMarket
+		gofakeit.Struct(&fm)
+		market := shared.Cast[dbEntity.Market](fm)
+		markets = append(markets, &market)
+	}
+
+	marketIDs := lo.Map(markets, func(m *dbEntity.Market, _ int) string {
+		return m.ID
+	})
+
+	type fakeMarketImage struct {
+		ID        string
+		MarketID  string
+		CreatedAt time.Time
+		UpdatedAt time.Time
+		ImageID   string
+	}
+
+	var marketImages []*dbEntity.MarketImage
+	for i := 0; i < 3+rand.Intn(10); i++ {
+		var fmi fakeMarketImage
+		gofakeit.Struct(&fmi)
+		marketImage := shared.Cast[dbEntity.MarketImage](fmi)
+		marketImages = append(marketImages, &marketImage)
+	}
+
 	type mocks struct {
-		marketRepo *mock_db.MockMarketRepository
+		marketRepo      *mock_db.MockMarketRepository
+		marketImageRepo *mock_db.MockMarketImageRepository
 	}
 
 	type args struct {
 		ctx context.Context
 	}
+
 	tests := []struct {
 		name       string
 		args       args
 		mockExpect func(args args, m mocks)
-		want       []*dbEntity.Market
+		want       []*oas.Market
 		wantErr    bool
 	}{
 		{
@@ -37,42 +82,59 @@ func Test_getMarketsUsecase_Run(t *testing.T) {
 			mockExpect: func(args args, m mocks) {
 				m.marketRepo.EXPECT().GetAll(args.ctx).Return([]*dbEntity.Market{}, nil)
 			},
-			want:    []*dbEntity.Market{},
+			want:    []*oas.Market{},
 			wantErr: false,
 		},
 		{
-			name: "正常系_マーケットが複数存在する",
+			name: "正常系_画像が設定されていないマーケットが存在する",
 			args: args{ctx: context.Background()},
 			mockExpect: func(args args, m mocks) {
-				markets := []*dbEntity.Market{{
-					Market: boiler.Market{
-						ID:          "market1",
-						Name:        "market name",
-						Description: "market description",
-					},
-				}, {
-					Market: boiler.Market{
-						ID:          "market2",
-						Name:        "market name2",
-						Description: "market description2",
-					},
-				}}
-
 				m.marketRepo.EXPECT().GetAll(args.ctx).Return(markets, nil)
+				m.marketImageRepo.EXPECT().GetAllByMarketIDs(args.ctx, marketIDs).Return([]*dbEntity.MarketImage{}, nil)
 			},
-			want: []*dbEntity.Market{{
-				Market: boiler.Market{
-					ID:          "market1",
-					Name:        "market name",
-					Description: "market description",
+			want: lo.Map(markets, func(m *dbEntity.Market, _ int) *oas.Market {
+				return &oas.Market{
+					ID:          m.ID,
+					Name:        m.Name,
+					Description: m.Description,
+					Images:      []string{},
+				}
+			}),
+		},
+		{
+			name: "正常系_画像が設定されているマーケットが存在する",
+			args: args{ctx: context.Background()},
+			mockExpect: func(args args, m mocks) {
+				copyMarketImages := make([]*dbEntity.MarketImage, len(marketImages))
+				copy(copyMarketImages, marketImages)
+
+				copyMarketImages[0].MarketID = marketIDs[0]
+				copyMarketImages[1].MarketID = marketIDs[0]
+				copyMarketImages[2].MarketID = marketIDs[1]
+
+				m.marketRepo.EXPECT().GetAll(args.ctx).Return([]*dbEntity.Market{markets[0], markets[1], markets[2]}, nil)
+				m.marketImageRepo.EXPECT().GetAllByMarketIDs(args.ctx, []string{marketIDs[0], marketIDs[1], marketIDs[2]}).Return(copyMarketImages, nil)
+			},
+			want: []*oas.Market{
+				{
+					ID:          markets[0].ID,
+					Name:        markets[0].Name,
+					Description: markets[0].Description,
+					Images:      []string{marketImages[0].ID, marketImages[1].ID},
 				},
-			}, {
-				Market: boiler.Market{
-					ID:          "market2",
-					Name:        "market name2",
-					Description: "market description2",
+				{
+					ID:          markets[1].ID,
+					Name:        markets[1].Name,
+					Description: markets[1].Description,
+					Images:      []string{marketImages[2].ID},
 				},
-			}},
+				{
+					ID:          markets[2].ID,
+					Name:        markets[2].Name,
+					Description: markets[2].Description,
+					Images:      []string{},
+				},
+			},
 			wantErr: false,
 		},
 		{
@@ -84,6 +146,16 @@ func Test_getMarketsUsecase_Run(t *testing.T) {
 			want:    nil,
 			wantErr: true,
 		},
+		{
+			name: "異常系_マーケット画像取得エラー",
+			args: args{ctx: context.Background()},
+			mockExpect: func(args args, m mocks) {
+				m.marketRepo.EXPECT().GetAll(args.ctx).Return(markets, nil)
+				m.marketImageRepo.EXPECT().GetAllByMarketIDs(args.ctx, marketIDs).Return(nil, errors.New("error"))
+			},
+			want:    nil,
+			wantErr: true,
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -91,21 +163,20 @@ func Test_getMarketsUsecase_Run(t *testing.T) {
 			defer ctrl.Finish()
 
 			marketRepo := mock_db.NewMockMarketRepository(ctrl)
+			marketImageRepo := mock_db.NewMockMarketImageRepository(ctrl)
 
 			u := &getMarketsUsecase{
-				marketRepo: marketRepo,
+				marketRepo:      marketRepo,
+				marketImageRepo: marketImageRepo,
 			}
 			tt.mockExpect(tt.args, mocks{
-				marketRepo: marketRepo,
+				marketRepo:      marketRepo,
+				marketImageRepo: marketImageRepo,
 			})
 			got, err := u.Run(tt.args.ctx)
-			if (err != nil) != tt.wantErr {
-				t.Errorf("getMarketsUsecase.Run() error = %v, wantErr %v", err, tt.wantErr)
-				return
-			}
-			if !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("getMarketsUsecase.Run() = %v, want %v", got, tt.want)
-			}
+
+			assert.Equal(t, tt.wantErr, err != nil)
+			assert.Equal(t, tt.want, got)
 		})
 	}
 }
