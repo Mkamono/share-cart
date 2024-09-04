@@ -79,14 +79,17 @@ var MarketWhere = struct {
 
 // MarketRels is where relationship names are stored.
 var MarketRels = struct {
-	Items string
+	Items        string
+	MarketImages string
 }{
-	Items: "Items",
+	Items:        "Items",
+	MarketImages: "MarketImages",
 }
 
 // marketR is where relationships are stored.
 type marketR struct {
-	Items ItemSlice `boil:"Items" json:"Items" toml:"Items" yaml:"Items"`
+	Items        ItemSlice        `boil:"Items" json:"Items" toml:"Items" yaml:"Items"`
+	MarketImages MarketImageSlice `boil:"MarketImages" json:"MarketImages" toml:"MarketImages" yaml:"MarketImages"`
 }
 
 // NewStruct creates a new relationship struct
@@ -99,6 +102,13 @@ func (r *marketR) GetItems() ItemSlice {
 		return nil
 	}
 	return r.Items
+}
+
+func (r *marketR) GetMarketImages() MarketImageSlice {
+	if r == nil {
+		return nil
+	}
+	return r.MarketImages
 }
 
 // marketL is where Load methods for each relationship are stored.
@@ -431,6 +441,20 @@ func (o *Market) Items(mods ...qm.QueryMod) itemQuery {
 	return Items(queryMods...)
 }
 
+// MarketImages retrieves all the market_image's MarketImages with an executor.
+func (o *Market) MarketImages(mods ...qm.QueryMod) marketImageQuery {
+	var queryMods []qm.QueryMod
+	if len(mods) != 0 {
+		queryMods = append(queryMods, mods...)
+	}
+
+	queryMods = append(queryMods,
+		qm.Where("\"market_images\".\"market_id\"=?", o.ID),
+	)
+
+	return MarketImages(queryMods...)
+}
+
 // LoadItems allows an eager lookup of values, cached into the
 // loaded structs of the objects. This is for a 1-M or N-M relationship.
 func (marketL) LoadItems(ctx context.Context, e boil.ContextExecutor, singular bool, maybeMarket interface{}, mods queries.Applicator) error {
@@ -544,6 +568,119 @@ func (marketL) LoadItems(ctx context.Context, e boil.ContextExecutor, singular b
 	return nil
 }
 
+// LoadMarketImages allows an eager lookup of values, cached into the
+// loaded structs of the objects. This is for a 1-M or N-M relationship.
+func (marketL) LoadMarketImages(ctx context.Context, e boil.ContextExecutor, singular bool, maybeMarket interface{}, mods queries.Applicator) error {
+	var slice []*Market
+	var object *Market
+
+	if singular {
+		var ok bool
+		object, ok = maybeMarket.(*Market)
+		if !ok {
+			object = new(Market)
+			ok = queries.SetFromEmbeddedStruct(&object, &maybeMarket)
+			if !ok {
+				return errors.New(fmt.Sprintf("failed to set %T from embedded struct %T", object, maybeMarket))
+			}
+		}
+	} else {
+		s, ok := maybeMarket.(*[]*Market)
+		if ok {
+			slice = *s
+		} else {
+			ok = queries.SetFromEmbeddedStruct(&slice, maybeMarket)
+			if !ok {
+				return errors.New(fmt.Sprintf("failed to set %T from embedded struct %T", slice, maybeMarket))
+			}
+		}
+	}
+
+	args := make(map[interface{}]struct{})
+	if singular {
+		if object.R == nil {
+			object.R = &marketR{}
+		}
+		args[object.ID] = struct{}{}
+	} else {
+		for _, obj := range slice {
+			if obj.R == nil {
+				obj.R = &marketR{}
+			}
+			args[obj.ID] = struct{}{}
+		}
+	}
+
+	if len(args) == 0 {
+		return nil
+	}
+
+	argsSlice := make([]interface{}, len(args))
+	i := 0
+	for arg := range args {
+		argsSlice[i] = arg
+		i++
+	}
+
+	query := NewQuery(
+		qm.From(`market_images`),
+		qm.WhereIn(`market_images.market_id in ?`, argsSlice...),
+	)
+	if mods != nil {
+		mods.Apply(query)
+	}
+
+	results, err := query.QueryContext(ctx, e)
+	if err != nil {
+		return errors.Wrap(err, "failed to eager load market_images")
+	}
+
+	var resultSlice []*MarketImage
+	if err = queries.Bind(results, &resultSlice); err != nil {
+		return errors.Wrap(err, "failed to bind eager loaded slice market_images")
+	}
+
+	if err = results.Close(); err != nil {
+		return errors.Wrap(err, "failed to close results in eager load on market_images")
+	}
+	if err = results.Err(); err != nil {
+		return errors.Wrap(err, "error occurred during iteration of eager loaded relations for market_images")
+	}
+
+	if len(marketImageAfterSelectHooks) != 0 {
+		for _, obj := range resultSlice {
+			if err := obj.doAfterSelectHooks(ctx, e); err != nil {
+				return err
+			}
+		}
+	}
+	if singular {
+		object.R.MarketImages = resultSlice
+		for _, foreign := range resultSlice {
+			if foreign.R == nil {
+				foreign.R = &marketImageR{}
+			}
+			foreign.R.Market = object
+		}
+		return nil
+	}
+
+	for _, foreign := range resultSlice {
+		for _, local := range slice {
+			if local.ID == foreign.MarketID {
+				local.R.MarketImages = append(local.R.MarketImages, foreign)
+				if foreign.R == nil {
+					foreign.R = &marketImageR{}
+				}
+				foreign.R.Market = local
+				break
+			}
+		}
+	}
+
+	return nil
+}
+
 // AddItems adds the given related objects to the existing relationships
 // of the market, optionally inserting them as new records.
 // Appends related to o.R.Items.
@@ -588,6 +725,59 @@ func (o *Market) AddItems(ctx context.Context, exec boil.ContextExecutor, insert
 	for _, rel := range related {
 		if rel.R == nil {
 			rel.R = &itemR{
+				Market: o,
+			}
+		} else {
+			rel.R.Market = o
+		}
+	}
+	return nil
+}
+
+// AddMarketImages adds the given related objects to the existing relationships
+// of the market, optionally inserting them as new records.
+// Appends related to o.R.MarketImages.
+// Sets related.R.Market appropriately.
+func (o *Market) AddMarketImages(ctx context.Context, exec boil.ContextExecutor, insert bool, related ...*MarketImage) error {
+	var err error
+	for _, rel := range related {
+		if insert {
+			rel.MarketID = o.ID
+			if err = rel.Insert(ctx, exec, boil.Infer()); err != nil {
+				return errors.Wrap(err, "failed to insert into foreign table")
+			}
+		} else {
+			updateQuery := fmt.Sprintf(
+				"UPDATE \"market_images\" SET %s WHERE %s",
+				strmangle.SetParamNames("\"", "\"", 1, []string{"market_id"}),
+				strmangle.WhereClause("\"", "\"", 2, marketImagePrimaryKeyColumns),
+			)
+			values := []interface{}{o.ID, rel.ID}
+
+			if boil.IsDebug(ctx) {
+				writer := boil.DebugWriterFrom(ctx)
+				fmt.Fprintln(writer, updateQuery)
+				fmt.Fprintln(writer, values)
+			}
+			if _, err = exec.ExecContext(ctx, updateQuery, values...); err != nil {
+				return errors.Wrap(err, "failed to update foreign table")
+			}
+
+			rel.MarketID = o.ID
+		}
+	}
+
+	if o.R == nil {
+		o.R = &marketR{
+			MarketImages: related,
+		}
+	} else {
+		o.R.MarketImages = append(o.R.MarketImages, related...)
+	}
+
+	for _, rel := range related {
+		if rel.R == nil {
+			rel.R = &marketImageR{
 				Market: o,
 			}
 		} else {

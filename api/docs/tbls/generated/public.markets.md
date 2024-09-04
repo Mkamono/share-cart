@@ -4,13 +4,13 @@
 
 ## Columns
 
-| # | Name        | Type                     | Default | Nullable | Children                        | Parents | Comment |
-| - | ----------- | ------------------------ | ------- | -------- | ------------------------------- | ------- | ------- |
-| 1 | id          | uuid                     |         | false    | [public.items](public.items.md) |         |         |
-| 2 | name        | text                     |         | false    |                                 |         |         |
-| 3 | description | text                     |         | false    |                                 |         |         |
-| 4 | created_at  | timestamp with time zone |         | false    |                                 |         |         |
-| 5 | updated_at  | timestamp with time zone |         | false    |                                 |         |         |
+| # | Name        | Type                     | Default | Nullable | Children                                                                        | Parents | Comment |
+| - | ----------- | ------------------------ | ------- | -------- | ------------------------------------------------------------------------------- | ------- | ------- |
+| 1 | id          | uuid                     |         | false    | [public.items](public.items.md) [public.market_images](public.market_images.md) |         |         |
+| 2 | name        | text                     |         | false    |                                                                                 |         |         |
+| 3 | description | text                     |         | false    |                                                                                 |         |         |
+| 4 | created_at  | timestamp with time zone |         | false    |                                                                                 |         |         |
+| 5 | updated_at  | timestamp with time zone |         | false    |                                                                                 |         |         |
 
 ## Constraints
 

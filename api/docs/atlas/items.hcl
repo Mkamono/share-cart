@@ -15,8 +15,6 @@ table "items" {
   foreign_key "items_market_id_fk" {
     columns     = [column.market_id]
     ref_columns = [table.markets.column.id]
-    on_delete   = NO_ACTION
-    on_update   = NO_ACTION
   }
 
   column "name" {
