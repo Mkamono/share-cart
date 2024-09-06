@@ -9,10 +9,6 @@ import (
 	"log/slog"
 )
 
-type MarketDTO struct {
-	oas.Market
-}
-
 func (h *handler) MarketGet(ctx context.Context) ([]oas.Market, error) {
 	marketRepo := dbRepo.NewMarketRepository(h.db)
 	marketImageRepo := dbRepo.NewMarketImageRepository(h.db)

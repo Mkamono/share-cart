@@ -36,7 +36,7 @@ func Test_getMarketsUsecase_Run(t *testing.T) {
 	for i := 0; i < 3+rand.Intn(10); i++ {
 		var fm fakeMarket
 		gofakeit.Struct(&fm)
-		market := shared.Cast[dbEntity.Market](fm)
+		market := shared.Projection[dbEntity.Market](fm)
 		markets = append(markets, &market)
 	}
 
@@ -56,7 +56,7 @@ func Test_getMarketsUsecase_Run(t *testing.T) {
 	for i := 0; i < 3+rand.Intn(10); i++ {
 		var fmi fakeMarketImage
 		gofakeit.Struct(&fmi)
-		marketImage := shared.Cast[dbEntity.MarketImage](fmi)
+		marketImage := shared.Projection[dbEntity.MarketImage](fmi)
 		marketImages = append(marketImages, &marketImage)
 	}
 
