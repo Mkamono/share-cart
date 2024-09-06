@@ -10,8 +10,6 @@ FROM base AS local
 COPY share-cart/bun.lockb share-cart/package.json ./
 RUN bun install
 
-CMD ["bun", "run", "start"]
-
 # ビルダー
 FROM base AS builder
 

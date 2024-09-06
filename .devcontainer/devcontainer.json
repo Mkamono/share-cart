@@ -22,10 +22,10 @@
 				"rangav.vscode-thunder-client",
 				"streetsidesoftware.code-spell-checker",
 				"cweijan.vscode-database-client2",
-				"hashicorp.hcl"
+				"hashicorp.hcl",
+				"bradlc.vscode-tailwindcss",
+				"fredwangwang.vscode-hcl-format"
 			]
 		}
-	},
-	"postAttachCommand": "cd api && task dev -w"
-	// "postAttachCommand": "cd web && task dev"
+	}
 }
