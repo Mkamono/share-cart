@@ -12,9 +12,9 @@ import (
 func (h *handler) MarketGet(ctx context.Context) ([]oas.Market, error) {
 	marketRepo := dbRepo.NewMarketRepository(h.db)
 	marketImageRepo := dbRepo.NewMarketImageRepository(h.db)
-	getMarketsUsecase := usecase.NewGetMarketsUsecase(marketRepo, marketImageRepo)
+	getMarketAllUsecase := usecase.NewGetMarketAllUsecase(marketRepo, marketImageRepo)
 
-	oasMarkets, err := getMarketsUsecase.Run(ctx)
+	oasMarkets, err := getMarketAllUsecase.Run(ctx)
 	if err != nil {
 		slog.ErrorContext(ctx, "Failed to get markets", "error", err)
 		return nil, err

@@ -20,7 +20,7 @@ import (
 	"api/app/shared"
 )
 
-func Test_getMarketsUsecase_Run(t *testing.T) {
+func Test_getMarketAllUsecase_Run(t *testing.T) {
 	slog.SetDefault(slog.New(slog.NewTextHandler(io.Discard, nil)))
 
 	// テストデータ
@@ -165,7 +165,7 @@ func Test_getMarketsUsecase_Run(t *testing.T) {
 			marketRepo := mock_db.NewMockMarketRepository(ctrl)
 			marketImageRepo := mock_db.NewMockMarketImageRepository(ctrl)
 
-			u := &getMarketsUsecase{
+			u := &getMarketAllUsecase{
 				marketRepo:      marketRepo,
 				marketImageRepo: marketImageRepo,
 			}

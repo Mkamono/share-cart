@@ -11,28 +11,28 @@ import (
 	"github.com/samber/lo"
 )
 
-type GetMarketsUsecase interface {
+type GetMarketAllUsecase interface {
 	Run(ctx context.Context) ([]*oas.Market, error)
 }
 
-var _ GetMarketsUsecase = (*getMarketsUsecase)(nil)
+var _ GetMarketAllUsecase = (*getMarketAllUsecase)(nil)
 
-type getMarketsUsecase struct {
+type getMarketAllUsecase struct {
 	marketRepo      dbRepo.MarketRepository
 	marketImageRepo dbRepo.MarketImageRepository
 }
 
-func NewGetMarketsUsecase(
+func NewGetMarketAllUsecase(
 	marketRepo dbRepo.MarketRepository,
 	marketImageRepo dbRepo.MarketImageRepository,
-) GetMarketsUsecase {
-	return &getMarketsUsecase{
+) GetMarketAllUsecase {
+	return &getMarketAllUsecase{
 		marketRepo:      marketRepo,
 		marketImageRepo: marketImageRepo,
 	}
 }
 
-func (u *getMarketsUsecase) Run(ctx context.Context) ([]*oas.Market, error) {
+func (u *getMarketAllUsecase) Run(ctx context.Context) ([]*oas.Market, error) {
 	markets, err := u.marketRepo.GetAll(ctx)
 	if err != nil {
 		slog.ErrorContext(ctx, "Failed to get markets", "error", err)
