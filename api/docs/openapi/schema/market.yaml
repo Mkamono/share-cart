@@ -42,7 +42,14 @@ components:
         description:
           type: string
           example: "market_description"
+        images:
+          type: array
+          items:
+            type: string
+          description: The market images uuid.
+          example: ["xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"]
       required:
         - id
         - name
         - description
+        - images

@@ -31,3 +31,39 @@ table "markets" {
     type = timestamptz
   }
 }
+
+table "market_images" {
+  schema = schema.public
+  column "id" {
+    null = false
+    type = uuid
+  }
+  primary_key {
+    columns = [column.id]
+  }
+
+  column "market_id" {
+    null = false
+    type = uuid
+  }
+  foreign_key "market_images_market_id_fk" {
+    columns     = [column.market_id]
+    ref_columns = [table.markets.column.id]
+  }
+
+  column "image_id" {
+    null        = false
+    type        = uuid
+    description = "The image id (gcs) of the market"
+  }
+
+  // system managed columns
+  column "created_at" {
+    null = false
+    type = timestamptz
+  }
+  column "updated_at" {
+    null = false
+    type = timestamptz
+  }
+}

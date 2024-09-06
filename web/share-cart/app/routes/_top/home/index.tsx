@@ -24,7 +24,9 @@ export const Home = () => {
 			<div className="grid grid-cols-2 gap-4">
 				{markets?.map((market) => (
 					<div key={market.id} className="rounded-md">
-						<MarketCard market={{ ...market, imageURL: testImageURL }} />
+						<MarketCard
+							market={{ ...market, imageURL: market.images[0] || "" }}
+						/>
 					</div>
 				))}
 			</div>

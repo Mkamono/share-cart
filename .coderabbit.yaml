@@ -15,3 +15,4 @@ reviews:
     - "!**/cspell.jsonc"
     - "!.coderabbit.yaml" # cspell:disable-line
     - "!infra/terraform/remote/.terraform.lock.hcl"
+    - "!web/share-cart/app/models/schema.d.ts"

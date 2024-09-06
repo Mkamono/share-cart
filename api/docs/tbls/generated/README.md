@@ -8,6 +8,7 @@
 | 2 | [public.auth_subjects](public.auth_subjects.md) | 5       |         | BASE TABLE |
 | 3 | [public.markets](public.markets.md)             | 5       |         | BASE TABLE |
 | 4 | [public.items](public.items.md)                 | 6       |         | BASE TABLE |
+| 5 | [public.market_images](public.market_images.md) | 5       |         | BASE TABLE |
 
 ## Relations
 

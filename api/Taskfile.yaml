@@ -1,5 +1,8 @@
 version: "3"
 
+includes:
+  dep: taskfiles/dependency.yaml
+
 env:
   POSTGRES_URL:
     sh: echo postgres://$POSTGRES_USER:$POSTGRES_PASSWORD@$POSTGRES_HOST/$POSTGRES_DB?sslmode=disable
@@ -8,41 +11,51 @@ env:
 
 tasks:
   dev:
+    deps: [dep:sqlboiler, dep:ogen, dep:godepgraph, dep:atlas]
     cmds:
       - task: generate
       - task: graph
+      - task: plan
 
   generate:
+    deps: [dep:ogen]
     cmd: ogen --package oas --target app/oas --clean --config docs/openapi/ogen_config.yaml docs/openapi/schema/root.yaml
     sources:
       - docs/openapi/schema/root.yaml
 
   graph:
+    deps: [dep:godepgraph]
     cmd: godepgraph -o .,api -p api/app/shared -s . | dot -Tpng -o ./docs/dependency.png # cspell:disable-line
     sources:
       - ./**/*.go
 
   plan:
+    deps: [dep:atlas]
     cmd: atlas schema apply -u $POSTGRES_URL --to $SCHEMA_FILES --dry-run
 
   apply:
+    deps: [dep:atlas]
     cmds:
       - atlas schema apply -u $POSTGRES_URL --to $SCHEMA_FILES
       - task: tbls
       - task: sqlboiler
 
   apply_ci:
+    deps: [dep:atlas]
     cmds:
       - atlas schema apply -u $POSTGRES_URL --to $SCHEMA_FILES --auto-approve
 
   sqlboiler:
+    deps: [dep:sqlboiler]
     cmd: sqlboiler psql
 
   tbls:
+    deps: [dep:tbls]
     dir: docs
     cmd: tbls doc $POSTGRES_URL --rm-dist -c tbls/.tbls.yaml
 
   mockgen_base:
+    deps: [dep:mockgen]
     vars:
       INTERFACE_FILES:
         sh: find {{.INTERFACE_DIR}} -maxdepth 1 -name "*.go" -type f | sed 's!^.*/!!' # cspell:disable-line
