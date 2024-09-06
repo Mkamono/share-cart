@@ -1,7 +1,7 @@
 version: "3"
 
 includes:
-  dep: "taskfiles/dependency.yaml"
+  dep: taskfiles/dependency.yaml
 
 env:
   POSTGRES_URL:

@@ -8,5 +8,9 @@
 		"rules": {
 			"recommended": true
 		}
+	},
+	"files": {
+		"include": ["./app/*.ts", "./app/*.tsx"],
+		"ignore": ["./app/**/schema.d.ts"]
 	}
 }

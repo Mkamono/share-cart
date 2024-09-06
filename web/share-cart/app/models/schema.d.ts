@@ -104,6 +104,13 @@ export interface components {
             name: string;
             /** @example market_description */
             description: string;
+            /**
+             * @description The market images uuid.
+             * @example [
+             *       "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+             *     ]
+             */
+            images: string[];
         };
     };
     responses: {

@@ -2,12 +2,16 @@ version: "3"
 
 interval: 50ms
 
+includes:
+  dep: taskfiles/dependency.yaml
+
 tasks:
   dev:
     deps:
       - generate
       - gen_env
       - dep_graph
+      - format
 
   generate:
     cmd: bunx -y openapi-typescript ../api/docs/openapi/schema/root.yaml -o share-cart/app/models/schema.d.ts
@@ -23,6 +27,7 @@ tasks:
     sources:
       - "**/*.tsx"
       - "**/*.ts"
+      - "!**/schema.d.ts"
 
   gen_env:
     cmd: bunx gen-env-template .env .env.example
@@ -32,8 +37,7 @@ tasks:
       - ".env.example"
 
   dep_graph:
-    deps:
-      - install-graphviz
+    deps: [dep:graphviz]
     dir: share-cart
     cmd: bunx depcruise app --include-only "^app" --output-type dot | dot -Tpng > dependency-graph.png # cspell: disable-line
     sources:
@@ -41,8 +45,3 @@ tasks:
       - "app/**/*.tsx"
     generates:
       - "dependency-graph.png"
-
-  install-graphviz:
-    cmd: apt update && apt install -y graphviz
-    status:
-      - dot -V
