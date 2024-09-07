@@ -3,7 +3,11 @@ import { useLoaderData } from "@remix-run/react";
 import { useState } from "react";
 import { authenticator } from "~/service/auth.server";
 import { shareCartClient } from "~/service/client";
-import { CreateNewMarketDialog, marketName } from "./CreateNewMarketModal";
+import {
+	CreateNewMarketDialog,
+	marketDescription,
+	marketName,
+} from "./CreateNewMarketModal";
 import { MarketCard } from "./MarketCard";
 
 export async function loader({ request }: { request: Request }) {
@@ -18,13 +22,18 @@ export async function action({ request }: ActionFunctionArgs) {
 	const jwt = await authenticator.isAuthenticated(request);
 	const client = shareCartClient(jwt?.accessToken);
 
-	const { data } = await client.POST("/market", {
+	const res = await client.POST("/market", {
 		body: {
 			name: formData.get(marketName)?.toString() ?? "",
-			description: formData.get("description")?.toString() ?? "",
+			description: formData.get(marketDescription)?.toString() ?? "",
 		},
 	});
-	return json({ message: data });
+
+	if (!res.response.ok) {
+		return json({ message: "Failed to create market" }, { status: 500 });
+	}
+
+	return json({ message: res.data });
 }
 
 const defaultImageURL =
@@ -45,6 +54,7 @@ export default function Home() {
 					onClick={() => {
 						setOpen(true);
 					}}
+					aria-label="新しい市場を作成"
 				>
 					New Market
 				</button>
