@@ -33,7 +33,6 @@ func (h *handler) MarketPost(ctx context.Context, req *oas.MarketPostReq) (*oas.
 		slog.ErrorContext(ctx, "Failed to create market", "error", err)
 		return nil, err
 	}
-	slog.InfoContext(ctx, "Create market success")
 
 	return &oas.Market{
 		ID:          market.ID,

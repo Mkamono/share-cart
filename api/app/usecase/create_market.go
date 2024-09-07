@@ -3,8 +3,8 @@ package usecase
 import (
 	dbEntity "api/app/domain/entity/db"
 	dbRepo "api/app/domain/repository/db"
-	"api/app/infra/boiler"
 	"api/app/oas"
+	"log/slog"
 
 	"context"
 )
@@ -28,13 +28,13 @@ func NewCreateMarketUsecase(
 }
 
 func (u *createMarket) Run(ctx context.Context, req *oas.MarketPostReq) (*oas.Market, error) {
-	m, err := u.marketRepo.Create(ctx, &dbEntity.Market{
-		Market: boiler.Market{
-			Name:        req.Name,
-			Description: req.Description,
-		},
-	})
+	market := &dbEntity.Market{}
+	market.Name = req.Name
+	market.Description = req.Description
+
+	m, err := u.marketRepo.Create(ctx, market)
 	if err != nil {
+		slog.ErrorContext(ctx, "failed to create market", "error", err)
 		return nil, err
 	}
 

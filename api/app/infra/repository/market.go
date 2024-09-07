@@ -6,6 +6,7 @@ import (
 	"api/app/infra/boiler"
 	"context"
 	"database/sql"
+	"log/slog"
 
 	"github.com/google/uuid"
 	"github.com/samber/lo"
@@ -27,6 +28,7 @@ func NewMarketRepository(db *sql.DB) *marketRepository {
 func (m *marketRepository) GetAll(ctx context.Context) ([]*db.Market, error) {
 	boilerMarkets, err := boiler.Markets().All(ctx, m.db)
 	if err != nil {
+		slog.ErrorContext(ctx, "failed to get markets", "error", err)
 		return nil, err
 	}
 
@@ -43,6 +45,7 @@ func (m *marketRepository) Create(ctx context.Context, market *db.Market) (*db.M
 	market.ID = uuid.New()
 	err := market.Insert(ctx, m.db, boil.Infer())
 	if err != nil {
+		slog.ErrorContext(ctx, "failed to create market", "error", err)
 		return nil, err
 	}
 
