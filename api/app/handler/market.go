@@ -12,9 +12,9 @@ import (
 func (h *handler) MarketGet(ctx context.Context) ([]oas.Market, error) {
 	marketRepo := dbRepo.NewMarketRepository(h.db)
 	marketImageRepo := dbRepo.NewMarketImageRepository(h.db)
-	getMarketsUsecase := usecase.NewGetMarketsUsecase(marketRepo, marketImageRepo)
+	getMarketAllUsecase := usecase.NewGetMarketAllUsecase(marketRepo, marketImageRepo)
 
-	oasMarkets, err := getMarketsUsecase.Run(ctx)
+	oasMarkets, err := getMarketAllUsecase.Run(ctx)
 	if err != nil {
 		slog.ErrorContext(ctx, "Failed to get markets", "error", err)
 		return nil, err
@@ -22,4 +22,21 @@ func (h *handler) MarketGet(ctx context.Context) ([]oas.Market, error) {
 	slog.InfoContext(ctx, "Get markets success")
 
 	return lox.FromSlicePtr(oasMarkets), nil
+}
+
+func (h *handler) MarketPost(ctx context.Context, req *oas.MarketPostReq) (*oas.Market, error) {
+	marketRepo := dbRepo.NewMarketRepository(h.db)
+	createMarketUsecase := usecase.NewCreateMarketUsecase(marketRepo)
+
+	market, err := createMarketUsecase.Run(ctx, req)
+	if err != nil {
+		slog.ErrorContext(ctx, "Failed to create market", "error", err)
+		return nil, err
+	}
+
+	return &oas.Market{
+		ID:          market.ID,
+		Name:        market.Name,
+		Description: market.Description,
+	}, nil
 }

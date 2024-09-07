@@ -20,7 +20,7 @@ import (
 	"api/app/shared"
 )
 
-func Test_getMarketsUsecase_Run(t *testing.T) {
+func Test_getMarketAllUsecase_Run(t *testing.T) {
 	slog.SetDefault(slog.New(slog.NewTextHandler(io.Discard, nil)))
 
 	// テストデータ
@@ -41,7 +41,7 @@ func Test_getMarketsUsecase_Run(t *testing.T) {
 	}
 
 	marketIDs := lo.Map(markets, func(m *dbEntity.Market, _ int) string {
-		return m.ID
+		return m.ID.String()
 	})
 
 	type fakeMarketImage struct {
@@ -94,7 +94,7 @@ func Test_getMarketsUsecase_Run(t *testing.T) {
 			},
 			want: lo.Map(markets, func(m *dbEntity.Market, _ int) *oas.Market {
 				return &oas.Market{
-					ID:          m.ID,
+					ID:          m.ID.String(),
 					Name:        m.Name,
 					Description: m.Description,
 					Images:      []string{},
@@ -117,19 +117,19 @@ func Test_getMarketsUsecase_Run(t *testing.T) {
 			},
 			want: []*oas.Market{
 				{
-					ID:          markets[0].ID,
+					ID:          markets[0].ID.String(),
 					Name:        markets[0].Name,
 					Description: markets[0].Description,
-					Images:      []string{marketImages[0].ID, marketImages[1].ID},
+					Images:      []string{marketImages[0].ID.String(), marketImages[1].ID.String()},
 				},
 				{
-					ID:          markets[1].ID,
+					ID:          markets[1].ID.String(),
 					Name:        markets[1].Name,
 					Description: markets[1].Description,
-					Images:      []string{marketImages[2].ID},
+					Images:      []string{marketImages[2].ID.String()},
 				},
 				{
-					ID:          markets[2].ID,
+					ID:          markets[2].ID.String(),
 					Name:        markets[2].Name,
 					Description: markets[2].Description,
 					Images:      []string{},
@@ -165,7 +165,7 @@ func Test_getMarketsUsecase_Run(t *testing.T) {
 			marketRepo := mock_db.NewMockMarketRepository(ctrl)
 			marketImageRepo := mock_db.NewMockMarketImageRepository(ctrl)
 
-			u := &getMarketsUsecase{
+			u := &getMarketAllUsecase{
 				marketRepo:      marketRepo,
 				marketImageRepo: marketImageRepo,
 			}

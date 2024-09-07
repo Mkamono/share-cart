@@ -14,6 +14,7 @@ import (
 	"time"
 
 	"github.com/friendsofgo/errors"
+	"github.com/google/uuid"
 	"github.com/volatiletech/sqlboiler/v4/boil"
 	"github.com/volatiletech/sqlboiler/v4/queries"
 	"github.com/volatiletech/sqlboiler/v4/queries/qm"
@@ -23,7 +24,7 @@ import (
 
 // User is an object representing the database table.
 type User struct {
-	ID        string    `boil:"id" json:"id" toml:"id" yaml:"id"`
+	ID        uuid.UUID `boil:"id" json:"id" toml:"id" yaml:"id"`
 	Name      string    `boil:"name" json:"name" toml:"name" yaml:"name"`
 	CreatedAt time.Time `boil:"created_at" json:"created_at" toml:"created_at" yaml:"created_at"`
 	UpdatedAt time.Time `boil:"updated_at" json:"updated_at" toml:"updated_at" yaml:"updated_at"`
@@ -59,12 +60,12 @@ var UserTableColumns = struct {
 // Generated where
 
 var UserWhere = struct {
-	ID        whereHelperstring
+	ID        whereHelperuuid_UUID
 	Name      whereHelperstring
 	CreatedAt whereHelpertime_Time
 	UpdatedAt whereHelpertime_Time
 }{
-	ID:        whereHelperstring{field: "\"users\".\"id\""},
+	ID:        whereHelperuuid_UUID{field: "\"users\".\"id\""},
 	Name:      whereHelperstring{field: "\"users\".\"name\""},
 	CreatedAt: whereHelpertime_Time{field: "\"users\".\"created_at\""},
 	UpdatedAt: whereHelpertime_Time{field: "\"users\".\"updated_at\""},
@@ -523,7 +524,7 @@ func (userL) LoadAuthSubjects(ctx context.Context, e boil.ContextExecutor, singu
 
 	for _, foreign := range resultSlice {
 		for _, local := range slice {
-			if local.ID == foreign.UserID {
+			if queries.Equal(local.ID, foreign.UserID) {
 				local.R.AuthSubjects = append(local.R.AuthSubjects, foreign)
 				if foreign.R == nil {
 					foreign.R = &authSubjectR{}
@@ -545,7 +546,7 @@ func (o *User) AddAuthSubjects(ctx context.Context, exec boil.ContextExecutor, i
 	var err error
 	for _, rel := range related {
 		if insert {
-			rel.UserID = o.ID
+			queries.Assign(&rel.UserID, o.ID)
 			if err = rel.Insert(ctx, exec, boil.Infer()); err != nil {
 				return errors.Wrap(err, "failed to insert into foreign table")
 			}
@@ -566,7 +567,7 @@ func (o *User) AddAuthSubjects(ctx context.Context, exec boil.ContextExecutor, i
 				return errors.Wrap(err, "failed to update foreign table")
 			}
 
-			rel.UserID = o.ID
+			queries.Assign(&rel.UserID, o.ID)
 		}
 	}
 
@@ -603,7 +604,7 @@ func Users(mods ...qm.QueryMod) userQuery {
 
 // FindUser retrieves a single record by ID with an executor.
 // If selectCols is empty Find will return all columns.
-func FindUser(ctx context.Context, exec boil.ContextExecutor, iD string, selectCols ...string) (*User, error) {
+func FindUser(ctx context.Context, exec boil.ContextExecutor, iD uuid.UUID, selectCols ...string) (*User, error) {
 	userObj := &User{}
 
 	sel := "*"
@@ -1132,7 +1133,7 @@ func (o *UserSlice) ReloadAll(ctx context.Context, exec boil.ContextExecutor) er
 }
 
 // UserExists checks if the User row exists.
-func UserExists(ctx context.Context, exec boil.ContextExecutor, iD string) (bool, error) {
+func UserExists(ctx context.Context, exec boil.ContextExecutor, iD uuid.UUID) (bool, error) {
 	var exists bool
 	sql := "select exists(select 1 from \"users\" where \"id\"=$1 limit 1)"
 

@@ -7,4 +7,5 @@ import (
 
 type MarketRepository interface {
 	GetAll(ctx context.Context) ([]*dbEntity.Market, error)
+	Create(ctx context.Context, market *dbEntity.Market) (*dbEntity.Market, error)
 }

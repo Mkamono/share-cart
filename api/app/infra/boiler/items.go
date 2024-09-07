@@ -14,6 +14,7 @@ import (
 	"time"
 
 	"github.com/friendsofgo/errors"
+	"github.com/google/uuid"
 	"github.com/volatiletech/sqlboiler/v4/boil"
 	"github.com/volatiletech/sqlboiler/v4/queries"
 	"github.com/volatiletech/sqlboiler/v4/queries/qm"
@@ -24,7 +25,7 @@ import (
 
 // Item is an object representing the database table.
 type Item struct {
-	ID        string        `boil:"id" json:"id" toml:"id" yaml:"id"`
+	ID        uuid.UUID     `boil:"id" json:"id" toml:"id" yaml:"id"`
 	MarketID  string        `boil:"market_id" json:"market_id" toml:"market_id" yaml:"market_id"`
 	Name      string        `boil:"name" json:"name" toml:"name" yaml:"name"`
 	Price     types.Decimal `boil:"price" json:"price" toml:"price" yaml:"price"`
@@ -91,14 +92,14 @@ func (w whereHelpertypes_Decimal) GTE(x types.Decimal) qm.QueryMod {
 }
 
 var ItemWhere = struct {
-	ID        whereHelperstring
+	ID        whereHelperuuid_UUID
 	MarketID  whereHelperstring
 	Name      whereHelperstring
 	Price     whereHelpertypes_Decimal
 	CreatedAt whereHelpertime_Time
 	UpdatedAt whereHelpertime_Time
 }{
-	ID:        whereHelperstring{field: "\"items\".\"id\""},
+	ID:        whereHelperuuid_UUID{field: "\"items\".\"id\""},
 	MarketID:  whereHelperstring{field: "\"items\".\"market_id\""},
 	Name:      whereHelperstring{field: "\"items\".\"name\""},
 	Price:     whereHelpertypes_Decimal{field: "\"items\".\"price\""},
@@ -490,7 +491,9 @@ func (itemL) LoadMarket(ctx context.Context, e boil.ContextExecutor, singular bo
 		if object.R == nil {
 			object.R = &itemR{}
 		}
-		args[object.MarketID] = struct{}{}
+		if !queries.IsNil(object.MarketID) {
+			args[object.MarketID] = struct{}{}
+		}
 
 	} else {
 		for _, obj := range slice {
@@ -498,7 +501,9 @@ func (itemL) LoadMarket(ctx context.Context, e boil.ContextExecutor, singular bo
 				obj.R = &itemR{}
 			}
 
-			args[obj.MarketID] = struct{}{}
+			if !queries.IsNil(obj.MarketID) {
+				args[obj.MarketID] = struct{}{}
+			}
 
 		}
 	}
@@ -563,7 +568,7 @@ func (itemL) LoadMarket(ctx context.Context, e boil.ContextExecutor, singular bo
 
 	for _, local := range slice {
 		for _, foreign := range resultSlice {
-			if local.MarketID == foreign.ID {
+			if queries.Equal(local.MarketID, foreign.ID) {
 				local.R.Market = foreign
 				if foreign.R == nil {
 					foreign.R = &marketR{}
@@ -604,7 +609,7 @@ func (o *Item) SetMarket(ctx context.Context, exec boil.ContextExecutor, insert 
 		return errors.Wrap(err, "failed to update local table")
 	}
 
-	o.MarketID = related.ID
+	queries.Assign(&o.MarketID, related.ID)
 	if o.R == nil {
 		o.R = &itemR{
 			Market: related,
@@ -637,7 +642,7 @@ func Items(mods ...qm.QueryMod) itemQuery {
 
 // FindItem retrieves a single record by ID with an executor.
 // If selectCols is empty Find will return all columns.
-func FindItem(ctx context.Context, exec boil.ContextExecutor, iD string, selectCols ...string) (*Item, error) {
+func FindItem(ctx context.Context, exec boil.ContextExecutor, iD uuid.UUID, selectCols ...string) (*Item, error) {
 	itemObj := &Item{}
 
 	sel := "*"
@@ -1166,7 +1171,7 @@ func (o *ItemSlice) ReloadAll(ctx context.Context, exec boil.ContextExecutor) er
 }
 
 // ItemExists checks if the Item row exists.
-func ItemExists(ctx context.Context, exec boil.ContextExecutor, iD string) (bool, error) {
+func ItemExists(ctx context.Context, exec boil.ContextExecutor, iD uuid.UUID) (bool, error) {
 	var exists bool
 	sql := "select exists(select 1 from \"items\" where \"id\"=$1 limit 1)"
 

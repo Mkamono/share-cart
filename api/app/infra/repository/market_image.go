@@ -6,6 +6,7 @@ import (
 	"api/app/infra/boiler"
 	"context"
 	"database/sql"
+	"log/slog"
 
 	"github.com/samber/lo"
 )
@@ -27,6 +28,7 @@ func (m *marketImageRepository) GetAllByMarketIDs(ctx context.Context, marketIDs
 		boiler.MarketImageWhere.MarketID.IN(marketIDs),
 	).All(ctx, m.db)
 	if err != nil {
+		slog.ErrorContext(ctx, "failed to get market images", "error", err)
 		return nil, err
 	}
 

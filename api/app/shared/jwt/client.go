@@ -4,6 +4,7 @@ import (
 	"api/app/handler"
 	"context"
 	"fmt"
+	"log/slog"
 	"net/url"
 	"time"
 
@@ -31,6 +32,7 @@ func NewClient(issuerURL *url.URL, audience []string) (*jwtClient, error) {
 		audience,
 	)
 	if err != nil {
+		slog.Error("failed to create JWT validator", "error", err)
 		return nil, fmt.Errorf("failed to create JWT validator: %v", err)
 	}
 
@@ -42,15 +44,18 @@ func NewClient(issuerURL *url.URL, audience []string) (*jwtClient, error) {
 func (j *jwtClient) Validate(ctx context.Context, token string) (*validator.ValidatedClaims, error) {
 	i, err := j.validator.ValidateToken(ctx, token)
 	if err != nil {
+		slog.ErrorContext(ctx, "failed to validate JWT token", "error", err)
 		return nil, err
 	}
 
 	claims, ok := i.(*validator.ValidatedClaims)
 	if !ok {
+		slog.ErrorContext(ctx, "failed to assert validated claims type")
 		return nil, fmt.Errorf("failed to assert validated claims type")
 	}
 
 	if len(claims.RegisteredClaims.Subject) == 0 {
+		slog.ErrorContext(ctx, "subject in JWT claims is empty")
 		return nil, fmt.Errorf("subject in JWT claims is empty")
 	}
 

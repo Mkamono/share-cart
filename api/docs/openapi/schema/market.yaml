@@ -13,21 +13,53 @@ paths:
         - Bearer: []
       responses:
         "200":
-          $ref: "#/components/responses/getMarket"
+          description: A list of markets.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/market"
+        "default":
+          $ref: "http_response.yaml#/components/responses/500InternalServerError"
+
+    post:
+      summary: Create a new market
+      security:
+        - Bearer: []
+      requestBody:
+        $ref: "#/components/requestBodies/createMarket"
+      responses:
+        "201":
+          description: A new market.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/market"
         "default":
           $ref: "http_response.yaml#/components/responses/500InternalServerError"
 
 components:
-  responses:
-    getMarket:
-      description: A list of markets.
+  # RequestBodies
+  requestBodies:
+    createMarket:
+      required: true
       content:
         application/json:
           schema:
-            type: array
-            items:
-              $ref: "#/components/schemas/market"
+            type: object
+            properties:
+              name:
+                type: string
+                example: "market_name"
+              description:
+                type: string
+                example: "market_description"
+            required:
+              - name
+              - description
 
+  # Schemas
   schemas:
     market:
       type: object

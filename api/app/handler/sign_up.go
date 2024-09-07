@@ -28,7 +28,6 @@ func (h *handler) SignUpPost(ctx context.Context, req *oas.SignUpPostReq) (oas.S
 		return nil, err
 	}
 
-	slog.InfoContext(ctx, "Usecase: Create user success")
 	return &oas.R201Created{
 		Message: "Created",
 	}, nil

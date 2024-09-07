@@ -14,6 +14,7 @@ import (
 	"time"
 
 	"github.com/friendsofgo/errors"
+	"github.com/google/uuid"
 	"github.com/volatiletech/sqlboiler/v4/boil"
 	"github.com/volatiletech/sqlboiler/v4/queries"
 	"github.com/volatiletech/sqlboiler/v4/queries/qm"
@@ -23,7 +24,7 @@ import (
 
 // AuthSubject is an object representing the database table.
 type AuthSubject struct {
-	ID        string    `boil:"id" json:"id" toml:"id" yaml:"id"`
+	ID        uuid.UUID `boil:"id" json:"id" toml:"id" yaml:"id"`
 	UserID    string    `boil:"user_id" json:"user_id" toml:"user_id" yaml:"user_id"`
 	Subject   string    `boil:"subject" json:"subject" toml:"subject" yaml:"subject"`
 	CreatedAt time.Time `boil:"created_at" json:"created_at" toml:"created_at" yaml:"created_at"`
@@ -62,6 +63,27 @@ var AuthSubjectTableColumns = struct {
 }
 
 // Generated where
+
+type whereHelperuuid_UUID struct{ field string }
+
+func (w whereHelperuuid_UUID) EQ(x uuid.UUID) qm.QueryMod {
+	return qmhelper.Where(w.field, qmhelper.EQ, x)
+}
+func (w whereHelperuuid_UUID) NEQ(x uuid.UUID) qm.QueryMod {
+	return qmhelper.Where(w.field, qmhelper.NEQ, x)
+}
+func (w whereHelperuuid_UUID) LT(x uuid.UUID) qm.QueryMod {
+	return qmhelper.Where(w.field, qmhelper.LT, x)
+}
+func (w whereHelperuuid_UUID) LTE(x uuid.UUID) qm.QueryMod {
+	return qmhelper.Where(w.field, qmhelper.LTE, x)
+}
+func (w whereHelperuuid_UUID) GT(x uuid.UUID) qm.QueryMod {
+	return qmhelper.Where(w.field, qmhelper.GT, x)
+}
+func (w whereHelperuuid_UUID) GTE(x uuid.UUID) qm.QueryMod {
+	return qmhelper.Where(w.field, qmhelper.GTE, x)
+}
 
 type whereHelperstring struct{ field string }
 
@@ -112,13 +134,13 @@ func (w whereHelpertime_Time) GTE(x time.Time) qm.QueryMod {
 }
 
 var AuthSubjectWhere = struct {
-	ID        whereHelperstring
+	ID        whereHelperuuid_UUID
 	UserID    whereHelperstring
 	Subject   whereHelperstring
 	CreatedAt whereHelpertime_Time
 	UpdatedAt whereHelpertime_Time
 }{
-	ID:        whereHelperstring{field: "\"auth_subjects\".\"id\""},
+	ID:        whereHelperuuid_UUID{field: "\"auth_subjects\".\"id\""},
 	UserID:    whereHelperstring{field: "\"auth_subjects\".\"user_id\""},
 	Subject:   whereHelperstring{field: "\"auth_subjects\".\"subject\""},
 	CreatedAt: whereHelpertime_Time{field: "\"auth_subjects\".\"created_at\""},
@@ -509,7 +531,9 @@ func (authSubjectL) LoadUser(ctx context.Context, e boil.ContextExecutor, singul
 		if object.R == nil {
 			object.R = &authSubjectR{}
 		}
-		args[object.UserID] = struct{}{}
+		if !queries.IsNil(object.UserID) {
+			args[object.UserID] = struct{}{}
+		}
 
 	} else {
 		for _, obj := range slice {
@@ -517,7 +541,9 @@ func (authSubjectL) LoadUser(ctx context.Context, e boil.ContextExecutor, singul
 				obj.R = &authSubjectR{}
 			}
 
-			args[obj.UserID] = struct{}{}
+			if !queries.IsNil(obj.UserID) {
+				args[obj.UserID] = struct{}{}
+			}
 
 		}
 	}
@@ -582,7 +608,7 @@ func (authSubjectL) LoadUser(ctx context.Context, e boil.ContextExecutor, singul
 
 	for _, local := range slice {
 		for _, foreign := range resultSlice {
-			if local.UserID == foreign.ID {
+			if queries.Equal(local.UserID, foreign.ID) {
 				local.R.User = foreign
 				if foreign.R == nil {
 					foreign.R = &userR{}
@@ -623,7 +649,7 @@ func (o *AuthSubject) SetUser(ctx context.Context, exec boil.ContextExecutor, in
 		return errors.Wrap(err, "failed to update local table")
 	}
 
-	o.UserID = related.ID
+	queries.Assign(&o.UserID, related.ID)
 	if o.R == nil {
 		o.R = &authSubjectR{
 			User: related,
@@ -656,7 +682,7 @@ func AuthSubjects(mods ...qm.QueryMod) authSubjectQuery {
 
 // FindAuthSubject retrieves a single record by ID with an executor.
 // If selectCols is empty Find will return all columns.
-func FindAuthSubject(ctx context.Context, exec boil.ContextExecutor, iD string, selectCols ...string) (*AuthSubject, error) {
+func FindAuthSubject(ctx context.Context, exec boil.ContextExecutor, iD uuid.UUID, selectCols ...string) (*AuthSubject, error) {
 	authSubjectObj := &AuthSubject{}
 
 	sel := "*"
@@ -1185,7 +1211,7 @@ func (o *AuthSubjectSlice) ReloadAll(ctx context.Context, exec boil.ContextExecu
 }
 
 // AuthSubjectExists checks if the AuthSubject row exists.
-func AuthSubjectExists(ctx context.Context, exec boil.ContextExecutor, iD string) (bool, error) {
+func AuthSubjectExists(ctx context.Context, exec boil.ContextExecutor, iD uuid.UUID) (bool, error) {
 	var exists bool
 	sql := "select exists(select 1 from \"auth_subjects\" where \"id\"=$1 limit 1)"
 

@@ -22,6 +22,15 @@ func (UnimplementedHandler) MarketGet(ctx context.Context) (r []Market, _ error)
 	return r, ht.ErrNotImplemented
 }
 
+// MarketPost implements POST /market operation.
+//
+// Create a new market.
+//
+// POST /market
+func (UnimplementedHandler) MarketPost(ctx context.Context, req *MarketPostReq) (r *Market, _ error) {
+	return r, ht.ErrNotImplemented
+}
+
 // SignUpPost implements POST /sign-up operation.
 //
 // POST /sign-up

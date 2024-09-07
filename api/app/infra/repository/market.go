@@ -6,8 +6,11 @@ import (
 	"api/app/infra/boiler"
 	"context"
 	"database/sql"
+	"log/slog"
 
+	"github.com/google/uuid"
 	"github.com/samber/lo"
+	"github.com/volatiletech/sqlboiler/v4/boil"
 )
 
 var _ dbRepo.MarketRepository = (*marketRepository)(nil)
@@ -25,6 +28,7 @@ func NewMarketRepository(db *sql.DB) *marketRepository {
 func (m *marketRepository) GetAll(ctx context.Context) ([]*db.Market, error) {
 	boilerMarkets, err := boiler.Markets().All(ctx, m.db)
 	if err != nil {
+		slog.ErrorContext(ctx, "failed to get markets", "error", err)
 		return nil, err
 	}
 
@@ -35,4 +39,15 @@ func (m *marketRepository) GetAll(ctx context.Context) ([]*db.Market, error) {
 	})
 
 	return markets, nil
+}
+
+func (m *marketRepository) Create(ctx context.Context, market *db.Market) (*db.Market, error) {
+	market.ID = uuid.New()
+	err := market.Insert(ctx, m.db, boil.Infer())
+	if err != nil {
+		slog.ErrorContext(ctx, "failed to create market", "error", err)
+		return nil, err
+	}
+
+	return market, nil
 }
