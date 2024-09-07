@@ -4,19 +4,12 @@ import type { paths } from "~/models/schema";
 import { config } from "~/service/config.server";
 
 export const shareCartClient = (accessToken: string | undefined) => {
-	return createClient<paths>({
-		baseUrl: config.API_HOST,
-		fetch: async (
-			input: string | URL | globalThis.Request,
-			init?: RequestInit,
-		): Promise<Response> => {
-			return fetch(input, {
-				...init,
-				headers: new Headers({
-					...init?.headers,
-					Authorization: `Bearer ${accessToken ?? "empty"}`,
-				}),
-			});
+	const client = createClient<paths>({ baseUrl: config.API_HOST });
+	client.use({
+		async onRequest({ request, options }) {
+			request.headers.set("Authorization", `Bearer ${accessToken ?? "empty"}`);
+			return request;
 		},
 	});
+	return client;
 };
