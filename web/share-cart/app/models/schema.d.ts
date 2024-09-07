@@ -78,12 +78,41 @@ export interface paths {
             };
             requestBody?: never;
             responses: {
-                200: components["responses"]["getMarket"];
+                /** @description A list of markets. */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["market"][];
+                    };
+                };
                 default: components["responses"]["500InternalServerError"];
             };
         };
         put?: never;
-        post?: never;
+        /** Create a new market */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody: components["requestBodies"]["createMarket"];
+            responses: {
+                /** @description A new market. */
+                201: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["market"];
+                    };
+                };
+                default: components["responses"]["500InternalServerError"];
+            };
+        };
         delete?: never;
         options?: never;
         head?: never;
@@ -162,15 +191,6 @@ export interface components {
                 };
             };
         };
-        /** @description A list of markets. */
-        getMarket: {
-            headers: {
-                [name: string]: unknown;
-            };
-            content: {
-                "application/json": components["schemas"]["market"][];
-            };
-        };
     };
     parameters: never;
     requestBodies: {
@@ -179,6 +199,16 @@ export interface components {
                 "application/json": {
                     /** @example your_name */
                     name?: string;
+                };
+            };
+        };
+        createMarket: {
+            content: {
+                "application/json": {
+                    /** @example market_name */
+                    name: string;
+                    /** @example market_description */
+                    description: string;
                 };
             };
         };

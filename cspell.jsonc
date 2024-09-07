@@ -18,6 +18,7 @@
 		"googleapis",
 		"graphviz",
 		"gserviceaccount",
+		"headlessui",
 		"jwks",
 		"mockgen",
 		"ogen",

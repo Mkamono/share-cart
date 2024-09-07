@@ -6,8 +6,7 @@ type MarketCardProps = {
 		description: string;
 	};
 };
-const defaultImageURL =
-	"https://cdn.pixabay.com/photo/2021/01/01/12/44/concert-5878452_640.jpg";
+const noImageURL = "https://placehold.jp/150x150.png";
 
 export const MarketCard = (props: MarketCardProps) => {
 	return (
@@ -17,12 +16,13 @@ export const MarketCard = (props: MarketCardProps) => {
 				className="object-cover w-full h-32"
 				alt="market"
 				onError={(e) => {
-					(e.target as HTMLImageElement).src = defaultImageURL;
+					(e.target as HTMLImageElement).src = noImageURL;
 				}}
 			/>
 			<p>
 				<strong>{props.market.name}</strong>
 			</p>
+			<p className="text-gray-500">{props.market.description}</p>
 		</div>
 	);
 };

@@ -10,7 +10,12 @@
 		}
 	},
 	"files": {
-		"include": ["./app/*.ts", "./app/*.tsx"],
-		"ignore": ["./app/**/schema.d.ts"]
+		"include": [
+			"./app/*.ts",
+			"./app/*.tsx"
+		],
+		"ignore": [
+			"./app/**/schema.d.ts"
+		]
 	}
 }
