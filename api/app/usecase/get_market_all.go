@@ -63,7 +63,7 @@ func (u *getMarketAllUsecase) Run(ctx context.Context) ([]*oas.Market, error) {
 			Name:        m.Name,
 			Description: m.Description,
 			Images: lo.Map(images, func(i *dbEntity.MarketImage, _ int) string {
-				return i.ID.String()
+				return i.ImageID
 			}),
 		}
 	})

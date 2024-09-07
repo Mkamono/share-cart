@@ -7,4 +7,5 @@ import (
 
 type MarketImageRepository interface {
 	GetAllByMarketIDs(ctx context.Context, marketIDs []string) ([]*dbEntity.MarketImage, error)
+	DeleteByMarketID(ctx context.Context, marketID string) error
 }

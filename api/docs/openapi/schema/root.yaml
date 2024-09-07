@@ -33,6 +33,9 @@ paths:
   /market:
     $ref: "market.yaml#/paths/~1market"
 
+  /market/{marketId}:
+    $ref: "market.yaml#/paths/~1market~1{marketId}"
+
 components:
   requestBodies:
     SignUp:

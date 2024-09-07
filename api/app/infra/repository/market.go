@@ -51,3 +51,31 @@ func (m *marketRepository) Create(ctx context.Context, market *db.Market) (*db.M
 
 	return market, nil
 }
+
+func (m *marketRepository) GetByID(ctx context.Context, id uuid.UUID) (*db.Market, error) {
+	boilerMarket, err := boiler.FindMarket(ctx, m.db, id)
+	if err != nil {
+		slog.ErrorContext(ctx, "failed to get market", "error", err)
+		return nil, err
+	}
+
+	return &db.Market{
+		Market: *boilerMarket,
+	}, nil
+}
+
+func (m *marketRepository) DeleteByID(ctx context.Context, id uuid.UUID) error {
+	boilerMarket, err := boiler.FindMarket(ctx, m.db, id)
+	if err != nil {
+		slog.ErrorContext(ctx, "failed to get market", "error", err)
+		return err
+	}
+
+	_, err = boilerMarket.Delete(ctx, m.db)
+	if err != nil {
+		slog.ErrorContext(ctx, "failed to delete market", "error", err)
+		return err
+	}
+
+	return nil
+}

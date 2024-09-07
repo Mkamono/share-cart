@@ -74,6 +74,9 @@ func (s *Market) SetImages(val []string) {
 	s.Images = val
 }
 
+// MarketMarketIdDeleteNoContent is response for MarketMarketIdDelete operation.
+type MarketMarketIdDeleteNoContent struct{}
+
 type MarketPostReq struct {
 	Name        string `json:"name"`
 	Description string `json:"description"`

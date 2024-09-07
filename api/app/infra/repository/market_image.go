@@ -40,3 +40,15 @@ func (m *marketImageRepository) GetAllByMarketIDs(ctx context.Context, marketIDs
 
 	return marketImages, nil
 }
+
+func (m *marketImageRepository) DeleteByMarketID(ctx context.Context, marketID string) error {
+	_, err := boiler.MarketImages(
+		boiler.MarketImageWhere.MarketID.EQ(marketID),
+	).DeleteAll(ctx, m.db)
+	if err != nil {
+		slog.ErrorContext(ctx, "failed to delete market images", "error", err)
+		return err
+	}
+
+	return nil
+}
