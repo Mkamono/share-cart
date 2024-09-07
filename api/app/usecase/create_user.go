@@ -44,13 +44,13 @@ func (u *createUserUsecase) Run(ctx context.Context, name string, sub string) er
 			ID   string
 			Name string
 		}{
-			ID:   user.ID,
+			ID:   user.ID.String(),
 			Name: user.Name,
 		})
 
 		subject := &dbEntity.AuthSubject{}
 		subject.Subject = sub
-		subject.UserID = user.ID
+		subject.UserID = user.ID.String()
 		err = u.subjectRepo.Create(ctx, subject)
 		if err != nil {
 			slog.ErrorContext(ctx, "Repo: Failed to create auth subject", "error", err)

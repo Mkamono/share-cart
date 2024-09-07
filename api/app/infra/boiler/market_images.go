@@ -14,6 +14,7 @@ import (
 	"time"
 
 	"github.com/friendsofgo/errors"
+	"github.com/google/uuid"
 	"github.com/volatiletech/sqlboiler/v4/boil"
 	"github.com/volatiletech/sqlboiler/v4/queries"
 	"github.com/volatiletech/sqlboiler/v4/queries/qm"
@@ -23,7 +24,7 @@ import (
 
 // MarketImage is an object representing the database table.
 type MarketImage struct {
-	ID        string    `boil:"id" json:"id" toml:"id" yaml:"id"`
+	ID        uuid.UUID `boil:"id" json:"id" toml:"id" yaml:"id"`
 	MarketID  string    `boil:"market_id" json:"market_id" toml:"market_id" yaml:"market_id"`
 	CreatedAt time.Time `boil:"created_at" json:"created_at" toml:"created_at" yaml:"created_at"`
 	UpdatedAt time.Time `boil:"updated_at" json:"updated_at" toml:"updated_at" yaml:"updated_at"`
@@ -64,13 +65,13 @@ var MarketImageTableColumns = struct {
 // Generated where
 
 var MarketImageWhere = struct {
-	ID        whereHelperstring
+	ID        whereHelperuuid_UUID
 	MarketID  whereHelperstring
 	CreatedAt whereHelpertime_Time
 	UpdatedAt whereHelpertime_Time
 	ImageID   whereHelperstring
 }{
-	ID:        whereHelperstring{field: "\"market_images\".\"id\""},
+	ID:        whereHelperuuid_UUID{field: "\"market_images\".\"id\""},
 	MarketID:  whereHelperstring{field: "\"market_images\".\"market_id\""},
 	CreatedAt: whereHelpertime_Time{field: "\"market_images\".\"created_at\""},
 	UpdatedAt: whereHelpertime_Time{field: "\"market_images\".\"updated_at\""},
@@ -461,7 +462,9 @@ func (marketImageL) LoadMarket(ctx context.Context, e boil.ContextExecutor, sing
 		if object.R == nil {
 			object.R = &marketImageR{}
 		}
-		args[object.MarketID] = struct{}{}
+		if !queries.IsNil(object.MarketID) {
+			args[object.MarketID] = struct{}{}
+		}
 
 	} else {
 		for _, obj := range slice {
@@ -469,7 +472,9 @@ func (marketImageL) LoadMarket(ctx context.Context, e boil.ContextExecutor, sing
 				obj.R = &marketImageR{}
 			}
 
-			args[obj.MarketID] = struct{}{}
+			if !queries.IsNil(obj.MarketID) {
+				args[obj.MarketID] = struct{}{}
+			}
 
 		}
 	}
@@ -534,7 +539,7 @@ func (marketImageL) LoadMarket(ctx context.Context, e boil.ContextExecutor, sing
 
 	for _, local := range slice {
 		for _, foreign := range resultSlice {
-			if local.MarketID == foreign.ID {
+			if queries.Equal(local.MarketID, foreign.ID) {
 				local.R.Market = foreign
 				if foreign.R == nil {
 					foreign.R = &marketR{}
@@ -575,7 +580,7 @@ func (o *MarketImage) SetMarket(ctx context.Context, exec boil.ContextExecutor, 
 		return errors.Wrap(err, "failed to update local table")
 	}
 
-	o.MarketID = related.ID
+	queries.Assign(&o.MarketID, related.ID)
 	if o.R == nil {
 		o.R = &marketImageR{
 			Market: related,
@@ -608,7 +613,7 @@ func MarketImages(mods ...qm.QueryMod) marketImageQuery {
 
 // FindMarketImage retrieves a single record by ID with an executor.
 // If selectCols is empty Find will return all columns.
-func FindMarketImage(ctx context.Context, exec boil.ContextExecutor, iD string, selectCols ...string) (*MarketImage, error) {
+func FindMarketImage(ctx context.Context, exec boil.ContextExecutor, iD uuid.UUID, selectCols ...string) (*MarketImage, error) {
 	marketImageObj := &MarketImage{}
 
 	sel := "*"
@@ -1137,7 +1142,7 @@ func (o *MarketImageSlice) ReloadAll(ctx context.Context, exec boil.ContextExecu
 }
 
 // MarketImageExists checks if the MarketImage row exists.
-func MarketImageExists(ctx context.Context, exec boil.ContextExecutor, iD string) (bool, error) {
+func MarketImageExists(ctx context.Context, exec boil.ContextExecutor, iD uuid.UUID) (bool, error) {
 	var exists bool
 	sql := "select exists(select 1 from \"market_images\" where \"id\"=$1 limit 1)"
 

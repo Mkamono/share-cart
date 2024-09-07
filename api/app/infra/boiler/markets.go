@@ -14,6 +14,7 @@ import (
 	"time"
 
 	"github.com/friendsofgo/errors"
+	"github.com/google/uuid"
 	"github.com/volatiletech/sqlboiler/v4/boil"
 	"github.com/volatiletech/sqlboiler/v4/queries"
 	"github.com/volatiletech/sqlboiler/v4/queries/qm"
@@ -23,7 +24,7 @@ import (
 
 // Market is an object representing the database table.
 type Market struct {
-	ID          string    `boil:"id" json:"id" toml:"id" yaml:"id"`
+	ID          uuid.UUID `boil:"id" json:"id" toml:"id" yaml:"id"`
 	Name        string    `boil:"name" json:"name" toml:"name" yaml:"name"`
 	Description string    `boil:"description" json:"description" toml:"description" yaml:"description"`
 	CreatedAt   time.Time `boil:"created_at" json:"created_at" toml:"created_at" yaml:"created_at"`
@@ -64,13 +65,13 @@ var MarketTableColumns = struct {
 // Generated where
 
 var MarketWhere = struct {
-	ID          whereHelperstring
+	ID          whereHelperuuid_UUID
 	Name        whereHelperstring
 	Description whereHelperstring
 	CreatedAt   whereHelpertime_Time
 	UpdatedAt   whereHelpertime_Time
 }{
-	ID:          whereHelperstring{field: "\"markets\".\"id\""},
+	ID:          whereHelperuuid_UUID{field: "\"markets\".\"id\""},
 	Name:        whereHelperstring{field: "\"markets\".\"name\""},
 	Description: whereHelperstring{field: "\"markets\".\"description\""},
 	CreatedAt:   whereHelpertime_Time{field: "\"markets\".\"created_at\""},
@@ -554,7 +555,7 @@ func (marketL) LoadItems(ctx context.Context, e boil.ContextExecutor, singular b
 
 	for _, foreign := range resultSlice {
 		for _, local := range slice {
-			if local.ID == foreign.MarketID {
+			if queries.Equal(local.ID, foreign.MarketID) {
 				local.R.Items = append(local.R.Items, foreign)
 				if foreign.R == nil {
 					foreign.R = &itemR{}
@@ -667,7 +668,7 @@ func (marketL) LoadMarketImages(ctx context.Context, e boil.ContextExecutor, sin
 
 	for _, foreign := range resultSlice {
 		for _, local := range slice {
-			if local.ID == foreign.MarketID {
+			if queries.Equal(local.ID, foreign.MarketID) {
 				local.R.MarketImages = append(local.R.MarketImages, foreign)
 				if foreign.R == nil {
 					foreign.R = &marketImageR{}
@@ -689,7 +690,7 @@ func (o *Market) AddItems(ctx context.Context, exec boil.ContextExecutor, insert
 	var err error
 	for _, rel := range related {
 		if insert {
-			rel.MarketID = o.ID
+			queries.Assign(&rel.MarketID, o.ID)
 			if err = rel.Insert(ctx, exec, boil.Infer()); err != nil {
 				return errors.Wrap(err, "failed to insert into foreign table")
 			}
@@ -710,7 +711,7 @@ func (o *Market) AddItems(ctx context.Context, exec boil.ContextExecutor, insert
 				return errors.Wrap(err, "failed to update foreign table")
 			}
 
-			rel.MarketID = o.ID
+			queries.Assign(&rel.MarketID, o.ID)
 		}
 	}
 
@@ -742,7 +743,7 @@ func (o *Market) AddMarketImages(ctx context.Context, exec boil.ContextExecutor,
 	var err error
 	for _, rel := range related {
 		if insert {
-			rel.MarketID = o.ID
+			queries.Assign(&rel.MarketID, o.ID)
 			if err = rel.Insert(ctx, exec, boil.Infer()); err != nil {
 				return errors.Wrap(err, "failed to insert into foreign table")
 			}
@@ -763,7 +764,7 @@ func (o *Market) AddMarketImages(ctx context.Context, exec boil.ContextExecutor,
 				return errors.Wrap(err, "failed to update foreign table")
 			}
 
-			rel.MarketID = o.ID
+			queries.Assign(&rel.MarketID, o.ID)
 		}
 	}
 
@@ -800,7 +801,7 @@ func Markets(mods ...qm.QueryMod) marketQuery {
 
 // FindMarket retrieves a single record by ID with an executor.
 // If selectCols is empty Find will return all columns.
-func FindMarket(ctx context.Context, exec boil.ContextExecutor, iD string, selectCols ...string) (*Market, error) {
+func FindMarket(ctx context.Context, exec boil.ContextExecutor, iD uuid.UUID, selectCols ...string) (*Market, error) {
 	marketObj := &Market{}
 
 	sel := "*"
@@ -1329,7 +1330,7 @@ func (o *MarketSlice) ReloadAll(ctx context.Context, exec boil.ContextExecutor) 
 }
 
 // MarketExists checks if the Market row exists.
-func MarketExists(ctx context.Context, exec boil.ContextExecutor, iD string) (bool, error) {
+func MarketExists(ctx context.Context, exec boil.ContextExecutor, iD uuid.UUID) (bool, error) {
 	var exists bool
 	sql := "select exists(select 1 from \"markets\" where \"id\"=$1 limit 1)"
 

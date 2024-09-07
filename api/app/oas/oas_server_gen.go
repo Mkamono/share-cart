@@ -14,6 +14,12 @@ type Handler interface {
 	//
 	// GET /market
 	MarketGet(ctx context.Context) ([]Market, error)
+	// MarketPost implements POST /market operation.
+	//
+	// Create a new market.
+	//
+	// POST /market
+	MarketPost(ctx context.Context, req *MarketPostReq) (*Market, error)
 	// SignUpPost implements POST /sign-up operation.
 	//
 	// POST /sign-up

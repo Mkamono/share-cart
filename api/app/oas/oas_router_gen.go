@@ -73,8 +73,10 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 					switch r.Method {
 					case "GET":
 						s.handleMarketGetRequest([0]string{}, elemIsEscaped, w, r)
+					case "POST":
+						s.handleMarketPostRequest([0]string{}, elemIsEscaped, w, r)
 					default:
-						s.notAllowed(w, r, "GET")
+						s.notAllowed(w, r, "GET,POST")
 					}
 
 					return
@@ -232,6 +234,14 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 					case "GET":
 						r.name = "MarketGet"
 						r.summary = "Get all markets"
+						r.operationID = ""
+						r.pathPattern = "/market"
+						r.args = args
+						r.count = 0
+						return r, true
+					case "POST":
+						r.name = "MarketPost"
+						r.summary = "Create a new market"
 						r.operationID = ""
 						r.pathPattern = "/market"
 						r.args = args

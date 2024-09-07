@@ -7,7 +7,9 @@ import (
 	"context"
 	"database/sql"
 
+	"github.com/google/uuid"
 	"github.com/samber/lo"
+	"github.com/volatiletech/sqlboiler/v4/boil"
 )
 
 var _ dbRepo.MarketRepository = (*marketRepository)(nil)
@@ -35,4 +37,14 @@ func (m *marketRepository) GetAll(ctx context.Context) ([]*db.Market, error) {
 	})
 
 	return markets, nil
+}
+
+func (m *marketRepository) Create(ctx context.Context, market *db.Market) (*db.Market, error) {
+	market.ID = uuid.New()
+	err := market.Insert(ctx, m.db, boil.Infer())
+	if err != nil {
+		return nil, err
+	}
+
+	return market, nil
 }

@@ -74,6 +74,31 @@ func (s *Market) SetImages(val []string) {
 	s.Images = val
 }
 
+type MarketPostReq struct {
+	Name        string `json:"name"`
+	Description string `json:"description"`
+}
+
+// GetName returns the value of Name.
+func (s *MarketPostReq) GetName() string {
+	return s.Name
+}
+
+// GetDescription returns the value of Description.
+func (s *MarketPostReq) GetDescription() string {
+	return s.Description
+}
+
+// SetName sets the value of Name.
+func (s *MarketPostReq) SetName(val string) {
+	s.Name = val
+}
+
+// SetDescription sets the value of Description.
+func (s *MarketPostReq) SetDescription(val string) {
+	s.Description = val
+}
+
 // NewOptString returns new OptString with value set to v.
 func NewOptString(v string) OptString {
 	return OptString{

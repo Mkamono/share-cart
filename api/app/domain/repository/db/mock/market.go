@@ -40,6 +40,21 @@ func (m *MockMarketRepository) EXPECT() *MockMarketRepositoryMockRecorder {
 	return m.recorder
 }
 
+// Create mocks base method.
+func (m *MockMarketRepository) Create(ctx context.Context, market *db.Market) (*db.Market, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Create", ctx, market)
+	ret0, _ := ret[0].(*db.Market)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// Create indicates an expected call of Create.
+func (mr *MockMarketRepositoryMockRecorder) Create(ctx, market any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Create", reflect.TypeOf((*MockMarketRepository)(nil).Create), ctx, market)
+}
+
 // GetAll mocks base method.
 func (m *MockMarketRepository) GetAll(ctx context.Context) ([]*db.Market, error) {
 	m.ctrl.T.Helper()

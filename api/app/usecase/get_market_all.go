@@ -44,7 +44,7 @@ func (u *getMarketAllUsecase) Run(ctx context.Context) ([]*oas.Market, error) {
 	}
 
 	marketImages, err := u.marketImageRepo.GetAllByMarketIDs(ctx, lo.Map(markets, func(m *dbEntity.Market, _ int) string {
-		return m.ID
+		return m.ID.String()
 	}))
 	if err != nil {
 		slog.ErrorContext(ctx, "Failed to get market images", "error", err)
@@ -55,15 +55,15 @@ func (u *getMarketAllUsecase) Run(ctx context.Context) ([]*oas.Market, error) {
 
 	oasMarkets := lo.Map(markets, func(m *dbEntity.Market, _ int) *oas.Market {
 		images := lo.Filter(marketImages, func(i *dbEntity.MarketImage, _ int) bool {
-			return i.MarketID == m.ID
+			return i.MarketID == m.ID.String()
 		})
 
 		return &oas.Market{
-			ID:          m.ID,
+			ID:          m.ID.String(),
 			Name:        m.Name,
 			Description: m.Description,
 			Images: lo.Map(images, func(i *dbEntity.MarketImage, _ int) string {
-				return i.ID
+				return i.ID.String()
 			}),
 		}
 	})
