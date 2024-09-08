@@ -8,6 +8,7 @@ import (
 	"context"
 	"log/slog"
 
+	"github.com/google/uuid"
 	"github.com/samber/lo"
 )
 
@@ -43,8 +44,8 @@ func (u *getMarketAllUsecase) Run(ctx context.Context) ([]*oas.Market, error) {
 		return []*oas.Market{}, nil
 	}
 
-	marketImages, err := u.marketImageRepo.GetAllByMarketIDs(ctx, lo.Map(markets, func(m *dbEntity.Market, _ int) string {
-		return m.ID.String()
+	marketImages, err := u.marketImageRepo.GetAllByMarketIDs(ctx, lo.Map(markets, func(m *dbEntity.Market, _ int) uuid.UUID {
+		return m.ID
 	}))
 	if err != nil {
 		slog.ErrorContext(ctx, "Failed to get market images", "error", err)

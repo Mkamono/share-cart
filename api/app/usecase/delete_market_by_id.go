@@ -95,7 +95,7 @@ func (u *deleteMarketByID) Run(ctx context.Context, id uuid.UUID) error {
 		if err != nil {
 			return err
 		}
-		err = u.marketRepo.DeleteByID(ctx, id)
+		err = u.marketImageRepo.DeleteByMarketID(ctx, id)
 		if err != nil {
 			return err
 		}

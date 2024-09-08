@@ -26,9 +26,9 @@ import (
 type MarketImage struct {
 	ID        uuid.UUID `boil:"id" json:"id" toml:"id" yaml:"id"`
 	MarketID  string    `boil:"market_id" json:"market_id" toml:"market_id" yaml:"market_id"`
+	ImageID   string    `boil:"image_id" json:"image_id" toml:"image_id" yaml:"image_id"`
 	CreatedAt time.Time `boil:"created_at" json:"created_at" toml:"created_at" yaml:"created_at"`
 	UpdatedAt time.Time `boil:"updated_at" json:"updated_at" toml:"updated_at" yaml:"updated_at"`
-	ImageID   string    `boil:"image_id" json:"image_id" toml:"image_id" yaml:"image_id"`
 
 	R *marketImageR `boil:"-" json:"-" toml:"-" yaml:"-"`
 	L marketImageL  `boil:"-" json:"-" toml:"-" yaml:"-"`
@@ -37,29 +37,29 @@ type MarketImage struct {
 var MarketImageColumns = struct {
 	ID        string
 	MarketID  string
+	ImageID   string
 	CreatedAt string
 	UpdatedAt string
-	ImageID   string
 }{
 	ID:        "id",
 	MarketID:  "market_id",
+	ImageID:   "image_id",
 	CreatedAt: "created_at",
 	UpdatedAt: "updated_at",
-	ImageID:   "image_id",
 }
 
 var MarketImageTableColumns = struct {
 	ID        string
 	MarketID  string
+	ImageID   string
 	CreatedAt string
 	UpdatedAt string
-	ImageID   string
 }{
 	ID:        "market_images.id",
 	MarketID:  "market_images.market_id",
+	ImageID:   "market_images.image_id",
 	CreatedAt: "market_images.created_at",
 	UpdatedAt: "market_images.updated_at",
-	ImageID:   "market_images.image_id",
 }
 
 // Generated where
@@ -67,15 +67,15 @@ var MarketImageTableColumns = struct {
 var MarketImageWhere = struct {
 	ID        whereHelperuuid_UUID
 	MarketID  whereHelperstring
+	ImageID   whereHelperstring
 	CreatedAt whereHelpertime_Time
 	UpdatedAt whereHelpertime_Time
-	ImageID   whereHelperstring
 }{
 	ID:        whereHelperuuid_UUID{field: "\"market_images\".\"id\""},
 	MarketID:  whereHelperstring{field: "\"market_images\".\"market_id\""},
+	ImageID:   whereHelperstring{field: "\"market_images\".\"image_id\""},
 	CreatedAt: whereHelpertime_Time{field: "\"market_images\".\"created_at\""},
 	UpdatedAt: whereHelpertime_Time{field: "\"market_images\".\"updated_at\""},
-	ImageID:   whereHelperstring{field: "\"market_images\".\"image_id\""},
 }
 
 // MarketImageRels is where relationship names are stored.
@@ -106,8 +106,8 @@ func (r *marketImageR) GetMarket() *Market {
 type marketImageL struct{}
 
 var (
-	marketImageAllColumns            = []string{"id", "market_id", "created_at", "updated_at", "image_id"}
-	marketImageColumnsWithoutDefault = []string{"id", "market_id", "created_at", "updated_at", "image_id"}
+	marketImageAllColumns            = []string{"id", "market_id", "image_id", "created_at", "updated_at"}
+	marketImageColumnsWithoutDefault = []string{"id", "market_id", "image_id", "created_at", "updated_at"}
 	marketImageColumnsWithDefault    = []string{}
 	marketImagePrimaryKeyColumns     = []string{"id"}
 	marketImageGeneratedColumns      = []string{}

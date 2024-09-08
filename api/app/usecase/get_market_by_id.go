@@ -36,13 +36,13 @@ func NewGetMarketByIDUsecase(
 func (u *getMarketByID) Run(ctx context.Context, id uuid.UUID) (*oas.Market, error) {
 	market, err := u.marketRepo.GetByID(ctx, id)
 	if err != nil {
-		slog.ErrorContext(ctx, "failed to create market", "error", err)
+		slog.ErrorContext(ctx, "failed to retrieve market", "error", err)
 		return nil, err
 	}
 
-	marketImages, err := u.marketImageRepo.GetAllByMarketIDs(ctx, []string{market.ID.String()})
+	marketImages, err := u.marketImageRepo.GetAllByMarketIDs(ctx, []uuid.UUID{market.ID})
 	if err != nil {
-		slog.ErrorContext(ctx, "failed to get market images", "error", err)
+		slog.ErrorContext(ctx, "failed to retrieve market images", "error", err)
 		return nil, err
 	}
 

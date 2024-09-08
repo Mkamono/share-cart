@@ -82,14 +82,14 @@
 <text text-anchor="start" x="437.5" y="-471.9" font-family="Arial" font-size="14.00" fill="#000000">market_id    </text>
 <text text-anchor="start" x="533.1536" y="-471.9" font-family="Arial" font-size="14.00" fill="#666666">[uuid]</text>
 <polygon fill="none" stroke="#000000" points="430.5,-430.5 430.5,-460.5 746.5,-460.5 746.5,-430.5 430.5,-430.5"/>
-<text text-anchor="start" x="437.5" y="-441.9" font-family="Arial" font-size="14.00" fill="#000000">created_at    </text>
-<text text-anchor="start" x="537.8422" y="-441.9" font-family="Arial" font-size="14.00" fill="#666666">[timestamp with time zone]</text>
+<text text-anchor="start" x="437.5" y="-441.9" font-family="Arial" font-size="14.00" fill="#000000">image_id    </text>
+<text text-anchor="start" x="528.4916" y="-441.9" font-family="Arial" font-size="14.00" fill="#666666">[uuid]</text>
 <polygon fill="none" stroke="#000000" points="430.5,-400.5 430.5,-430.5 746.5,-430.5 746.5,-400.5 430.5,-400.5"/>
-<text text-anchor="start" x="437.5" y="-411.9" font-family="Arial" font-size="14.00" fill="#000000">updated_at    </text>
-<text text-anchor="start" x="541.7468" y="-411.9" font-family="Arial" font-size="14.00" fill="#666666">[timestamp with time zone]</text>
+<text text-anchor="start" x="437.5" y="-411.9" font-family="Arial" font-size="14.00" fill="#000000">created_at    </text>
+<text text-anchor="start" x="537.8422" y="-411.9" font-family="Arial" font-size="14.00" fill="#666666">[timestamp with time zone]</text>
 <polygon fill="none" stroke="#000000" points="430.5,-370.5 430.5,-400.5 746.5,-400.5 746.5,-370.5 430.5,-370.5"/>
-<text text-anchor="start" x="437.5" y="-381.9" font-family="Arial" font-size="14.00" fill="#000000">image_id    </text>
-<text text-anchor="start" x="528.4916" y="-381.9" font-family="Arial" font-size="14.00" fill="#666666">[uuid]</text>
+<text text-anchor="start" x="437.5" y="-381.9" font-family="Arial" font-size="14.00" fill="#000000">updated_at    </text>
+<text text-anchor="start" x="541.7468" y="-381.9" font-family="Arial" font-size="14.00" fill="#666666">[timestamp with time zone]</text>
 </g>
 <!-- public.market_images&#45;&gt;public.markets -->
 <g id="edge2" class="edge">
