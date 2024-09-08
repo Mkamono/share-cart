@@ -119,6 +119,74 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/market/{marketId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get a market by ID */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    /**
+                     * @description The market ID(uuid).
+                     * @example xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                     */
+                    marketId: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description A market. */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["market"];
+                    };
+                };
+                default: components["responses"]["500InternalServerError"];
+            };
+        };
+        put?: never;
+        post?: never;
+        /** Delete a market by ID */
+        delete: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    /**
+                     * @description The market ID(uuid).
+                     * @example xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                     */
+                    marketId: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description No content. */
+                204: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                default: components["responses"]["500InternalServerError"];
+            };
+        };
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {

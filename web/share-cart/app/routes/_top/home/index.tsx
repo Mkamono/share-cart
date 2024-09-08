@@ -1,5 +1,5 @@
-import { ActionFunctionArgs, json } from "@remix-run/node";
-import { useLoaderData } from "@remix-run/react";
+import { ActionFunctionArgs, json, LoaderFunctionArgs } from "@remix-run/node";
+import { Link, useLoaderData } from "@remix-run/react";
 import { useState } from "react";
 import { authenticator } from "~/service/auth.server";
 import { shareCartClient } from "~/service/client";
@@ -10,7 +10,7 @@ import {
 } from "./CreateNewMarketModal";
 import { MarketCard } from "./MarketCard";
 
-export async function loader({ request }: { request: Request }) {
+export async function loader({ request }: LoaderFunctionArgs) {
 	const jwt = await authenticator.isAuthenticated(request);
 	const client = shareCartClient(jwt?.accessToken);
 	const { data } = await client.GET("/market");
@@ -67,14 +67,14 @@ export default function Home() {
 			</div>
 			<div className="grid grid-cols-2 gap-4">
 				{markets?.map((market) => (
-					<div key={market.id} className="rounded-md">
+					<Link to={`/market/${market.id}`} prefetch="viewport" key={market.id}>
 						<MarketCard
 							market={{
 								...market,
 								imageURL: market.images[0] || defaultImageURL,
 							}}
 						/>
-					</div>
+					</Link>
 				))}
 			</div>
 		</div>

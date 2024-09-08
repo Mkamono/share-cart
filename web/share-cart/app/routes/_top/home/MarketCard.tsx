@@ -10,7 +10,7 @@ const noImageURL = "https://placehold.jp/150x150.png";
 
 export const MarketCard = (props: MarketCardProps) => {
 	return (
-		<div className="text-wrap truncate">
+		<div className="text-wrap truncate rounded-lg">
 			<img
 				src={props.market.imageURL}
 				className="object-cover w-full h-32"

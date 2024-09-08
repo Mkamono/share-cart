@@ -8,7 +8,7 @@ const navContent = (
 	children: ReactNode,
 ) => {
 	if (isPending) {
-		return <div className="text-center text-gray-400 py-2">{children}</div>;
+		return <div className="text-center py-2">{children}</div>;
 	}
 	if (isActive) {
 		return (
