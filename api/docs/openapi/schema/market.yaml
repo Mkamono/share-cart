@@ -39,6 +39,47 @@ paths:
         "default":
           $ref: "http_response.yaml#/components/responses/500InternalServerError"
 
+  /market/{marketId}:
+    get:
+      summary: Get a market by ID
+      security:
+        - Bearer: []
+      parameters:
+        - name: marketId
+          in: path
+          required: true
+          description: The market ID(uuid).
+          schema:
+            type: string
+          example: "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+      responses:
+        "200":
+          description: A market.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/market"
+        "default":
+          $ref: "http_response.yaml#/components/responses/500InternalServerError"
+
+    delete:
+      summary: Delete a market by ID
+      security:
+        - Bearer: []
+      parameters:
+        - name: marketId
+          in: path
+          required: true
+          description: The market ID(uuid).
+          schema:
+            type: string
+          example: "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+      responses:
+        "204":
+          description: No content.
+        "default":
+          $ref: "http_response.yaml#/components/responses/500InternalServerError"
+
 components:
   # RequestBodies
   requestBodies:

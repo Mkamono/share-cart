@@ -14,6 +14,7 @@ import (
 	context "context"
 	reflect "reflect"
 
+	uuid "github.com/google/uuid"
 	gomock "go.uber.org/mock/gomock"
 )
 
@@ -40,8 +41,22 @@ func (m *MockMarketImageRepository) EXPECT() *MockMarketImageRepositoryMockRecor
 	return m.recorder
 }
 
+// DeleteByMarketID mocks base method.
+func (m *MockMarketImageRepository) DeleteByMarketID(ctx context.Context, marketID uuid.UUID) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DeleteByMarketID", ctx, marketID)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// DeleteByMarketID indicates an expected call of DeleteByMarketID.
+func (mr *MockMarketImageRepositoryMockRecorder) DeleteByMarketID(ctx, marketID any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteByMarketID", reflect.TypeOf((*MockMarketImageRepository)(nil).DeleteByMarketID), ctx, marketID)
+}
+
 // GetAllByMarketIDs mocks base method.
-func (m *MockMarketImageRepository) GetAllByMarketIDs(ctx context.Context, marketIDs []string) ([]*db.MarketImage, error) {
+func (m *MockMarketImageRepository) GetAllByMarketIDs(ctx context.Context, marketIDs uuid.UUIDs) ([]*db.MarketImage, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetAllByMarketIDs", ctx, marketIDs)
 	ret0, _ := ret[0].([]*db.MarketImage)

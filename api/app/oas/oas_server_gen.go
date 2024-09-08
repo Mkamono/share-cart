@@ -14,6 +14,18 @@ type Handler interface {
 	//
 	// GET /market
 	MarketGet(ctx context.Context) ([]Market, error)
+	// MarketMarketIdDelete implements DELETE /market/{marketId} operation.
+	//
+	// Delete a market by ID.
+	//
+	// DELETE /market/{marketId}
+	MarketMarketIdDelete(ctx context.Context, params MarketMarketIdDeleteParams) error
+	// MarketMarketIdGet implements GET /market/{marketId} operation.
+	//
+	// Get a market by ID.
+	//
+	// GET /market/{marketId}
+	MarketMarketIdGet(ctx context.Context, params MarketMarketIdGetParams) (*Market, error)
 	// MarketPost implements POST /market operation.
 	//
 	// Create a new market.

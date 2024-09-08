@@ -22,6 +22,24 @@ func (UnimplementedHandler) MarketGet(ctx context.Context) (r []Market, _ error)
 	return r, ht.ErrNotImplemented
 }
 
+// MarketMarketIdDelete implements DELETE /market/{marketId} operation.
+//
+// Delete a market by ID.
+//
+// DELETE /market/{marketId}
+func (UnimplementedHandler) MarketMarketIdDelete(ctx context.Context, params MarketMarketIdDeleteParams) error {
+	return ht.ErrNotImplemented
+}
+
+// MarketMarketIdGet implements GET /market/{marketId} operation.
+//
+// Get a market by ID.
+//
+// GET /market/{marketId}
+func (UnimplementedHandler) MarketMarketIdGet(ctx context.Context, params MarketMarketIdGetParams) (r *Market, _ error) {
+	return r, ht.ErrNotImplemented
+}
+
 // MarketPost implements POST /market operation.
 //
 // Create a new market.

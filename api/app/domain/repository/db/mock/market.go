@@ -14,6 +14,7 @@ import (
 	context "context"
 	reflect "reflect"
 
+	uuid "github.com/google/uuid"
 	gomock "go.uber.org/mock/gomock"
 )
 
@@ -55,6 +56,20 @@ func (mr *MockMarketRepositoryMockRecorder) Create(ctx, market any) *gomock.Call
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Create", reflect.TypeOf((*MockMarketRepository)(nil).Create), ctx, market)
 }
 
+// DeleteByID mocks base method.
+func (m *MockMarketRepository) DeleteByID(ctx context.Context, id uuid.UUID) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DeleteByID", ctx, id)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// DeleteByID indicates an expected call of DeleteByID.
+func (mr *MockMarketRepositoryMockRecorder) DeleteByID(ctx, id any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteByID", reflect.TypeOf((*MockMarketRepository)(nil).DeleteByID), ctx, id)
+}
+
 // GetAll mocks base method.
 func (m *MockMarketRepository) GetAll(ctx context.Context) ([]*db.Market, error) {
 	m.ctrl.T.Helper()
@@ -68,4 +83,19 @@ func (m *MockMarketRepository) GetAll(ctx context.Context) ([]*db.Market, error)
 func (mr *MockMarketRepositoryMockRecorder) GetAll(ctx any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetAll", reflect.TypeOf((*MockMarketRepository)(nil).GetAll), ctx)
+}
+
+// GetByID mocks base method.
+func (m *MockMarketRepository) GetByID(ctx context.Context, id uuid.UUID) (*db.Market, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetByID", ctx, id)
+	ret0, _ := ret[0].(*db.Market)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetByID indicates an expected call of GetByID.
+func (mr *MockMarketRepositoryMockRecorder) GetByID(ctx, id any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetByID", reflect.TypeOf((*MockMarketRepository)(nil).GetByID), ctx, id)
 }
