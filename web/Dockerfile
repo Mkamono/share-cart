@@ -1,14 +1,16 @@
 # ベースイメージ
-FROM oven/bun:1.1.26 AS base
+FROM node:22 AS base
 
 ENV TZ=Asia/Tokyo
 WORKDIR /app/share-cart
 
+RUN npm install -g pnpm@9.11.0 @biomejs/biome
+
 # ローカル開発
 FROM base AS local
 
-COPY share-cart/bun.lockb share-cart/package.json ./
-RUN bun install
+# COPY share-cart/bun.lockb share-cart/package.json ./
+# RUN bun install
 
 # ビルダー
 FROM base AS builder
