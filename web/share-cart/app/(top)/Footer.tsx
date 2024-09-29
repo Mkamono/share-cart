@@ -1,5 +1,4 @@
 "use client";
-
 import { buttonVariants } from "@/components/ui/button";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -21,7 +20,7 @@ function NavigationItem({
 	return (
 		<Link
 			href={
-				pathname === href
+				isActive
 					? href
 					: { pathname: href, search: new URLSearchParams({}).toString() }
 			}

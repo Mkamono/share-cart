@@ -25,7 +25,6 @@ services:
       # target: production
     volumes:
       - ./web/:/app/
-      - share-cart-node-modules:/app/share-cart/node_modules
     ports:
       - "5173:5173"
     environment:
@@ -33,7 +32,7 @@ services:
       PORT: 5173
     env_file:
       - ./web/.env
-    command: ["bun", "run", "dev"]
+    command: ["pnpm", "dev"]
   db:
     image: postgres:15
     environment:
@@ -46,5 +45,4 @@ services:
       - share-cart-db-data:/var/lib/postgresql/data
 
 volumes:
-  share-cart-node-modules:
   share-cart-db-data:
