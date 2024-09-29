@@ -1,4 +1,5 @@
 "use server";
+import type { paths } from "@/lib/share-cart";
 import { shareCartClient } from "@/lib/share-cart-client";
 import { getSession } from "@auth0/nextjs-auth0";
 
@@ -6,20 +7,42 @@ export type Input = {
 	id: string;
 };
 
-export async function getMarket(input: Input): Promise<Result<undefined>> {
+export async function getMarket(
+	input: Input,
+): Promise<
+	Result<
+		paths["/market/{marketId}"]["get"]["responses"]["200"]["content"]["application/json"]
+	>
+> {
 	const session = await getSession();
 	const client = shareCartClient(session?.accessToken);
 	const res = await client.GET("/market/{marketId}", {
 		params: { path: { marketId: input.id } },
 	});
+
+	const emptyData = {
+		id: "",
+		name: "",
+		description: "",
+		images: [],
+	};
+
 	if (!res.response.ok) {
 		return {
-			data: undefined,
+			data: emptyData,
 			error: res.error?.message,
 		};
 	}
+
+	if (!res.data) {
+		return {
+			data: emptyData,
+			error: "No data",
+		};
+	}
+
 	return {
-		data: undefined,
+		data: res.data,
 		error: undefined,
 	};
 }
