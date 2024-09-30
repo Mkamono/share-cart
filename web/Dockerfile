@@ -4,20 +4,19 @@ FROM node:22 AS base
 ENV TZ=Asia/Tokyo
 WORKDIR /app/share-cart
 
-RUN npm install -g pnpm@9.11.0 @biomejs/biome
+RUN npm install -g pnpm@9.11.0 @biomejs/biome@1.9.2
 
 # ローカル開発
 FROM base AS local
 
-# COPY share-cart/bun.lockb share-cart/package.json ./
-# RUN bun install
+COPY share-cart/pnpm-lock.yaml share-cart/package.json ./
+RUN pnpm install --frozen-lockfile
 
 # ビルダー
 FROM base AS builder
 
 COPY share-cart/ .
-RUN bun install --frozen-lockfile
-RUN bun run build
+RUN bun install --frozen-lockfile && bun run build
 
 FROM base AS production-deps
 
