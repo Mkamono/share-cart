@@ -9,22 +9,33 @@
 	"workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
 	"features": {
 		"ghcr.io/meaningful-ooo/devcontainer-features/fish:1": {},
+		"ghcr.io/joshuanianji/devcontainer-features/mount-pnpm-store:1": {},
+		// "ghcr.io/dhoeric/features/hadolint:1": {},
 		"ghcr.io/eitsupi/devcontainer-features/go-task:1": {}
 	},
 	"customizations": {
 		"vscode": {
 			"extensions": [
+				// api
 				"golang.go",
-				"ms-azuretools.vscode-docker",
-				"redhat.vscode-yaml",
-				"eamodio.gitlens",
-				"42Crunch.vscode-openapi",
-				"rangav.vscode-thunder-client",
-				"streetsidesoftware.code-spell-checker",
-				"cweijan.vscode-database-client2",
 				"hashicorp.hcl",
-				"bradlc.vscode-tailwindcss",
-				"fredwangwang.vscode-hcl-format"
+				"42Crunch.vscode-openapi",
+				"fredwangwang.vscode-hcl-format",
+				// web
+				// "biomejs.biome",
+				// "bradlc.vscode-tailwindcss",
+				// "formulahendry.auto-rename-tag",
+				// common
+				"eamodio.gitlens",
+				"task.vscode-task",
+				"redhat.vscode-yaml",
+				"usernamehw.errorlens",
+				"42Crunch.vscode-openapi",
+				"ms-azuretools.vscode-docker",
+				"rangav.vscode-thunder-client",
+				"cweijan.vscode-database-client2",
+				"GitHub.vscode-pull-request-github",
+				"streetsidesoftware.code-spell-checker"
 			]
 		}
 	}

@@ -32,10 +32,17 @@ func main() {
 	}
 
 	// logger
-	baseHandler := slog.NewJSONHandler(os.Stdout, &slog.HandlerOptions{
+	var baseHandler slog.Handler
+	baseHandler = slog.NewJSONHandler(os.Stdout, &slog.HandlerOptions{
 		AddSource:   true,
 		ReplaceAttr: ctxlogger.GoogleCloudReplacer,
 	})
+
+	if os.Getenv("ENV") == "local" {
+		baseHandler = slog.NewTextHandler(os.Stdout, &slog.HandlerOptions{
+			AddSource: true,
+		})
+	}
 
 	slogHandler := ctxlogger.NewHandler(baseHandler)
 	slog.SetDefault(slog.New(slogHandler))
