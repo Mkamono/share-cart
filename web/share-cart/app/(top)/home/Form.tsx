@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
@@ -26,7 +27,10 @@ const FormSchema = z.object({
 
 const createMarketFormID = "create-market";
 
-export function CreateMarketForm() {
+export function CreateMarketForm({
+	afterSubmit,
+}: { afterSubmit?: () => void } = {}) {
+	const router = useRouter();
 	const form = useForm<z.infer<typeof FormSchema>>({
 		resolver: zodResolver(FormSchema),
 		defaultValues: {
@@ -46,8 +50,10 @@ export function CreateMarketForm() {
 				});
 				return;
 			}
-			form.reset();
-			form.setValue("apiMessage", `Market "${data.name}" created successfully`);
+
+			if (afterSubmit) {
+				afterSubmit();
+			}
 		});
 	}
 

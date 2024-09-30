@@ -30,19 +30,12 @@ export async function getMarket(
 	if (!res.response.ok) {
 		return {
 			data: emptyData,
-			error: res.error?.message,
-		};
-	}
-
-	if (!res.data) {
-		return {
-			data: emptyData,
-			error: "No data",
+			error: res.error?.message || "Failed to get market",
 		};
 	}
 
 	return {
-		data: res.data,
+		data: res.data ?? emptyData,
 		error: undefined,
 	};
 }

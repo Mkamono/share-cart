@@ -14,7 +14,7 @@ export async function createMarket(input: Input): Promise<Result<string>> {
 	if (!res.response.ok) {
 		return {
 			data: "Failed to create market",
-			error: res.error?.message,
+			error: res.error?.message || "Failed to create market",
 		};
 	}
 	return {

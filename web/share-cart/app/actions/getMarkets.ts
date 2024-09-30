@@ -12,8 +12,14 @@ export async function getMarkets(): Promise<
 	const client = shareCartClient(session?.accessToken);
 	const res = await client.GET("/market");
 	if (!res.response.ok) {
-		return { data: [], error: res.error?.message };
+		return {
+			data: [],
+			error: res.error?.message || "Failed to get markets",
+		};
 	}
 
-	return { data: res.data ?? [], error: undefined };
+	return {
+		data: res.data ?? [],
+		error: undefined,
+	};
 }

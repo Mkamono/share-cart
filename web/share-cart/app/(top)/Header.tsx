@@ -1,7 +1,10 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
 import { getSession } from "@auth0/nextjs-auth0";
+import Link from "next/link";
 import { Suspense } from "react";
 import { ModeToggle } from "./ModeToggle";
+import { UserDropdownMenu } from "./UserDropdownMenu";
 
 export default function Header() {
 	return (
@@ -19,24 +22,43 @@ async function UserProfile() {
 	const session = await getSession();
 	if (!session) {
 		return (
-			<p>
-				<a href="/api/auth/login">Login</a>
-			</p>
+			<div className="flex items-baseline px-4">
+				<Link
+					href={"/home"}
+					className="text-2xl font-semibold leading-none tracking-tight py-4"
+				>
+					Share Cart
+				</Link>
+				<div className="flex-auto" />
+				<ModeToggle />
+				<Button>
+					<a href="/api/auth/login">Login</a>
+				</Button>
+			</div>
 		);
 	}
 	const user = session.user;
 	return (
-		<div className="flex">
-			<ModeToggle />
+		<div className="flex items-baseline px-4">
+			<Link
+				href={"/home"}
+				className="text-2xl font-semibold leading-none tracking-tight py-4"
+			>
+				Share Cart
+			</Link>
+			<div className="flex-auto" />
 			<div>
-				<Avatar>
-					<AvatarImage src={user.picture} />
-					<AvatarFallback>{user.name[0]}</AvatarFallback>
-				</Avatar>
-				<p>{user.name}</p>
-				<p>
-					<a href="/api/auth/logout">Logout</a>
-				</p>
+				<div className="flex">
+					<div className="flex-auto" />
+					<ModeToggle />
+					<UserDropdownMenu>
+						<Avatar>
+							<AvatarImage src={user.picture} />
+							<AvatarFallback>{user.name[0]}</AvatarFallback>
+						</Avatar>
+					</UserDropdownMenu>
+				</div>
+				<p className="text-right">{user.name}</p>
 			</div>
 		</div>
 	);

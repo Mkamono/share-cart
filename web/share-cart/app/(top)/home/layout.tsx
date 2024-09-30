@@ -1,5 +1,5 @@
-import { CreateMarketDialogButton } from "./Button";
-import { CreateMarketDialog } from "./Dialog";
+import { CreateMarketDialogButton } from "./Button"; // server component
+import { CreateMarketDialog } from "./Dialog"; // client component
 
 export default function TopPageLayout({
 	children,
