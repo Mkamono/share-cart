@@ -4,8 +4,8 @@
 		"../compose.yaml",
 		"docker-compose.yml"
 	],
-	"service": "api",
-	// "service": "web",
+	// "service": "api",
+	"service": "web",
 	"workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
 	"features": {
 		"ghcr.io/meaningful-ooo/devcontainer-features/fish:1": {},
@@ -17,14 +17,14 @@
 		"vscode": {
 			"extensions": [
 				// api
-				"golang.go",
-				"hashicorp.hcl",
-				"42Crunch.vscode-openapi",
-				"fredwangwang.vscode-hcl-format",
+				// "golang.go",
+				// "hashicorp.hcl",
+				// "42Crunch.vscode-openapi",
+				// "fredwangwang.vscode-hcl-format",
 				// web
-				// "biomejs.biome",
-				// "bradlc.vscode-tailwindcss",
-				// "formulahendry.auto-rename-tag",
+				"biomejs.biome",
+				"bradlc.vscode-tailwindcss",
+				"formulahendry.auto-rename-tag",
 				// common
 				"eamodio.gitlens",
 				"task.vscode-task",

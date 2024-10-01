@@ -13,6 +13,7 @@ FROM base AS builder
 
 RUN --mount=type=bind,target=. go build -o /go/bin/app
 
+# hadolint ignore=DL3006
 FROM gcr.io/distroless/base-debian12 AS production
 
 COPY --from=builder /go/bin/app /app
