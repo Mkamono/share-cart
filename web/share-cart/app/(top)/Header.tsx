@@ -1,5 +1,6 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
+import { LoadingSpinner } from "@/components/ui/loading-spinner";
 import { getSession } from "@auth0/nextjs-auth0";
 import Link from "next/link";
 import { Suspense } from "react";
@@ -15,7 +16,11 @@ export default function Header() {
 }
 
 function Loading() {
-	return <div>Loading...</div>;
+	return (
+		<div className="h-full flex">
+			<LoadingSpinner className="m-auto" />
+		</div>
+	);
 }
 
 async function UserProfile() {
@@ -31,9 +36,9 @@ async function UserProfile() {
 				</Link>
 				<div className="flex-auto" />
 				<ModeToggle />
-				<Button>
-					<a href="/api/auth/login">Login</a>
-				</Button>
+				<form action="/api/auth/login" method="GET">
+					<Button type="submit">Login</Button>
+				</form>
 			</div>
 		);
 	}
