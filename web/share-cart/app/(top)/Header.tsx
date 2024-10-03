@@ -1,6 +1,6 @@
+import { LoadingSpinner } from "@/components/custom-ui/loading-spinner";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { LoadingSpinner } from "@/components/ui/loading-spinner";
 import { getSession } from "@auth0/nextjs-auth0";
 import Link from "next/link";
 import { Suspense } from "react";

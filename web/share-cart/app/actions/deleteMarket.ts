@@ -15,7 +15,9 @@ export async function deleteMarket(input: Input): Promise<Result<string>> {
 	if (!res.response.ok) {
 		return {
 			data: "Failed to delete market",
-			error: res.error?.message || "Failed to delete market",
+			error:
+				res.error?.message ||
+				`Failed to delete market with ID: ${input.id}. Status: ${res.response.status}`,
 		};
 	}
 	return {
