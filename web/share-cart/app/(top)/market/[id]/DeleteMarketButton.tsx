@@ -12,17 +12,17 @@ export function DeleteMarketButton({ id }: { id: string }) {
 
 	const handleClick = async () => {
 		setButtonDisabled(true);
-		deleteMarket({ id }).then((res) => {
-			if (res.error) {
-				toast({
-					title: "Failed to delete market",
-					description: res.error,
-					variant: "destructive",
-				});
-			} else {
-				router.push("/home");
-			}
-		});
+		const res = await deleteMarket({ id });
+		if (res.error) {
+			toast({
+				title: "Failed to delete market",
+				description: res.error,
+				variant: "destructive",
+			});
+			setButtonDisabled(false);
+		} else {
+			router.push("/home");
+		}
 	};
 	return (
 		<Button variant="destructive" disabled={buttonDisabled} onClick={handleClick}>
