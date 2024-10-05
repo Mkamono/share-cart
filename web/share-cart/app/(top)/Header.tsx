@@ -22,9 +22,11 @@ async function UserProfile() {
 				</Link>
 				<div className="flex-auto" />
 				<ModeToggle />
-				<Link href="/api/auth/login">
-					<Button type="submit">Login</Button>
-				</Link>
+				<Button type="submit">
+					<a href="/api/auth/login">
+						Login
+					</a>
+				</Button>
 			</div>
 		);
 	}
