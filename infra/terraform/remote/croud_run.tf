@@ -111,7 +111,7 @@ resource "google_cloud_run_v2_service" "web" {
         cpu_idle = true
         limits = {
           cpu    = "2"
-          memory = "1024Mi"
+          memory = "2Gi"
         }
       }
       ports {
