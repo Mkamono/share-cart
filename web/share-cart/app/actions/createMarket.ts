@@ -21,7 +21,7 @@ export async function createMarket(input: Input): Promise<Result<string>> {
 
 	revalidateShareCartCache("/market");
 	return {
-		data: res.data?.id || "",
+		data: res.data?.id ?? "",
 		error: undefined,
 	};
 }

@@ -1,20 +1,18 @@
-import Footer from "./Footer";
-import Header from "./Header";
+import { Footer } from "./Footer";
+import { Header } from "./Header";
 
 export default function TopPageLayout({
 	children,
-}: {
-	children: React.ReactNode;
-}) {
+}: { children: React.ReactNode }) {
 	return (
 		<section className="flex flex-col h-dvh">
-			<div className="sticky top-0">
+			<header>
 				<Header />
-			</div>
-			<div className="flex-1 p-2 pb-0 overflow-auto">{children}</div>
-			<div className="sticky bottom-0">
+			</header>
+			<div className="flex-1 px-2 overflow-auto">{children}</div>
+			<footer>
 				<Footer />
-			</div>
+			</footer>
 		</section>
 	);
 }

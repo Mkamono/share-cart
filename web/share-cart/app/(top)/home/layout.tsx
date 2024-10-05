@@ -14,7 +14,7 @@ export default function TopPageLayout({
 			</div>
 			<div className="absolute bottom-0 right-0">
 				<CreateMarketDialog>
-					<CreateMarketDialogButton className="m-2" />
+					<CreateMarketDialogButton />
 				</CreateMarketDialog>
 			</div>
 		</section>

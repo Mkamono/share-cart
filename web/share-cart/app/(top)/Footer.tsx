@@ -31,9 +31,9 @@ function NavigationItem({
 	);
 }
 
-export default function ExampleClientComponent() {
+export function Footer() {
 	return (
-		<section className="flex">
+		<div className="flex">
 			<NavigationItem href="/home" className="flex-auto">
 				Home
 			</NavigationItem>
@@ -43,6 +43,6 @@ export default function ExampleClientComponent() {
 			<NavigationItem href="/notification" className="flex-auto">
 				Notification
 			</NavigationItem>
-		</section>
+		</div>
 	);
 }

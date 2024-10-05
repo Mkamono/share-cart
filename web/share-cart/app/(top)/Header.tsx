@@ -1,26 +1,12 @@
-import { LoadingSpinner } from "@/components/custom-ui/loading-spinner";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { getSession } from "@auth0/nextjs-auth0";
 import Link from "next/link";
-import { Suspense } from "react";
 import { ModeToggle } from "./ModeToggle";
 import { UserDropdownMenu } from "./UserDropdownMenu";
 
-export default function Header() {
-	return (
-		<Suspense fallback={<Loading />}>
-			<UserProfile />
-		</Suspense>
-	);
-}
-
-function Loading() {
-	return (
-		<div className="h-full flex">
-			<LoadingSpinner className="m-auto" />
-		</div>
-	);
+export function Header() {
+	return <UserProfile />;
 }
 
 async function UserProfile() {

@@ -1,13 +1,9 @@
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 
-export function CreateMarketDialogButton({
-	className,
-}: { className?: string }) {
-	const classes = `rounded-full ${className}`;
-
+export function CreateMarketDialogButton() {
 	return (
-		<Button variant="default" size="icon" className={classes}>
+		<Button variant="default" size="icon" className="rounded-full">
 			<Plus className="h-4 w-4" />
 		</Button>
 	);
