@@ -76,9 +76,7 @@ function ErrorReportForm({ children }: { children: React.ReactNode }) {
 						送信された情報は、問題の特定と解決に役立てられます。
 					</DialogDescription>
 				</DialogHeader>
-
 				<ReportBugForm afterSubmit={afterSubmit} />
-
 				<DialogFooter className="flex-row gap-4">
 					<DialogClose asChild className="flex-1">
 						<Button type="button" variant="secondary">
