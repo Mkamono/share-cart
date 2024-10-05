@@ -6,11 +6,6 @@ const nextConfig = {
             hostname: 'via.placeholder.com',
         }],
     },
-    logging: {
-        fetches: {
-            fullUrl: true,
-        },
-    },
 };
 
 export default nextConfig;
