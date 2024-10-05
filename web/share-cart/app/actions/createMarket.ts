@@ -1,8 +1,9 @@
 "use server";
 import { shareCartClient } from "@/lib/share-cart-client";
 import { getSession } from "@auth0/nextjs-auth0";
+import { revalidateShareCartCache } from "./revalidatePath";
 
-export type Input = {
+type Input = {
 	name: string;
 	description: string;
 };
@@ -17,8 +18,10 @@ export async function createMarket(input: Input): Promise<Result<string>> {
 			error: res.error?.message || "Failed to create market",
 		};
 	}
+
+	revalidateShareCartCache("/market");
 	return {
-		data: "Market created successfully",
+		data: res.data?.id || "",
 		error: undefined,
 	};
 }

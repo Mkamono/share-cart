@@ -1,8 +1,9 @@
 "use server";
 import { shareCartClient } from "@/lib/share-cart-client";
 import { getSession } from "@auth0/nextjs-auth0";
+import { revalidateShareCartCache } from "./revalidatePath";
 
-export type Input = {
+type Input = {
 	id: string;
 };
 
@@ -20,6 +21,8 @@ export async function deleteMarket(input: Input): Promise<Result<string>> {
 				`Failed to delete market with ID: ${input.id}. Status: ${res.response.status}`,
 		};
 	}
+
+	revalidateShareCartCache("/market");
 	return {
 		data: "Market deleted successfully",
 		error: undefined,
