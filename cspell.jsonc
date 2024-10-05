@@ -19,6 +19,7 @@
 		"graphviz",
 		"gserviceaccount",
 		"headlessui",
+		"hookform",
 		"jwks",
 		"lucide",
 		"mockgen",
