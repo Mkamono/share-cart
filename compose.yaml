@@ -12,6 +12,7 @@ services:
       POSTGRES_DB: ${POSTGRES_DB}
       POSTGRES_HOST: ${POSTGRES_HOST}
       POSTGRES_PORT: ${POSTGRES_PORT}
+      ENV: "local"
     ports:
       - "8081:8081"
     env_file:
@@ -25,15 +26,15 @@ services:
       # target: production
     volumes:
       - ./web/:/app/
-      - share-cart-node-modules:/app/share-cart/node_modules
     ports:
       - "5173:5173"
     environment:
       API_HOST: http://api:8081
       PORT: 5173
+      ENV: "local"
     env_file:
       - ./web/.env
-    command: ["bun", "run", "dev"]
+    command: ["pnpm", "dev"]
   db:
     image: postgres:15
     environment:
@@ -46,5 +47,4 @@ services:
       - share-cart-db-data:/var/lib/postgresql/data
 
 volumes:
-  share-cart-node-modules:
   share-cart-db-data:
