@@ -1,4 +1,3 @@
-
 resource "google_cloud_run_v2_service" "api" {
   name     = "api"
   location = local.region
@@ -121,6 +120,10 @@ resource "google_cloud_run_v2_service" "web" {
 
       // シークレットの設定
       env {
+        name  = "API_HOST"
+        value = google_cloud_run_v2_service.api.uri
+      }
+      env {
         name = "AUTH0_CLIENT_ID"
         value_source {
           secret_key_ref {
@@ -139,8 +142,31 @@ resource "google_cloud_run_v2_service" "web" {
         }
       }
       env {
-        name  = "API_HOST"
-        value = google_cloud_run_v2_service.api.uri
+        name = "AUTH0_SECRET"
+        value_source {
+          secret_key_ref {
+            secret  = google_secret_manager_secret.auth0_secret.secret_id
+            version = "latest"
+          }
+        }
+      }
+      env {
+        name = "AUTH0_BASE_URL"
+        value_source {
+          secret_key_ref {
+            secret  = google_secret_manager_secret.auth0_base_url.secret_id
+            version = "latest"
+          }
+        }
+      }
+      env {
+        name = "AUTH0_ISSUER_BASE_URL"
+        value_source {
+          secret_key_ref {
+            secret  = google_secret_manager_secret.auth0_issuer_base_url.secret_id
+            version = "latest"
+          }
+        }
       }
     }
   }
