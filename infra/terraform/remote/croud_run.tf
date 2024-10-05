@@ -121,24 +121,6 @@ resource "google_cloud_run_v2_service" "web" {
 
       // シークレットの設定
       env {
-        name = "SESSION_SECRET"
-        value_source {
-          secret_key_ref {
-            secret  = google_secret_manager_secret.auth0_session_secret.secret_id
-            version = "latest"
-          }
-        }
-      }
-      env {
-        name = "AUTH0_CALLBACK_URL"
-        value_source {
-          secret_key_ref {
-            secret  = google_secret_manager_secret.auth0_callback_url.secret_id
-            version = "latest"
-          }
-        }
-      }
-      env {
         name = "AUTH0_CLIENT_ID"
         value_source {
           secret_key_ref {
@@ -152,42 +134,6 @@ resource "google_cloud_run_v2_service" "web" {
         value_source {
           secret_key_ref {
             secret  = google_secret_manager_secret.auth0_client_secret.secret_id
-            version = "latest"
-          }
-        }
-      }
-      env {
-        name = "AUTH0_DOMAIN"
-        value_source {
-          secret_key_ref {
-            secret  = google_secret_manager_secret.auth0_domain.secret_id
-            version = "latest"
-          }
-        }
-      }
-      env {
-        name = "AUTH0_LOGOUT_URL"
-        value_source {
-          secret_key_ref {
-            secret  = google_secret_manager_secret.auth0_logout_url.secret_id
-            version = "latest"
-          }
-        }
-      }
-      env {
-        name = "AUTH0_AUDIENCE"
-        value_source {
-          secret_key_ref {
-            secret  = google_secret_manager_secret.auth0_audience.secret_id
-            version = "latest"
-          }
-        }
-      }
-      env {
-        name = "AUTH0_RETURN_TO_URL"
-        value_source {
-          secret_key_ref {
-            secret  = google_secret_manager_secret.auth0_return_to_url.secret_id
             version = "latest"
           }
         }

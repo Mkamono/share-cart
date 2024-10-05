@@ -50,8 +50,8 @@ resource "google_secret_manager_secret" "supabase_port" {
 }
 
 # auth0
-resource "google_secret_manager_secret" "auth0_session_secret" {
-  secret_id = "auth0_session_secret"
+resource "google_secret_manager_secret" "auth0_audience" {
+  secret_id = "auth0_audience"
   labels = {
     service = "auth0"
   }
@@ -60,8 +60,8 @@ resource "google_secret_manager_secret" "auth0_session_secret" {
   }
 }
 
-resource "google_secret_manager_secret" "auth0_callback_url" {
-  secret_id = "auth0_callback_url"
+resource "google_secret_manager_secret" "auth0_domain" {
+  secret_id = "auth0_domain"
   labels = {
     service = "auth0"
   }
@@ -90,8 +90,8 @@ resource "google_secret_manager_secret" "auth0_client_secret" {
   }
 }
 
-resource "google_secret_manager_secret" "auth0_domain" {
-  secret_id = "auth0_domain"
+resource "google_secret_manager_secret" "auth0_secret" {
+  secret_id = "auth0_secret"
   labels = {
     service = "auth0"
   }
@@ -100,8 +100,8 @@ resource "google_secret_manager_secret" "auth0_domain" {
   }
 }
 
-resource "google_secret_manager_secret" "auth0_logout_url" {
-  secret_id = "auth0_logout_url"
+resource "google_secret_manager_secret" "auth0_base_url" {
+  secret_id = "auth0_base_url"
   labels = {
     service = "auth0"
   }
@@ -110,18 +110,8 @@ resource "google_secret_manager_secret" "auth0_logout_url" {
   }
 }
 
-resource "google_secret_manager_secret" "auth0_audience" {
-  secret_id = "auth0_audience"
-  labels = {
-    service = "auth0"
-  }
-  replication {
-    auto {}
-  }
-}
-
-resource "google_secret_manager_secret" "auth0_return_to_url" {
-  secret_id = "auth0_return_to_url"
+resource "google_secret_manager_secret" "auth0_issuer_base_url" {
+  secret_id = "auth0_issuer_base_url"
   labels = {
     service = "auth0"
   }
