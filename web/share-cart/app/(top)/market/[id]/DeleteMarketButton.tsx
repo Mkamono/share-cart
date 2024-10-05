@@ -7,13 +7,11 @@ import { useState } from "react";
 
 export function DeleteMarketButton({ id }: { id: string }) {
 	const { toast } = useToast();
-	const [buttonVariant, setButtonVariant] = useState<"link" | "default" | "destructive" | "outline" | "secondary" | "ghost" | null>(
-		"destructive",
-	);
+	const [buttonDisabled, setButtonDisabled] = useState(false);
 	const router = useRouter();
 
 	const handleClick = async () => {
-		setButtonVariant("outline");
+		setButtonDisabled(true);
 		deleteMarket({ id }).then((res) => {
 			if (res.error) {
 				toast({
@@ -27,7 +25,7 @@ export function DeleteMarketButton({ id }: { id: string }) {
 		});
 	};
 	return (
-		<Button variant={buttonVariant} onClick={handleClick}>
+		<Button variant="destructive" disabled={buttonDisabled} onClick={handleClick}>
 			削除
 		</Button>
 	);
