@@ -5,7 +5,7 @@ import { Market } from "./Market";
 export default async function Home() {
 	const res = await getMarkets();
 	if (res.error) {
-		return <ErrorPage />;
+		return <ErrorPage errorMessage="マーケットが見つかりませんでした" />;
 	}
 	const markets = res.data;
 	return (

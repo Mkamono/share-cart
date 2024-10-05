@@ -6,7 +6,7 @@ export default async function Home({ params }: { params: { id: string } }) {
 	const res = await getMarket({ id: params.id });
 
 	if (res.error) {
-		return <ErrorPage />;
+		return <ErrorPage errorMessage="マーケットが見つかりませんでした" />;
 	}
 
 	const { data: market } = res;
