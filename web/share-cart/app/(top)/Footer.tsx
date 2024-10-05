@@ -33,7 +33,7 @@ function NavigationItem({
 
 export function Footer() {
 	return (
-		<div className="flex">
+		<nav className="flex" aria-label="フッターナビゲーション">
 			<NavigationItem href="/home" className="flex-auto">
 				Home
 			</NavigationItem>
@@ -43,6 +43,6 @@ export function Footer() {
 			<NavigationItem href="/notification" className="flex-auto">
 				Notification
 			</NavigationItem>
-		</div>
+		</nav>
 	);
 }

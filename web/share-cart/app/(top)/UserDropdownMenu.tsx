@@ -26,6 +26,7 @@ import {
 	DropdownMenuSubTrigger,
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import Link from "next/link";
 
 export function UserDropdownMenu({ children }: { children: React.ReactNode }) {
 	return (
@@ -93,7 +94,7 @@ export function UserDropdownMenu({ children }: { children: React.ReactNode }) {
 				</DropdownMenuItem>
 				<DropdownMenuItem>
 					<LogOut className="mr-2 h-4 w-4" />
-					<a href="/api/auth/logout">Log Out</a>
+					<Link href="/api/auth/logout">Log Out</Link>
 					<DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
 				</DropdownMenuItem>
 			</DropdownMenuContent>

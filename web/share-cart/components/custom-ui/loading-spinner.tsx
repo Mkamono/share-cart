@@ -27,12 +27,4 @@ const LoadingSpinner = React.forwardRef<HTMLDivElement, LoadingSpinnerProps>(
 
 LoadingSpinner.displayName = "LoadingSpinner";
 
-function LoadingPage() {
-	return (
-		<div className="h-full flex">
-			<LoadingSpinner className="m-auto" />
-		</div>
-	);
-}
-
-export { LoadingPage, LoadingSpinner };
+export { LoadingSpinner };

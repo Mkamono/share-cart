@@ -8,7 +8,7 @@
 	"files": {
 		"ignoreUnknown": false,
 		"include": ["./app/*.ts", "./app/*.tsx"],
-		"ignore": ["./app/**/schema.d.ts"]
+		"ignore": ["./app/**/schema.d.ts", "./node_modules/**"]
 	},
 	"formatter": {
 		"enabled": true,

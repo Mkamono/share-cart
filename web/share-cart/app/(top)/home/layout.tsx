@@ -3,9 +3,7 @@ import { CreateMarketDialog } from "./Dialog"; // client component
 
 export default function TopPageLayout({
 	children,
-}: {
-	children: React.ReactNode;
-}) {
+}: { children: React.ReactNode }) {
 	return (
 		<section className="relative h-full flex flex-col">
 			<div className="flex-auto overflow-auto">

@@ -22,9 +22,9 @@ async function UserProfile() {
 				</Link>
 				<div className="flex-auto" />
 				<ModeToggle />
-				<form action="/api/auth/login" method="GET">
+				<Link href="/api/auth/login">
 					<Button type="submit">Login</Button>
-				</form>
+				</Link>
 			</div>
 		);
 	}
