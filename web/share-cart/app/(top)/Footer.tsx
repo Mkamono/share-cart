@@ -34,13 +34,13 @@ function NavigationItem({
 export function Footer() {
 	return (
 		<nav className="flex" aria-label="フッターナビゲーション">
-			<NavigationItem href="/home" className="flex-auto">
+			<NavigationItem href="/home" className="flex-1">
 				Home
 			</NavigationItem>
-			<NavigationItem href="/explore" className="flex-auto">
+			<NavigationItem href="/explore" className="flex-1">
 				Explore
 			</NavigationItem>
-			<NavigationItem href="/notification" className="flex-auto">
+			<NavigationItem href="/notification" className="flex-1">
 				Notification
 			</NavigationItem>
 		</nav>

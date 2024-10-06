@@ -21,11 +21,11 @@ const altImage = "https://via.placeholder.com/300x200/?text=No+Image";
 export function Market(props: Props) {
 	const { market } = props;
 	return (
-		<Link href={`/market/${market.id}`}>
-			<Card className="overflow-hidden">
+		<Card className="overflow-hidden h-full">
+			<Link href={`/market/${market.id}`}>
 				<Image
 					src={market.images[0] || altImage}
-					className="w-full h-full object-contain"
+					className="w-full object-contain"
 					width={300}
 					height={200}
 					alt=""
@@ -34,7 +34,8 @@ export function Market(props: Props) {
 					<CardTitle>{market.name}</CardTitle>
 					<CardDescription>{market.description}</CardDescription>
 				</CardHeader>
-			</Card>
-		</Link>
+			</Link>
+		</Card>
+
 	);
 }
