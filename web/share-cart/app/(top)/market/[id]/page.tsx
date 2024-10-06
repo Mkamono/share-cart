@@ -14,8 +14,8 @@ export default async function Home({ params }: { params: { id: string } }) {
 	return (
 		<div>
 			<DeleteMarketButton id={market.id} />
-			<h1>{market.name || "マーケット名なし"}</h1>
-			<p>{market.description || "説明なし"}</p>
+			<h1>{market.name}</h1>
+			<p>{market.description}</p>
 		</div>
 	);
 }

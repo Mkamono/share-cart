@@ -9,7 +9,7 @@ export default async function Home() {
 	}
 	const markets = res.data;
 	return (
-		<div className="flex flex-col space-y-4">
+		<div className="gap-2 grid grid-cols-2 md:grid-cols-4">
 			{markets.map((market) => (
 				<div key={market.id}>
 					<Market market={market} />

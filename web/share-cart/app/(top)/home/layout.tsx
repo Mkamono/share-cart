@@ -5,10 +5,9 @@ export default function TopPageLayout({
 	children,
 }: { children: React.ReactNode }) {
 	return (
-		<section className="relative h-full flex flex-col">
-			<div className="flex-auto overflow-auto">
+		<section className="relative h-full p-2">
+			<div className="overflow-auto h-full pb-20">
 				{children}
-				<div className="h-16" />
 			</div>
 			<div className="absolute bottom-4 right-4">
 				<CreateMarketDialog>
