@@ -52,9 +52,8 @@ table "market_images" {
   }
 
   column "image_id" {
-    null        = false
-    type        = uuid
-    description = "The image id (gcs) of the market"
+    null = false
+    type = uuid
   }
 
   // system managed columns
